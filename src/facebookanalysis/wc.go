@@ -11,6 +11,20 @@ import "strconv"
 
 var pattern *regexp.Regexp
 
+
+
+// Split function needs to split into files called 
+func Split(input string) *mapreduce.MapReduce {
+
+//  Generate filename with
+//    mapreduce.MapName(input, i)
+
+    fmt.Println("Test Split Function Call")
+
+    return nil
+
+}
+
 func Map(value string) *list.List {
 
     fs := strings.Split(value,"\n")
@@ -81,9 +95,9 @@ func main() {
         // Original implementation
         if os.Args[1] == "master" {
             if os.Args[3] == "sequential" {
-                mapreduce.RunSingle(5, 3, os.Args[2], Map, Reduce)
+                mapreduce.RunSingle(5, 3, os.Args[2], Map, Reduce, Split)
             } else {
-                mr := mapreduce.MakeMapReduce(5, 3, os.Args[2], os.Args[3])
+                mr := mapreduce.MakeMapReduce(5, 3, os.Args[2], os.Args[3], Split)
                 // Wait until MR is done
                 <-mr.DoneChannel
             }

@@ -62,6 +62,7 @@ type MapReduce struct {
      alive           bool
      l               net.Listener
      stats           *list.List
+     Split           func (string) *MapReduce
 
      // Map of registered workers that you need to keep up to date
      Workers map[string]*WorkerInfo
@@ -70,7 +71,8 @@ type MapReduce struct {
 }
 
 func InitMapReduce(nmap int, nreduce int,
-     file string, master string) *MapReduce {
+     file string, master string,
+     Split func(string) *MapReduce) *MapReduce {
      mr := new(MapReduce)
      mr.nMap = nmap
      mr.nReduce = nreduce
@@ -79,14 +81,16 @@ func InitMapReduce(nmap int, nreduce int,
      mr.alive = true
      mr.registerChannel = make(chan string)
      mr.DoneChannel = make(chan bool)
+     mr.Split = Split
 
      // initialize any additional state here
      return mr
 }
 
 func MakeMapReduce(nmap int, nreduce int,
-     file string, master string) *MapReduce {
-     mr := InitMapReduce(nmap, nreduce, file, master)
+     file string, master string,
+     Split func(string) *MapReduce) *MapReduce {
+     mr := InitMapReduce(nmap, nreduce, file, master, Split)
      mr.StartRegistrationServer()
      go mr.Run()
      return mr
@@ -141,7 +145,7 @@ func MapName(fileName string, MapJob int) string {
 }
 
 // Split bytes of input file into nMap splits, but split only on white space
-func (mr *MapReduce) Split(fileName string) {
+/*func (mr *MapReduce) Split(fileName string) {
      fmt.Printf("Split %s\n", fileName)
      infile, err := os.Open(fileName)
      if err != nil {
@@ -180,7 +184,7 @@ func (mr *MapReduce) Split(fileName string) {
 												writer.Flush()
 												outfile.Close()
 }
-
+*/
 func ReduceName(fileName string, MapJob int, ReduceJob int) string {
      return MapName(fileName, MapJob) + "-" + strconv.Itoa(ReduceJob)
 }
@@ -347,10 +351,14 @@ func (mr *MapReduce) CleanupFiles() {
 // Run jobs sequentially.
 func RunSingle(nMap int, nReduce int, file string,
      Map func(string) *list.List,
-     Reduce func(string, *list.List) string) {
-     mr := InitMapReduce(nMap, nReduce, file, "")
-     mr.Split(mr.file)
-     for i := 0; i < nMap; i++ {
+     Reduce func(string, *list.List) string,
+     Split func(string) *MapReduce)  {
+
+
+     mr := InitMapReduce(nMap, nReduce, file, "", Split)
+	 mr.Split(mr.file)
+
+	 for i := 0; i < nMap; i++ {
      	 DoMap(i, mr.file, mr.nReduce, Map)
 	 }
 	 for i := 0; i < mr.nReduce; i++ {
