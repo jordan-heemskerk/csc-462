@@ -130,7 +130,9 @@ func BuildGraph(fileName string) {
     //
     piec := chart.PieChart{Title:"Chatty Cathy"}
 
-    dumper := NewDumper("xpie1", 2, 2, 1000, 500)
+    graphName := fileName + "pie"
+
+    dumper := NewDumper(graphName, 2, 2, 1000, 500)
     defer dumper.Close()
 
     // TODO - Later - Traverse the ENTIRE tree (down to the minutes; via range)
@@ -171,4 +173,3 @@ func BuildGraph(fileName string) {
 
     fmt.Println("Done")
 }
-
