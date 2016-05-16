@@ -62,7 +62,7 @@ type MapReduce struct {
      alive           bool
      l               net.Listener
      stats           *list.List
-     Split           func (string) *MapReduce
+     Split           func (string) error
 
      // Map of registered workers that you need to keep up to date
      Workers map[string]*WorkerInfo
@@ -72,11 +72,14 @@ type MapReduce struct {
 
 func InitMapReduce(nmap int, nreduce int,
      file string, master string,
-     Split func(string) *MapReduce) *MapReduce {
+     Split func(string) error) *MapReduce {
      mr := new(MapReduce)
      mr.nMap = nmap
      mr.nReduce = nreduce
      mr.file = file
+      
+     fmt.Println(mr.file)
+
      mr.MasterAddress = master
      mr.alive = true
      mr.registerChannel = make(chan string)
@@ -89,7 +92,7 @@ func InitMapReduce(nmap int, nreduce int,
 
 func MakeMapReduce(nmap int, nreduce int,
      file string, master string,
-     Split func(string) *MapReduce) *MapReduce {
+     Split func(string) error) *MapReduce {
      mr := InitMapReduce(nmap, nreduce, file, master, Split)
      mr.StartRegistrationServer()
      go mr.Run()
@@ -352,7 +355,7 @@ func (mr *MapReduce) CleanupFiles() {
 func RunSingle(nMap int, nReduce int, file string,
      Map func(string) *list.List,
      Reduce func(string, *list.List) string,
-     Split func(string) *MapReduce)  {
+     Split func(string) error)  {
 
 
      mr := InitMapReduce(nMap, nReduce, file, "", Split)

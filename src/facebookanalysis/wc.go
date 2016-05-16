@@ -4,7 +4,9 @@ import "os"
 import "fmt"
 import "mapreduce"
 import "graphbuilder"
+import "github.com/PuerkitoBio/goquery"
 import "container/list"
+import "path"
 import "regexp"
 import "strings"
 import "strconv"
@@ -12,16 +14,46 @@ import "strconv"
 var pattern *regexp.Regexp
 
 
-
-// Split function needs to split into files called 
-func Split(input string) *mapreduce.MapReduce {
+// Custom split function that can operate on a directory of *.htm files from a Facebook down1load
+func Split(input string) error  {
 
 //  Generate filename with
 //    mapreduce.MapName(input, i)
 
-    fmt.Println("Test Split Function Call")
+    // We treat input as a directory
+
+
+    // Max bytes in block
+    //max_bytes := 2 * 1024 // bytes
+
+    // Inlude Friend data
+    friends_path := path.Join(input, "friends.htm")
+
+
+    fr, err := os.Open(friends_path)
+    if err != nil {
+        fmt.Println(err)
+        return err 
+    }
+
+    doc, err := goquery.NewDocumentFromReader(fr)
+    
+
+
+    current_size := 0
+
+    friends := doc.Find("h2:contains(\"Friends\"):not(:contains(\"Removed\"))").Parent().Find("li").Each(func (i int, s *goquery.Selection) {
+        
+
+        // Loop over friends here and split into filesi
+        
+        
+
+    }
+
 
     return nil
+
 
 }
 
