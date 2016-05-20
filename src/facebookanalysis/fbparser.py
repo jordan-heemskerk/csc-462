@@ -47,9 +47,12 @@ class FacebookMessageParser(object):
 			# save time without am/pm suffix
 			meta_time = raw_time[:-2]
 
-			# print data to file e.g., Sunday,April,5,2015,8:44
-			print '%s,%s,%s,%s,%s' % (meta_weekday, meta_month, meta_date, meta_year, meta_time)
-
+                        try:
+                            # print data to file e.g., Sunday,April,5,2015,8:44
+                            print '%s;%s,%s,%s,%s,%s' % (meta_user_text, meta_weekday, meta_month, meta_date, meta_year, meta_time)
+                        except (UnicodeDecodeError, UnicodeEncodeError) as e:
+                            print "Unable to encode/decode this line"
+                        
 if __name__ == "__main__":
 	fb = FacebookMessageParser()
 	fb.parser()
