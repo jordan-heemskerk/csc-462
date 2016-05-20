@@ -8,8 +8,16 @@ import "container/list"
 import "regexp"
 import "strings"
 import "strconv"
+import "log"
+import "encoding/json"
+import "github.com/fvbock/trie"
 
 var pattern *regexp.Regexp
+
+type NameTreePair struct {
+    Total   int
+    PrefixTree string
+}
 
 func Map(value string) *list.List {
 
@@ -49,18 +57,27 @@ func Map(value string) *list.List {
 
 // you need to provide the code to iterate over list and add values
 func Reduce(key string, values *list.List) string { 
-    var total = 0
     
+    t := trie.NewTrie()
+    total := 0
+
     for e := values.Front(); e != nil; e = e.Next() {
-       
-        if val, err := strconv.Atoi(e.Value.(string)); err == nil { 
-            total += val
-        } else {
-            fmt.Printf("Error converting the interface to an integer\n")
-        }
+      
+        total += 1
+        t.Add(e.Value.(string))
+
     }
 
-    return strconv.Itoa(total) 
+
+    ntp := NameTreePair{Total: total, PrefixTree: t.Dump()}
+
+    encoded, err := json.Marshal(ntp)
+
+    if err != nil {
+        fmt.Println("Error: ",  err)
+    }
+
+    return string(encoded)
 
 }
 
