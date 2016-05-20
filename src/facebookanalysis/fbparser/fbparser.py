@@ -15,6 +15,8 @@ class FacebookMessageParser(object):
 		headers = soup.findAll('div', attrs={'class':'message_header'})
 		for header in headers:
 
+                        meta_user_text = header.find('span', attrs={'class':'user'}).get_text()
+                        
 			meta_date_text = header.find('span', attrs={'class':'meta'}).get_text()
 
 			# e.g., [u'Sunday', u' April 5', u' 2015 at 8:44am PDT']
@@ -48,7 +50,7 @@ class FacebookMessageParser(object):
 			meta_time = raw_time[:-2]
 
 			# print data to file e.g., Sunday,April,5,2015,8:44
-			print '%s,%s,%s,%s,%s' % (meta_weekday, meta_month, meta_date, meta_year, meta_time)
+			print '%s;%s,%s,%s,%s,%s' % (meta_user_text, meta_weekday, meta_month, meta_date, meta_year, meta_time)
 
 if __name__ == "__main__":
 	fb = FacebookMessageParser()
