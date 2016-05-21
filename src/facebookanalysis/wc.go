@@ -3,39 +3,67 @@ package main
 import "os"
 import "fmt"
 import "mapreduce"
-import "graphbuilder"
+//import "graphbuilder"
 import "container/list"
 import "regexp"
 import "strings"
 import "strconv"
+import "log"
+import "encoding/json"
+import "github.com/fvbock/trie"
 
 var pattern *regexp.Regexp
+
+type NameTreePair struct {
+    Total   int
+    PrefixTree string
+}
 
 func Map(value string) *list.List {
 
     fs := strings.Split(value,"\n")
 
     var l = new(list.List)
-    //counts := make(map[string]int)
+    
     for _, v := range fs {
 
-        //Slice with: [wholematch, "DoW", "HH", "MM"]
+        //Slice with: [wholematch, "Name", "DoW", "HH", "MM"]
         extracted := pattern.FindAllStringSubmatch(v, -1)
 
+        //fmt.Printf("Extracted: " + extracted[0][0] + "\n")
+        
+        // check if we have a match            
         if len(extracted) > 0 {
+
+            // this will be our key
+            name := extracted[0][1]
+
             // Use DoW later
-            //DoW := extracted[0][1]
-            HH := extracted[0][2]
-            MM := extracted[0][3]
+            //DoW := extracted[0][2]
 
-            iHH, _ := strconv.Atoi(HH) // TODO err
-            sHH := fmt.Sprintf("%02d", iHH)
+            // Extract hour and minute strings
+            HH := extracted[0][3]
+            MM := extracted[0][4]
 
-            k := sHH + MM
-
+            // We need to do some parsing for hours to prefix a zero if necessary
+            // ie. 0900
+            iHH, err := strconv.Atoi(HH)
             
+            if err != nil {
+                log.Fatal("Not able to convert hour string to an integer")
+            }
 
-            l.PushBack(mapreduce.KeyValue{Key: k, Value: "1"})
+            sHH := fmt.Sprintf("%02d", iHH) 
+
+            // build value
+            v := sHH + MM
+
+            l.PushBack(mapreduce.KeyValue{Key: name, Value: v})
+
+        } else {
+
+            fmt.Printf("Unable to parse a line of the file: " + v)
+
         }
     }
 /*  for k, v := range counts {
@@ -49,18 +77,27 @@ func Map(value string) *list.List {
 
 // you need to provide the code to iterate over list and add values
 func Reduce(key string, values *list.List) string { 
-    var total = 0
     
+    t := trie.NewTrie()
+    total := 0
+
     for e := values.Front(); e != nil; e = e.Next() {
-       
-        if val, err := strconv.Atoi(e.Value.(string)); err == nil { 
-            total += val
-        } else {
-            fmt.Printf("Error converting the interface to an integer\n")
-        }
+      
+        total += 1
+        t.Add(e.Value.(string))
+
     }
 
-    return strconv.Itoa(total) 
+
+    ntp := NameTreePair{Total: total, PrefixTree: t.Dump()}
+
+    encoded, err := json.Marshal(ntp)
+
+    if err != nil {
+        fmt.Println("Error: ",  err)
+    }
+
+    return string(encoded)
 
 }
 
@@ -71,12 +108,12 @@ func Reduce(key string, values *list.List) string {
 // Build graph via
 // 1) wc.go input.txt
 func main() {
-    pattern = regexp.MustCompile("([\\w]*),[\\w]*,[\\w]*,[\\w]*,(\\d*):(\\d*)")
+    pattern = regexp.MustCompile("(.*);([\\w]*),[\\w]*,[\\w]*,[\\w]*,(\\d*):(\\d*)")
 
     switch len(os.Args) {
     case 2:
         // Build graph
-        graphbuilder.BuildGraph(os.Args[1])
+    //    graphbuilder.BuildGraph(os.Args[1])
     case 4:
         // Original implementation
         if os.Args[1] == "master" {
