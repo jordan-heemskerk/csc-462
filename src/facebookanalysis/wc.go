@@ -3,7 +3,7 @@ package main
 import "os"
 import "fmt"
 import "mapreduce"
-//import "graphbuilder"
+import "graphbuilder"
 import "container/list"
 import "regexp"
 import "strings"
@@ -27,11 +27,9 @@ func Map(value string) *list.List {
     
     for _, v := range fs {
 
-        //Slice with: [wholematch, "Name", "DoW", "HH", "MM"]
+        // Slice with: [wholematch, "Name", "DoW", "HH", "MM"]
         extracted := pattern.FindAllStringSubmatch(v, -1)
 
-        //fmt.Printf("Extracted: " + extracted[0][0] + "\n")
-        
         // check if we have a match            
         if len(extracted) > 0 {
 
@@ -39,7 +37,7 @@ func Map(value string) *list.List {
             name := extracted[0][1]
 
             // Use DoW later
-            //DoW := extracted[0][2]
+            // DoW := extracted[0][2]
 
             // Extract hour and minute strings
             HH := extracted[0][3]
@@ -61,9 +59,7 @@ func Map(value string) *list.List {
             l.PushBack(mapreduce.KeyValue{Key: name, Value: v})
 
         } else {
-
-            fmt.Printf("Unable to parse a line of the file: " + v)
-
+            fmt.Printf("Empty line; Unable to parse a line of the file: " + v)
         }
     }
 /*  for k, v := range counts {
@@ -74,22 +70,23 @@ func Map(value string) *list.List {
     return l
 }
 
-
-// you need to provide the code to iterate over list and add values
-func Reduce(key string, values *list.List) string { 
-    
+func Reduce(key string, values *list.List) string {
+    // Create a new key result trie
     t := trie.NewTrie()
     total := 0
 
+    // Build tree; add each hour and increase total message count
     for e := values.Front(); e != nil; e = e.Next() {
-      
         total += 1
         t.Add(e.Value.(string))
-
     }
 
-
-    ntp := NameTreePair{Total: total, PrefixTree: t.Dump()}
+    // Key value pair to output; total number of messages and string dump of tree
+    // The vdobler trie library does not support direct encoding/decoding of prefix trees
+    // as such, we can't just store a dump of the tree in the struct. We write to a file to be read later
+    treeFile := "00-" + key + "-Trie"
+    t.DumpToFile(treeFile)
+    ntp := NameTreePair{Total: total, PrefixTree: treeFile}
 
     encoded, err := json.Marshal(ntp)
 
@@ -98,22 +95,18 @@ func Reduce(key string, values *list.List) string {
     }
 
     return string(encoded)
-
 }
 
 // Mapper can be run in 3 ways:
 // 1) Sequential (e.g., go run wc.go master x.txt sequential)
 // 2) Master (e.g., go run wc.go master x.txt localhost:7777)
 // 3) Worker (e.g., go run wc.go worker localhost:7777 localhost:7778 &)
-// Build graph via
-// 1) wc.go input.txt
+// Graphbuilder can be built using the base input file name via:
+// 1) go run wc.go graph stack-hist x.txt 3
 func main() {
     pattern = regexp.MustCompile("(.*);([\\w]*),[\\w]*,[\\w]*,[\\w]*,(\\d*):(\\d*)")
 
     switch len(os.Args) {
-    case 2:
-        // Build graph
-    //    graphbuilder.BuildGraph(os.Args[1])
     case 4:
         // Original implementation
         if os.Args[1] == "master" {
@@ -126,6 +119,11 @@ func main() {
             }
         } else {
             mapreduce.RunWorker(os.Args[2], os.Args[3], Map, Reduce, 100)
+        }
+    case 5:
+        // Graph building
+        if os.Args[2] == "stack-hist" {
+            graphbuilder.BuildGraph(os.Args[3], os.Args[4], os.Args[2])
         }
     default:
         fmt.Printf("%s: see usage comments in file\n", os.Args[0])
