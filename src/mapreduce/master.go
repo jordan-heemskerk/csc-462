@@ -2,6 +2,7 @@ package mapreduce
 
 import "container/list"
 import "fmt"
+import "time"
 
 type WorkerInfo struct {
 	address string
@@ -116,7 +117,26 @@ func (mr *MapReduce) launchTask(i int, args DoJobArgs, loc string, done chan str
 	reply := new(DoJobReply)
 	w := mr.Workers[loc]
 	fmt.Println("Assigned job ", i, " to ", loc)
-	call(w.address, "Worker.DoJob", args, reply)
+
+    success := make(chan bool, 1)
+    again := true
+    // try a different worker?
+    for (again) {
+        go func() {success <- call(w.address, "Worker.DoJob", args, reply) } ()        
+        select {
+
+            case <-success:
+               again = false 
+
+            case <-time.After(10 * time.Second):
+                fmt.Println("Timeout - retry!")
+        }
+
+    
+    }
+
+	//call(w.address, "Worker.DoJob", args, reply)
+
 	if !reply.OK {
 		fmt.Println("Failed task! Returning to queue, worker ", w.address, " task ", i)
 		del <- loc

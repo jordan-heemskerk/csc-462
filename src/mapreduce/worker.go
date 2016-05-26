@@ -6,6 +6,8 @@ import "log"
 import "net/rpc"
 import "net"
 import "container/list"
+import "time"
+import "math/rand"
 
 // Worker is a server waiting for DoJob or Shutdown RPCs
 
@@ -20,6 +22,13 @@ type Worker struct {
 
 // The master sent us a job
 func (wk *Worker) DoJob(arg *DoJobArgs, res *DoJobReply) error {
+
+    // 1 in 100 chance to fail
+    if (rand.Intn(99) == 0) {
+
+        time.Sleep(20 * time.Second)
+
+    }
 	fmt.Printf("Dojob %s job %d file %s operation %v N %d\n",
 		wk.name, arg.JobNumber, arg.File, arg.Operation,
 		arg.NumOtherPhase)
