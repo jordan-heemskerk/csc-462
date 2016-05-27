@@ -2,6 +2,8 @@ package mapreduce
 
 import "container/list"
 import "fmt"
+import "time"
+import "log"
 
 type WorkerInfo struct {
 	address string
@@ -116,11 +118,27 @@ func (mr *MapReduce) launchTask(i int, args DoJobArgs, loc string, done chan str
 	reply := new(DoJobReply)
 	w := mr.Workers[loc]
 	fmt.Println("Assigned job ", i, " to ", loc)
-	call(w.address, "Worker.DoJob", args, reply)
-	if !reply.OK {
+
+    success := make(chan bool, 1)
+    again := true
+    go func() {success <- call(w.address, "Worker.DoJob", args, reply) } ()        
+    select {
+
+        case <-success:
+           again = false 
+
+        case <-time.After(10 * time.Second):
+           again = true
+    }
+
+	if (again || !reply.OK) {
 		fmt.Println("Failed task! Returning to queue, worker ", w.address, " task ", i)
 		del <- loc
 		add <- i
+        mr.Retries[i] += 1
+        if (mr.Retries[i] > 5) {
+            log.Fatal("MapReduce encountered an irrecoverable failure")
+        }
 	} else {
 		mr.Workers[loc].busy = false
 		mr.Workers[loc].alive = true
@@ -167,6 +185,7 @@ func (mr *MapReduce) runTask(numTasks int, numOther int, update chan int, updel 
 	go mr.jobPool(jobs, add, quit)
 	for i := 0; i < numTasks; i++ {
 		add <- i
+        mr.Retries[i] = 0
 	}
 	for {
 		fmt.Println("Waiting for job or quit")
