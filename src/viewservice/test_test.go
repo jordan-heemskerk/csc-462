@@ -54,6 +54,7 @@ func Test1(t *testing.T) {
 
 	for i := 0; i < DeadPings*2; i++ {
 		view, _ := ck1.Ping(0)
+		view, _ = ck1.Ping(1) // Need to ack
 		if view.Primary == ck1.me {
 			break
 		}
@@ -70,6 +71,7 @@ func Test1(t *testing.T) {
 		for i := 0; i < DeadPings*2; i++ {
 			ck1.Ping(1)
 			view, _ := ck2.Ping(0)
+			ck1.Ping(2)
 			if view.Backup == ck2.me {
 				break
 			}
@@ -87,6 +89,7 @@ func Test1(t *testing.T) {
 		vx, _ := ck2.Ping(2)
 		for i := 0; i < DeadPings*2; i++ {
 			v, _ := ck2.Ping(vx.Viewnum)
+			v, _ = ck2.Ping(v.Viewnum) // have to ack
 			if v.Primary == ck2.me && v.Backup == "" {
 				break
 			}
@@ -105,6 +108,7 @@ func Test1(t *testing.T) {
 		for i := 0; i < DeadPings*2; i++ {
 			ck1.Ping(0)
 			v, _ := ck2.Ping(vx.Viewnum)
+			v, _ = ck2.Ping(v.Viewnum)
 			if v.Primary == ck2.me && v.Backup == ck1.me {
 				break
 			}
@@ -124,6 +128,7 @@ func Test1(t *testing.T) {
 		for i := 0; i < DeadPings*2; i++ {
 			ck3.Ping(0)
 			v, _ := ck1.Ping(vx.Viewnum)
+			v, _ = ck1.Ping(v.Viewnum)
 			if v.Primary == ck1.me && v.Backup == ck3.me {
 				break
 			}
@@ -144,6 +149,7 @@ func Test1(t *testing.T) {
 		for i := 0; i < DeadPings*2; i++ {
 			ck1.Ping(0)
 			ck3.Ping(vx.Viewnum)
+			ck3.Ping(vx.Viewnum + 1) // have to ack
 			v, _ := ck3.Get()
 			if v.Primary != ck1.me {
 				break
@@ -163,6 +169,7 @@ func Test1(t *testing.T) {
 		for i := 0; i < DeadPings*3; i++ {
 			vx, _ := ck3.Get()
 			ck3.Ping(vx.Viewnum)
+			ck3.Ping(vx.Viewnum + 1) // fake an ack
 			time.Sleep(PingInterval)
 		}
 		v, _ := ck3.Get()
@@ -182,6 +189,7 @@ func Test1(t *testing.T) {
 		for i := 0; i < DeadPings*3; i++ {
 			ck1.Ping(0)
 			ck3.Ping(vx.Viewnum)
+			ck3.Ping(vx.Viewnum + 1)
 			v, _ := ck1.Get()
 			if v.Viewnum > vx.Viewnum {
 				break
