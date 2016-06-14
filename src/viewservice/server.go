@@ -20,14 +20,14 @@ type ViewServer struct {
 	me   string
 
 	// Your declarations here.
-	View    View
-	Servers map[string]*ServerStatus
-	Acked   bool
+	View      View
+	DeltaView View
+	Servers   map[string]*ServerStatus
+	Acked     bool
 }
 
 func (vs *ViewServer) DeadServer(server string) {
 
-	delete(vs.Servers, server)
 	if vs.View.Primary == server {
 		if vs.View.Backup == "" {
 			log.Fatal("Primary failed and there's not a backup")
@@ -46,14 +46,22 @@ func (vs *ViewServer) DeadServer(server string) {
 //
 func (vs *ViewServer) NextView(primary string, backup string) {
 
+	if vs.Servers[primary] != nil {
+		vs.Servers[primary].Used = true
+	}
+
+	if vs.Servers[backup] != nil {
+		vs.Servers[backup].Used = true
+	}
+
 	if vs.View.Primary != primary || vs.View.Backup != backup {
 
-		vs.View.Primary = primary
-		vs.View.Backup = backup
-		vs.View.Viewnum++
+		vs.DeltaView.Primary = primary
+		vs.DeltaView.Backup = backup
+		vs.DeltaView.Viewnum = vs.View.Viewnum + 1
 		vs.Acked = false
 
-		fmt.Printf("Setting view %d (%s, %s)\n", vs.View.Viewnum, vs.View.Primary, vs.View.Backup)
+		fmt.Printf("Setting next view %d (%s, %s)\n", vs.DeltaView.Viewnum, vs.DeltaView.Primary, vs.DeltaView.Backup)
 
 	}
 
@@ -68,6 +76,7 @@ func (vs *ViewServer) NewServer() string {
 	for me, server := range vs.Servers {
 
 		if server.Used == false {
+			fmt.Printf("Set %s as used\n", me)
 			vs.Servers[me].Used = true
 			return me
 		}
@@ -94,13 +103,22 @@ func (vs *ViewServer) Ping(args *PingArgs, reply *PingReply) error {
 		vs.Servers[args.Me].Used = false
 
 	} else if args.Viewnum == 0 && vs.Servers[args.Me].Used {
-
+		vs.Servers[args.Me].Used = false
 		vs.DeadServer(args.Me)
+		vs.Servers[args.Me].Lastping = time.Now()
 		return nil
 
 	}
 
 	vs.Servers[args.Me].Lastping = time.Now()
+
+	if !vs.Acked && args.Me == vs.DeltaView.Primary && args.Viewnum == vs.DeltaView.Viewnum {
+
+		fmt.Println("View was acked")
+		vs.Acked = true
+		vs.View = vs.DeltaView
+
+	}
 
 	if vs.View.Primary == "" && vs.View.Backup == "" {
 
@@ -114,8 +132,11 @@ func (vs *ViewServer) Ping(args *PingArgs, reply *PingReply) error {
 
 	}
 
-	// Setup the reply
-	reply.View = vs.View
+	if args.Me != vs.DeltaView.Primary {
+		reply.View = vs.View
+	} else {
+		reply.View = vs.DeltaView
+	}
 
 	return nil
 }
@@ -144,6 +165,8 @@ func (vs *ViewServer) tick() {
 		if time.Since(server.Lastping) > PingInterval*DeadPings && server.Used {
 
 			fmt.Printf("%s died\n", me)
+			server.Used = false
+			delete(vs.Servers, me)
 			vs.DeadServer(me)
 
 		}
