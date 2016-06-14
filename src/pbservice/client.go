@@ -83,7 +83,33 @@ func (ck *Clerk) Get(key string) string {
 //
 func (ck *Clerk) PutAppend(key string, value string, op string) {
 
+
+	// RPC Get() on VS to find current view
+	// Now I know the primary
+	// RPC PutAppend() on the primary
+
+	get_args := &GetArgs{}
+	var get_reply GetReply
+
 	// Your code here.
+	ok := call(ck.vs, "ViewServer.Get", get_args, &get_reply)
+
+	if !ok {
+		fmt.Printf("RPC Get() failed")
+	}
+
+	put_args := &PutAppendArgs{}
+	put_args.Key = key
+	put args.Value = value
+	put_args.Op = op
+
+	var put_reply PutAppendReply
+
+	ok := call(get_reply.View.Primary, "PBServer.PutAppend", put_args, &put_reply)
+
+	if !ok {
+		fmt.Printf("RPC PutAppend() failed")
+	}
 }
 
 //

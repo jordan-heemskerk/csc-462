@@ -21,7 +21,10 @@ type PBServer struct {
 	unreliable int32 // for testing
 	me         string
 	vs         *viewservice.Clerk
-	// Your declarations here.
+	// Your deClarations here.
+
+	view View
+	db map[string]string
 }
 
 
@@ -51,6 +54,21 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 func (pb *PBServer) tick() {
 
 	// Your code here.
+	args := &PingArgs{}
+	var reply PingReply
+	args.Me = pb.me
+	args.Viewnum = pb.view.Viewnum
+	
+	ok := call(pb.vs, "ViewServer.Ping", args, &reply)
+	if !ok {
+		fmt.Printf("Ping failed")
+	}
+
+	pb.view = reply.View
+
+	// TODO
+	// If I am now the backup, ask the primary to transfer everything to me
+
 }
 
 // tell the server to shut itself down.
@@ -84,6 +102,10 @@ func StartServer(vshost string, me string) *PBServer {
 	pb.me = me
 	pb.vs = viewservice.MakeClerk(me, vshost)
 	// Your pb.* initializations here.
+	pb.view.Primary = ""
+	pb.view.Backup = ""
+	pb.view.Viewnum = 0
+	pb.db := make(map[string]string)
 
 	rpcs := rpc.NewServer()
 	rpcs.Register(pb)
