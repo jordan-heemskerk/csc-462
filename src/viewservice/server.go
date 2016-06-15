@@ -26,6 +26,10 @@ type ViewServer struct {
 	Acked     bool
 }
 
+func (vs *ViewServer) GetRPCCount() uint {
+	return 0
+}
+
 func (vs *ViewServer) DeadServer(server string) {
 
 	if vs.View.Primary == server {

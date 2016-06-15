@@ -11,8 +11,7 @@ import "sync/atomic"
 import "os"
 import "syscall"
 import "math/rand"
-
-
+import "errors"
 
 type PBServer struct {
 	mu         sync.Mutex
@@ -23,27 +22,58 @@ type PBServer struct {
 	vs         *viewservice.Clerk
 	// Your deClarations here.
 
-	view View
-	db map[string]string
+	view viewservice.View
+	db   map[string]string
 }
-
 
 func (pb *PBServer) Get(args *GetArgs, reply *GetReply) error {
 
 	// Your code here.
 
+	key := args.Key
+
+	if val, ok := pb.db[key]; ok {
+		reply.Err = OK
+		reply.Value = val
+		return nil
+	} else {
+		reply.Err = ErrNoKey
+		reply.Value = ""
+		return errors.New("Key does not exist")
+	}
+
 	return nil
 }
-
 
 func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error {
 
 	// Your code here.
 
+	key := args.Key
+	val := args.Value
+	op := args.Op
 
-	return nil
+	fmt.Printf("Key: %s, Value: %s, Op: %s\n", key, val, op)
+	if op == "Put" {
+		//Put
+		pb.db[key] = val
+		reply.Err = OK
+		return nil
+	}
+
+	if op == "Append" {
+		// Append
+		if _, ok := pb.db[key]; ok {
+			pb.db[key] += val
+		} else {
+			pb.db[key] = val
+		}
+		reply.Err = OK
+		return nil
+	}
+
+	return errors.New("Unsupported PutAppend Operation.")
 }
-
 
 //
 // ping the viewserver periodically.
@@ -53,18 +83,13 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 //
 func (pb *PBServer) tick() {
 
-	// Your code here.
-	args := &PingArgs{}
-	var reply PingReply
-	args.Me = pb.me
-	args.Viewnum = pb.view.Viewnum
-	
-	ok := call(pb.vs, "ViewServer.Ping", args, &reply)
-	if !ok {
-		fmt.Printf("Ping failed")
+	v, err := pb.vs.Ping(pb.view.Viewnum)
+
+	if err != nil {
+		fmt.Printf("Ping failed.\n")
 	}
 
-	pb.view = reply.View
+	pb.view = v
 
 	// TODO
 	// If I am now the backup, ask the primary to transfer everything to me
@@ -96,7 +121,6 @@ func (pb *PBServer) isunreliable() bool {
 	return atomic.LoadInt32(&pb.unreliable) != 0
 }
 
-
 func StartServer(vshost string, me string) *PBServer {
 	pb := new(PBServer)
 	pb.me = me
@@ -105,7 +129,7 @@ func StartServer(vshost string, me string) *PBServer {
 	pb.view.Primary = ""
 	pb.view.Backup = ""
 	pb.view.Viewnum = 0
-	pb.db := make(map[string]string)
+	pb.db = make(map[string]string)
 
 	rpcs := rpc.NewServer()
 	rpcs.Register(pb)

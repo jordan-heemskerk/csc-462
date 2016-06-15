@@ -7,7 +7,6 @@ import "fmt"
 import "crypto/rand"
 import "math/big"
 
-
 type Clerk struct {
 	vs *viewservice.Clerk
 	// Your declarations here
@@ -28,7 +27,6 @@ func MakeClerk(vshost string, me string) *Clerk {
 
 	return ck
 }
-
 
 //
 // call() sends an RPC to the rpcname handler on server srv
@@ -75,6 +73,25 @@ func (ck *Clerk) Get(key string) string {
 
 	// Your code here.
 
+	var primary string
+
+	if view, ok := ck.vs.Get(); !ok {
+		fmt.Printf("Get() failed.")
+	} else {
+		primary = view.Primary
+	}
+
+	get_args := &GetArgs{}
+	get_args.Key = key
+
+	var get_reply GetReply
+
+	if ok := call(primary, "PBServer.Get", get_args, &get_reply); !ok {
+		fmt.Printf("RPC Get() failed")
+	} else {
+		return get_reply.Value
+	}
+
 	return "???"
 }
 
@@ -83,31 +100,26 @@ func (ck *Clerk) Get(key string) string {
 //
 func (ck *Clerk) PutAppend(key string, value string, op string) {
 
-
 	// RPC Get() on VS to find current view
 	// Now I know the primary
 	// RPC PutAppend() on the primary
 
-	get_args := &GetArgs{}
-	var get_reply GetReply
+	var primary string
 
-	// Your code here.
-	ok := call(ck.vs, "ViewServer.Get", get_args, &get_reply)
-
-	if !ok {
-		fmt.Printf("RPC Get() failed")
+	if view, ok := ck.vs.Get(); !ok {
+		fmt.Printf("Get() failed.")
+	} else {
+		primary = view.Primary
 	}
 
 	put_args := &PutAppendArgs{}
 	put_args.Key = key
-	put args.Value = value
+	put_args.Value = value
 	put_args.Op = op
 
 	var put_reply PutAppendReply
 
-	ok := call(get_reply.View.Primary, "PBServer.PutAppend", put_args, &put_reply)
-
-	if !ok {
+	if ok := call(primary, "PBServer.PutAppend", put_args, &put_reply); !ok {
 		fmt.Printf("RPC PutAppend() failed")
 	}
 }
