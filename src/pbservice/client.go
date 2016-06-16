@@ -110,23 +110,24 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 	// Now I know the primary
 	// RPC PutAppend() on the primary
 
-	var primary string
-
-	if view, ok := ck.vs.Get(); !ok {
-		fmt.Printf("Get() failed.")
-	} else {
-		primary = view.Primary
-	}
-
 	put_args := &PutAppendArgs{}
 	put_args.Key = key
 	put_args.Value = value
 	put_args.Op = op
 	put_args.Hash = nrand()
 
-	var put_reply PutAppendReply
-
 	for {
+		fmt.Printf("Put")
+		var primary string
+
+		if view, ok := ck.vs.Get(); !ok {
+			fmt.Printf("Get() failed.")
+		} else {
+			primary = view.Primary
+		}
+
+		var put_reply PutAppendReply
+
 		if ok := call(primary, "PBServer.PutAppend", put_args, &put_reply); ok {
 			break
 		}
