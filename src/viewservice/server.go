@@ -96,6 +96,11 @@ func (vs *ViewServer) Ping(args *PingArgs, reply *PingReply) error {
 
 	fmt.Printf("Received Ping %d from %s\n", args.Viewnum, args.Me)
 
+	if args.Viewnum == 0 && vs.Servers[args.Me] == nil && vs.View.Primary != "" {
+		reply.View = vs.View
+		return nil
+	}
+
 	// Find new servers
 	if vs.Servers[args.Me] == nil {
 
