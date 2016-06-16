@@ -87,7 +87,7 @@ func (vs *ViewServer) NewServer() string {
 
 	}
 
-	fmt.Println("Warning: No servers available")
+	//fmt.Println("Warning: No servers available")
 	return ""
 }
 

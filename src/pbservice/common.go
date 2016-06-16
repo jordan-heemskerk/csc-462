@@ -35,3 +35,10 @@ type GetReply struct {
 }
 
 // Your RPC definitions here.
+
+type TransferDBArgs struct {
+}
+
+type TransferDBReply struct {
+	Db map[string]string
+}

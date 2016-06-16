@@ -26,6 +26,19 @@ type PBServer struct {
 	db   map[string]string
 }
 
+func (pb *PBServer) TransferDB(args *TransferDBArgs, reply *TransferDBReply) error {
+
+	reply.Db = make(map[string]string)
+
+	// We need to copy
+	for k, v := range pb.db {
+		reply.Db[k] = v
+	}
+
+	return nil
+
+}
+
 func (pb *PBServer) Get(args *GetArgs, reply *GetReply) error {
 
 	// Your code here.
@@ -49,16 +62,21 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 
 	// Your code here.
 
+	// TODO need more here
+	if pb.view.Primary != pb.me && pb.view.Backup != pb.me {
+		reply.Err = ErrWrongServer
+		return nil
+	}
+
 	key := args.Key
 	val := args.Value
 	op := args.Op
 
-	fmt.Printf("Key: %s, Value: %s, Op: %s\n", key, val, op)
+	fmt.Printf("Primary: %s, Backup: %s, Key: %s, Value: %s, Op: %s\n", pb.view.Primary, pb.view.Backup, key, val, op)
 	if op == "Put" {
 		//Put
 		pb.db[key] = val
 		reply.Err = OK
-		return nil
 	}
 
 	if op == "Append" {
@@ -69,10 +87,19 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 			pb.db[key] = val
 		}
 		reply.Err = OK
-		return nil
 	}
 
-	return errors.New("Unsupported PutAppend Operation.")
+	// If there is a backup, we must forward any Put request to it
+	if pb.view.Backup != "" && pb.view.Primary == pb.me {
+
+		var for_reply PutAppendReply
+		if ok := call(pb.view.Backup, "PBServer.PutAppend", args, &for_reply); !ok {
+			fmt.Printf("Forwarding Put request failed.\n")
+		}
+
+	}
+
+	return nil
 }
 
 //
@@ -89,11 +116,28 @@ func (pb *PBServer) tick() {
 		fmt.Printf("Ping failed.\n")
 	}
 
-	pb.view = v
+	if pb.view != v {
 
-	// TODO
-	// If I am now the backup, ask the primary to transfer everything to me
+		pb.view = v
 
+		// If I am now the backup, ask the primary to
+		// transfer everything to me and then save it
+		if v.Backup == pb.me {
+			fmt.Printf("%s requests state transfer from %s \n", pb.me, v.Primary)
+
+			tran_args := &TransferDBArgs{}
+			var tran_reply TransferDBReply
+
+			if ok := call(v.Primary, "PBServer.TransferDB", tran_args, &tran_reply); !ok {
+				fmt.Printf("Transfer DB failed\n")
+			} else {
+				fmt.Printf("State transfer complete\n")
+				// TODO!!!! Do we need to copy here? or is this ok
+				pb.db = tran_reply.Db
+			}
+
+		}
+	}
 }
 
 // tell the server to shut itself down.
