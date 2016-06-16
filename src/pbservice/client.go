@@ -3,13 +3,19 @@ package pbservice
 import "viewservice"
 import "net/rpc"
 import "fmt"
-
 import "crypto/rand"
 import "math/big"
 
 type Clerk struct {
 	vs *viewservice.Clerk
 	// Your declarations here
+}
+
+type PutReq struct {
+	Key   string
+	Value string
+	Op    string
+	Time  string
 }
 
 // this may come in handy.
@@ -116,11 +122,14 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 	put_args.Key = key
 	put_args.Value = value
 	put_args.Op = op
+	put_args.Hash = nrand()
 
 	var put_reply PutAppendReply
 
-	if ok := call(primary, "PBServer.PutAppend", put_args, &put_reply); !ok {
-		fmt.Printf("RPC PutAppend() failed")
+	for {
+		if ok := call(primary, "PBServer.PutAppend", put_args, &put_reply); ok {
+			break
+		}
 	}
 }
 

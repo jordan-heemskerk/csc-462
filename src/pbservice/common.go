@@ -14,7 +14,8 @@ type PutAppendArgs struct {
 	Key   string
 	Value string
 	// You'll have to add definitions here.
-	Op string
+	Op   string
+	Hash int64
 
 	// Field names must start with capital letters,
 	// otherwise RPC will break.

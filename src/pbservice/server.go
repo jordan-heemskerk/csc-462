@@ -24,6 +24,7 @@ type PBServer struct {
 
 	view viewservice.View
 	db   map[string]string
+	ops  map[int64]bool
 }
 
 func (pb *PBServer) TransferDB(args *TransferDBArgs, reply *TransferDBReply) error {
@@ -62,6 +63,16 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 
 	// Your code here.
 
+	// Only ever atomically add things :P
+	pb.mu.Lock()
+	defer pb.mu.Unlock()
+
+	if _, ok := pb.ops[args.Hash]; ok {
+		// ignore the request, put tell the client everything is coo'
+		reply.Err = OK
+		return nil
+	}
+
 	// TODO need more here
 	if pb.view.Primary != pb.me && pb.view.Backup != pb.me {
 		reply.Err = ErrWrongServer
@@ -98,6 +109,8 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 		}
 
 	}
+
+	pb.ops[args.Hash] = true
 
 	return nil
 }
@@ -174,6 +187,7 @@ func StartServer(vshost string, me string) *PBServer {
 	pb.view.Backup = ""
 	pb.view.Viewnum = 0
 	pb.db = make(map[string]string)
+	pb.ops = make(map[int64]bool)
 
 	rpcs := rpc.NewServer()
 	rpcs.Register(pb)
