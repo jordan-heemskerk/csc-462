@@ -72,7 +72,7 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 	val := args.Value
 	op := args.Op
 
-	fmt.Printf("Primary: %s, Backup: %s, Key: %s, Value: %s, Op: %s\n", pb.view.Primary, pb.view.Backup, key, val, op)
+	//fmt.Printf("Primary: %s, Backup: %s, Key: %s, Value: %s, Op: %s\n", pb.view.Primary, pb.view.Backup, key, val, op)
 	if op == "Put" {
 		//Put
 		pb.db[key] = val

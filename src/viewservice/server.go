@@ -34,7 +34,7 @@ func (vs *ViewServer) DeadServer(server string) {
 
 	if vs.View.Primary == server {
 		if vs.View.Backup == "" {
-			log.Fatal("Primary failed and there's not a backup")
+			vs.View.Primary = ""
 		} else {
 			vs.NextView(vs.View.Backup, vs.NewServer())
 		}
@@ -98,7 +98,7 @@ func (vs *ViewServer) Ping(args *PingArgs, reply *PingReply) error {
 
 	// Your code here.
 
-	fmt.Printf("Received Ping %d from %s\n", args.Viewnum, args.Me)
+	//fmt.Printf("Received Ping %d from %s\n", args.Viewnum, args.Me)
 
 	if args.Viewnum == 0 && vs.Servers[args.Me] == nil && vs.View.Primary != "" {
 		reply.View = vs.View
@@ -155,7 +155,11 @@ func (vs *ViewServer) Ping(args *PingArgs, reply *PingReply) error {
 //
 func (vs *ViewServer) Get(args *GetArgs, reply *GetReply) error {
 
+	//fmt.Printf("Returning current view %d (%s, %s)", vs.View.Viewnum, vs.View.Primary, vs.View.Backup)
 	// Your code here.
+	for vs.View.Primary == "" {
+		time.Sleep(100 * time.Millisecond)
+	}
 	reply.View = vs.View
 	return nil
 
