@@ -69,6 +69,9 @@ func (ck *Clerk) Ping(viewnum uint) (View, error) {
 }
 
 func (ck *Clerk) Get() (View, bool) {
+
+	// fmt.Println("View service client GET")
+
 	args := &GetArgs{}
 	var reply GetReply
 	ok := call(ck.server, "ViewServer.Get", args, &reply)

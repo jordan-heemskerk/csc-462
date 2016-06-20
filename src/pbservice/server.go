@@ -42,7 +42,7 @@ func (pb *PBServer) TransferDB(args *TransferDBArgs, reply *TransferDBReply) err
 
 func (pb *PBServer) Get(args *GetArgs, reply *GetReply) error {
 
-	// Your code here.
+	fmt.Println("Server GET\n")
 
 	key := args.Key
 
@@ -63,7 +63,10 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 
 	// Your code here.
 
-	// Only ever atomically add things :P
+	// Only ever atomically add things
+	// is this too high?
+	// fmt.Println("Server PutAppend")
+	fmt.Println("PutAppend. Locking..")
 	pb.mu.Lock()
 	defer pb.mu.Unlock()
 
