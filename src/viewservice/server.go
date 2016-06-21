@@ -103,8 +103,6 @@ func (vs *ViewServer) NewServer() string {
 //
 func (vs *ViewServer) Ping(args *PingArgs, reply *PingReply) error {
 
-	// Your code here.
-
 	vs.mu.Lock()
 	defer vs.mu.Unlock()
 
@@ -165,20 +163,18 @@ func (vs *ViewServer) Ping(args *PingArgs, reply *PingReply) error {
 //
 func (vs *ViewServer) Get(args *GetArgs, reply *GetReply) error {
 
-	// @eburdon: I tried putting a mutex here. Still erred
-	// vs.mu.Lock()
-	// defer vs.mu.Unlock()
+	vs.mu.Lock()
+	defer vs.mu.Unlock()
 
-	// Your code here.
+	count := 0 // timeout retry count
+
 	fmt.Println("View service GET. Entering for loop\n")
-
-	// @eburdon: the concurrency tests are failing here after -csa-2 dies
-	// is the backup not being set properly
 	fmt.Println("--", vs.View.Primary, vs.View.Backup)
 
-	for vs.View.Primary == "" && vs.start == true {
-		// @eburdon: it's infinitely looping here.
+	for vs.View.Primary == "" && vs.start == true && count < 5{
+		fmt.Println(count)
 		time.Sleep(100 * time.Millisecond)
+		count++;
 	}
 
 	// fmt.Printf("Returning current view %d (%s, %s)", vs.View.Viewnum, vs.View.Primary, vs.View.Backup)
@@ -193,6 +189,9 @@ func (vs *ViewServer) Get(args *GetArgs, reply *GetReply) error {
 // accordingly.
 //
 func (vs *ViewServer) tick() {
+
+	vs.mu.Lock()
+	defer vs.mu.Unlock()
 
 	// Your code here.
 	for me, server := range vs.Servers {
@@ -223,8 +222,6 @@ func (vs *ViewServer) Kill() {
 func StartServer(me string) *ViewServer {
 	vs := new(ViewServer)
 	vs.me = me
-	// Your vs.* initializations here.
-
 	vs.Servers = make(map[string]*ServerStatus)
 
 	vs.start = false

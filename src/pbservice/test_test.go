@@ -417,7 +417,7 @@ func TestConcurrentSame(t *testing.T) {
 		}
 	}
 
-	fmt.Printf("  ... Passed\n\n\n\n")
+	fmt.Printf("  ... Passed first concurrent test\n\n\n\n")
 
 	for i := 0; i < nservers; i++ {
 		sa[i].kill()

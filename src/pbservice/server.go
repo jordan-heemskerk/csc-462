@@ -29,6 +29,9 @@ type PBServer struct {
 
 func (pb *PBServer) TransferDB(args *TransferDBArgs, reply *TransferDBReply) error {
 
+	pb.mu.Lock()
+	defer pb.mu.Unlock()
+
 	reply.Db = make(map[string]string)
 
 	// We need to copy
@@ -65,8 +68,6 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 
 	// Only ever atomically add things
 	// is this too high?
-	// fmt.Println("Server PutAppend")
-	fmt.Println("PutAppend. Locking..")
 	pb.mu.Lock()
 	defer pb.mu.Unlock()
 
@@ -125,6 +126,9 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 //   manage transfer of state from primary to new backup.
 //
 func (pb *PBServer) tick() {
+
+	pb.mu.Lock()
+	defer pb.mu.Unlock()
 
 	v, err := pb.vs.Ping(pb.view.Viewnum)
 
