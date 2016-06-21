@@ -77,6 +77,8 @@ func call(srv string, rpcname string,
 //
 func (ck *Clerk) Get(key string) string {
 
+	// fmt.Println("Clerk GET\n")
+
 	// Your code here.
 
 	var primary string
@@ -106,6 +108,8 @@ func (ck *Clerk) Get(key string) string {
 //
 func (ck *Clerk) PutAppend(key string, value string, op string) {
 
+	// THESE ARE INTERLEAVED!
+
 	// RPC Get() on VS to find current view
 	// Now I know the primary
 	// RPC PutAppend() on the primary
@@ -117,7 +121,9 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 	put_args.Hash = nrand()
 
 	for {
-		fmt.Printf("Put")
+		// MERMAID
+		// fmt.Printf("Client PutAppend\n")
+
 		var primary string
 
 		if view, ok := ck.vs.Get(); !ok {

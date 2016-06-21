@@ -24,6 +24,8 @@ type ViewServer struct {
 	DeltaView View
 	Servers   map[string]*ServerStatus
 	Acked     bool
+
+	start bool
 }
 
 func (vs *ViewServer) GetRPCCount() uint {
@@ -65,6 +67,11 @@ func (vs *ViewServer) NextView(primary string, backup string) {
 		vs.DeltaView.Viewnum = vs.View.Viewnum + 1
 		vs.Acked = false
 
+		// set once on program load
+		if vs.start == false {
+			vs.start = true
+		}
+
 		fmt.Printf("Setting next view %d (%s, %s)\n", vs.DeltaView.Viewnum, vs.DeltaView.Primary, vs.DeltaView.Backup)
 
 	}
@@ -98,7 +105,10 @@ func (vs *ViewServer) Ping(args *PingArgs, reply *PingReply) error {
 
 	// Your code here.
 
-	//fmt.Printf("Received Ping %d from %s\n", args.Viewnum, args.Me)
+	vs.mu.Lock()
+	defer vs.mu.Unlock()
+
+	// fmt.Printf("Received Ping %d from %s\n", args.Viewnum, args.Me)
 
 	if args.Viewnum == 0 && vs.Servers[args.Me] == nil && vs.View.Primary != "" {
 		reply.View = vs.View
@@ -155,11 +165,23 @@ func (vs *ViewServer) Ping(args *PingArgs, reply *PingReply) error {
 //
 func (vs *ViewServer) Get(args *GetArgs, reply *GetReply) error {
 
-	//fmt.Printf("Returning current view %d (%s, %s)", vs.View.Viewnum, vs.View.Primary, vs.View.Backup)
+	// @eburdon: I tried putting a mutex here. Still erred
+	// vs.mu.Lock()
+	// defer vs.mu.Unlock()
+
 	// Your code here.
-	for vs.View.Primary == "" {
+	fmt.Println("View service GET. Entering for loop\n")
+
+	// @eburdon: the concurrency tests are failing here after -csa-2 dies
+	// is the backup not being set properly
+	fmt.Println("--", vs.View.Primary, vs.View.Backup)
+
+	for vs.View.Primary == "" && vs.start == true {
+		// @eburdon: it's infinitely looping here.
 		time.Sleep(100 * time.Millisecond)
 	}
+
+	// fmt.Printf("Returning current view %d (%s, %s)", vs.View.Viewnum, vs.View.Primary, vs.View.Backup)
 	reply.View = vs.View
 	return nil
 
@@ -204,6 +226,8 @@ func StartServer(me string) *ViewServer {
 	// Your vs.* initializations here.
 
 	vs.Servers = make(map[string]*ServerStatus)
+
+	vs.start = false
 
 	// tell net/rpc about our RPC server and handlers.
 	rpcs := rpc.NewServer()
