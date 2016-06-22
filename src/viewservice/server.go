@@ -76,6 +76,10 @@ func (vs *ViewServer) NextView(primary string, backup string) {
 
 		fmt.Printf("Setting next view %d (%s, %s)\n", vs.DeltaView.Viewnum, vs.DeltaView.Primary, vs.DeltaView.Backup)
 
+		if vs.DeltaView.Primary == vs.DeltaView.Backup && vs.DeltaView.Primary != "" {
+			log.Fatal("Server cannot be primary and backup")
+		}
+
 	}
 
 }
@@ -91,7 +95,9 @@ func (vs *ViewServer) NewServer() string {
 		if server.Used == false {
 			fmt.Printf("Set %s as used\n", me)
 			vs.Servers[me].Used = true
-			return me
+			if vs.View.Primary != me && vs.View.Backup != me {
+				return me
+			}
 		}
 
 	}
@@ -139,13 +145,13 @@ func (vs *ViewServer) Ping(args *PingArgs, reply *PingReply) error {
 
 	}
 
-	if vs.View.Primary == "" && vs.View.Backup == "" {
+	if vs.Acked && vs.View.Primary == "" && vs.View.Backup == "" {
 
 		vs.NextView(vs.NewServer(), "")
 
 	}
 
-	if vs.View.Primary != "" && vs.View.Backup == "" {
+	if vs.Acked && vs.View.Primary != "" && vs.View.Backup == "" {
 
 		vs.NextView(vs.View.Primary, vs.NewServer())
 
@@ -165,19 +171,23 @@ func (vs *ViewServer) Ping(args *PingArgs, reply *PingReply) error {
 //
 func (vs *ViewServer) Get(args *GetArgs, reply *GetReply) error {
 
-	vs.mu.Lock()
-	defer vs.mu.Unlock()
+	// We don't want to lock here because if we are waiting on having no primary, we may never get one
+	//	vs.mu.Lock()
+	//	defer vs.mu.Unlock()
 
 	vs.RPCs++
 	count := 0 // timeout retry count
 
-	fmt.Println("View service GET. Entering for loop\n")
-	fmt.Println("--", vs.View.Primary, vs.View.Backup)
+	//fmt.Println("View service GET. Entering for loop\n")
+	//fmt.Println("--", vs.View.Primary, vs.View.Backup)
 
-	for vs.View.Primary == "" && vs.start == true && count < 5{
-		fmt.Println(count)
-		time.Sleep(100 * time.Millisecond)
-		count++;
+	for vs.View.Primary == "" && vs.start == true {
+		fmt.Printf("%d: %s, %s", count, vs.View.Primary, vs.View.Backup)
+		time.Sleep(1000 * time.Millisecond)
+		count++
+		if vs.dead {
+			return nil
+		}
 	}
 
 	// fmt.Printf("Returning current view %d (%s, %s)", vs.View.Viewnum, vs.View.Primary, vs.View.Backup)
@@ -228,6 +238,7 @@ func StartServer(me string) *ViewServer {
 	vs.Servers = make(map[string]*ServerStatus)
 
 	vs.start = false
+	vs.Acked = true
 
 	// tell net/rpc about our RPC server and handlers.
 	rpcs := rpc.NewServer()
