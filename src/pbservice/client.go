@@ -5,10 +5,13 @@ import "net/rpc"
 import "fmt"
 import "crypto/rand"
 import "math/big"
+import "time"
 
 type Clerk struct {
 	vs *viewservice.Clerk
 	// Your declarations here
+
+	View viewservice.View
 }
 
 type PutReq struct {
@@ -30,6 +33,12 @@ func MakeClerk(vshost string, me string) *Clerk {
 	ck := new(Clerk)
 	ck.vs = viewservice.MakeClerk(me, vshost)
 	// Your ck.* initializations here
+
+	go func() {
+		for ck.tick() {
+			time.Sleep(viewservice.PingInterval)
+		}
+	}()
 
 	return ck
 }
@@ -68,6 +77,18 @@ func call(srv string, rpcname string,
 	return false
 }
 
+func (ck *Clerk) tick() bool {
+
+	if view, ok := ck.vs.Get(); !ok {
+		fmt.Printf("Get() failed in tick\n")
+		return false
+	} else {
+		ck.View = view
+		return true
+	}
+
+}
+
 //
 // fetch a key's value from the current primary;
 // if they key has never been set, return "".
@@ -81,23 +102,18 @@ func (ck *Clerk) Get(key string) string {
 
 	// Your code here.
 
-	var primary string
-
-	if view, ok := ck.vs.Get(); !ok {
-		fmt.Printf("Get() failed.")
-	} else {
-		primary = view.Primary
-	}
-
 	get_args := &GetArgs{}
 	get_args.Key = key
 
 	var get_reply GetReply
 
-	if ok := call(primary, "PBServer.Get", get_args, &get_reply); !ok {
-		fmt.Printf("RPC Get() failed")
-	} else {
-		return get_reply.Value
+	for {
+		if ok := call(ck.View.Primary, "PBServer.Get", get_args, &get_reply); !ok {
+			//	fmt.Printf("RPC Get() failed\n")
+		} else {
+			return get_reply.Value
+		}
+		time.Sleep(viewservice.PingInterval)
 	}
 
 	return "???"
@@ -124,19 +140,12 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 		// MERMAID
 		// fmt.Printf("Client PutAppend\n")
 
-		var primary string
-
-		if view, ok := ck.vs.Get(); !ok {
-			fmt.Printf("Get() failed.")
-		} else {
-			primary = view.Primary
-		}
-
 		var put_reply PutAppendReply
 
-		if ok := call(primary, "PBServer.PutAppend", put_args, &put_reply); ok {
+		if ok := call(ck.View.Primary, "PBServer.PutAppend", put_args, &put_reply); ok {
 			break
 		}
+		time.Sleep(viewservice.PingInterval)
 	}
 }
 

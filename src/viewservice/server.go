@@ -25,11 +25,13 @@ type ViewServer struct {
 	Servers   map[string]*ServerStatus
 	Acked     bool
 
+	RPCs uint
+
 	start bool
 }
 
 func (vs *ViewServer) GetRPCCount() uint {
-	return 0
+	return vs.RPCs
 }
 
 func (vs *ViewServer) DeadServer(server string) {
@@ -166,6 +168,7 @@ func (vs *ViewServer) Get(args *GetArgs, reply *GetReply) error {
 	vs.mu.Lock()
 	defer vs.mu.Unlock()
 
+	vs.RPCs++
 	count := 0 // timeout retry count
 
 	fmt.Println("View service GET. Entering for loop\n")
