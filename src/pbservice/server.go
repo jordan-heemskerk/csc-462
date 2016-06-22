@@ -25,6 +25,8 @@ type PBServer struct {
 	view viewservice.View
 	db   map[string]string
 	ops  map[int64]bool
+
+	putappendmu sync.Mutex
 }
 
 func (pb *PBServer) TransferDB(args *TransferDBArgs, reply *TransferDBReply) error {
@@ -68,8 +70,10 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 
 	// Only ever atomically add things
 	// is this too high?
-	pb.mu.Lock()
-	defer pb.mu.Unlock()
+
+	// Can't lock main mutex becuase we may have the backup change mid call
+	pb.putappendmu.Lock()
+	defer pb.putappendmu.Unlock()
 
 	if _, ok := pb.ops[args.Hash]; ok {
 		// ignore the request, put tell the client everything is coo'
@@ -81,6 +85,24 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 	if pb.view.Primary != pb.me && pb.view.Backup != pb.me {
 		reply.Err = ErrWrongServer
 		return nil
+	}
+
+	for {
+		// If there is a backup, we must forward any Put request to it
+		if pb.view.Backup != "" && pb.view.Primary == pb.me {
+
+			var for_reply PutAppendReply
+			if ok := call(pb.view.Backup, "PBServer.PutAppend", args, &for_reply); !ok {
+				// We retry until success now
+				//fmt.Printf("Forwarding Put request failed.\n")
+			} else {
+				break
+			}
+			time.Sleep(100 * time.Millisecond)
+
+		} else {
+			break
+		}
 	}
 
 	key := args.Key
@@ -102,16 +124,6 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 			pb.db[key] = val
 		}
 		reply.Err = OK
-	}
-
-	// If there is a backup, we must forward any Put request to it
-	if pb.view.Backup != "" && pb.view.Primary == pb.me {
-
-		var for_reply PutAppendReply
-		if ok := call(pb.view.Backup, "PBServer.PutAppend", args, &for_reply); !ok {
-			fmt.Printf("Forwarding Put request failed.\n")
-		}
-
 	}
 
 	pb.ops[args.Hash] = true
