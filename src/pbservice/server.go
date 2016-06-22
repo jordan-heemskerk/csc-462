@@ -22,9 +22,13 @@ type PBServer struct {
 	vs         *viewservice.Clerk
 	// Your deClarations here.
 
+	primviewnum uint
+
 	view viewservice.View
 	db   map[string]string
 	ops  map[int64]bool
+
+	putappendmu sync.Mutex
 }
 
 func (pb *PBServer) TransferDB(args *TransferDBArgs, reply *TransferDBReply) error {
@@ -45,7 +49,12 @@ func (pb *PBServer) TransferDB(args *TransferDBArgs, reply *TransferDBReply) err
 
 func (pb *PBServer) Get(args *GetArgs, reply *GetReply) error {
 
-	fmt.Println("Server GET\n")
+	//fmt.Println("Server GET\n")
+
+	for pb.view.Viewnum > pb.primviewnum || pb.view.Viewnum == 0 {
+		// force time out
+		time.Sleep(100 * time.Millisecond)
+	}
 
 	key := args.Key
 
@@ -68,8 +77,10 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 
 	// Only ever atomically add things
 	// is this too high?
-	pb.mu.Lock()
-	defer pb.mu.Unlock()
+
+	// Can't lock main mutex becuase we may have the backup change mid call
+	pb.putappendmu.Lock()
+	defer pb.putappendmu.Unlock()
 
 	if _, ok := pb.ops[args.Hash]; ok {
 		// ignore the request, put tell the client everything is coo'
@@ -81,6 +92,24 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 	if pb.view.Primary != pb.me && pb.view.Backup != pb.me {
 		reply.Err = ErrWrongServer
 		return nil
+	}
+
+	for {
+		// If there is a backup, we must forward any Put request to it
+		if pb.view.Backup != "" && pb.view.Primary == pb.me {
+
+			var for_reply PutAppendReply
+			if ok := call(pb.view.Backup, "PBServer.PutAppend", args, &for_reply); !ok {
+				// We retry until success now
+				//fmt.Printf("Forwarding Put request failed.\n")
+			} else {
+				break
+			}
+			time.Sleep(100 * time.Millisecond)
+
+		} else {
+			break
+		}
 	}
 
 	key := args.Key
@@ -104,16 +133,6 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 		reply.Err = OK
 	}
 
-	// If there is a backup, we must forward any Put request to it
-	if pb.view.Backup != "" && pb.view.Primary == pb.me {
-
-		var for_reply PutAppendReply
-		if ok := call(pb.view.Backup, "PBServer.PutAppend", args, &for_reply); !ok {
-			fmt.Printf("Forwarding Put request failed.\n")
-		}
-
-	}
-
 	pb.ops[args.Hash] = true
 
 	return nil
@@ -134,11 +153,16 @@ func (pb *PBServer) tick() {
 
 	if err != nil {
 		fmt.Printf("Ping failed.\n")
+		log.Print(err)
 	}
 
 	if pb.view != v {
 
 		pb.view = v
+
+		if v.Primary == pb.me {
+			pb.primviewnum = v.Viewnum
+		}
 
 		// If I am now the backup, ask the primary to
 		// transfer everything to me and then save it
