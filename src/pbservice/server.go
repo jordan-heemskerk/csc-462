@@ -22,6 +22,8 @@ type PBServer struct {
 	vs         *viewservice.Clerk
 	// Your deClarations here.
 
+	primviewnum uint
+
 	view viewservice.View
 	db   map[string]string
 	ops  map[int64]bool
@@ -47,7 +49,12 @@ func (pb *PBServer) TransferDB(args *TransferDBArgs, reply *TransferDBReply) err
 
 func (pb *PBServer) Get(args *GetArgs, reply *GetReply) error {
 
-	fmt.Println("Server GET\n")
+	//fmt.Println("Server GET\n")
+
+	for pb.view.Viewnum > pb.primviewnum || pb.view.Viewnum == 0 {
+		// force time out
+		time.Sleep(100 * time.Millisecond)
+	}
 
 	key := args.Key
 
@@ -146,11 +153,16 @@ func (pb *PBServer) tick() {
 
 	if err != nil {
 		fmt.Printf("Ping failed.\n")
+		log.Print(err)
 	}
 
 	if pb.view != v {
 
 		pb.view = v
+
+		if v.Primary == pb.me {
+			pb.primviewnum = v.Viewnum
+		}
 
 		// If I am now the backup, ask the primary to
 		// transfer everything to me and then save it
