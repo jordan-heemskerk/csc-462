@@ -111,6 +111,9 @@ func (ck *Clerk) Get(key string) string {
 		if ok := call(ck.View.Primary, "PBServer.Get", get_args, &get_reply); !ok {
 			//	fmt.Printf("RPC Get() failed\n")
 		} else {
+			if get_reply.Err == ErrNoKey {
+				return "???"
+			}
 			return get_reply.Value
 		}
 		time.Sleep(viewservice.PingInterval)

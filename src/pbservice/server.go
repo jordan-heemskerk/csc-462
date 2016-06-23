@@ -11,7 +11,8 @@ import "sync/atomic"
 import "os"
 import "syscall"
 import "math/rand"
-import "errors"
+
+//import "errors"
 
 type PBServer struct {
 	mu         sync.Mutex
@@ -65,7 +66,7 @@ func (pb *PBServer) Get(args *GetArgs, reply *GetReply) error {
 	} else {
 		reply.Err = ErrNoKey
 		reply.Value = ""
-		return errors.New("Key does not exist")
+		return nil
 	}
 
 	return nil
@@ -108,6 +109,18 @@ func (pb *PBServer) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error 
 			time.Sleep(100 * time.Millisecond)
 
 		} else {
+			if pb.view.Backup == "" {
+				//				fmt.Printf("No backup\n")
+			}
+
+			if pb.view.Primary != pb.me && pb.view.Backup != pb.me {
+				fmt.Printf("I am no longer the primary :( i am dead\n")
+			}
+
+			if pb.view.Backup == pb.me {
+				//				fmt.Printf("I am the backup, no need to forware request\n")
+			}
+
 			break
 		}
 	}
@@ -172,12 +185,21 @@ func (pb *PBServer) tick() {
 			tran_args := &TransferDBArgs{}
 			var tran_reply TransferDBReply
 
-			if ok := call(v.Primary, "PBServer.TransferDB", tran_args, &tran_reply); !ok {
-				fmt.Printf("Transfer DB failed\n")
-			} else {
-				fmt.Printf("State transfer complete\n")
-				// TODO!!!! Do we need to copy here? or is this ok
-				pb.db = tran_reply.Db
+			for {
+				if ok := call(v.Primary, "PBServer.TransferDB", tran_args, &tran_reply); !ok {
+					fmt.Printf("Transfer DB failed: retrying\n")
+				} else {
+					fmt.Printf("State transfer complete\n")
+					// TODO!!!! Do we need to copy here? or is this ok
+
+					//pb.db = tran_reply.Db
+
+					// Explicitly copy every entry
+					for k, v := range tran_reply.Db {
+						pb.db[k] = v
+					}
+					break
+				}
 			}
 
 		}
