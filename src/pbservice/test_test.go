@@ -771,7 +771,7 @@ func TestRepeatedCrash(t *testing.T) {
 					if v != wanted {
 						t.Fatalf("key=%v wanted=%v got=%v", k, wanted, v)
 					}
-					fmt.Printf("Got what we wanted\n")
+					//fmt.Printf("Got what we wanted\n")
 				}
 				nv := strconv.Itoa(rr.Int())
 				ck.Put(k, nv)
