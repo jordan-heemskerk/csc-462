@@ -131,7 +131,7 @@ func TestBasic(t *testing.T) {
 	pxa[0].Start(0, "hello")
 	waitn(t, pxa, 0, npaxos)
 
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 
 	fmt.Printf("Test: Many proposers, same value ...\n")
 
@@ -140,7 +140,7 @@ func TestBasic(t *testing.T) {
 	}
 	waitn(t, pxa, 1, npaxos)
 
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 
 	fmt.Printf("Test: Many proposers, different values ...\n")
 
@@ -149,7 +149,7 @@ func TestBasic(t *testing.T) {
 	pxa[2].Start(2, 102)
 	waitn(t, pxa, 2, npaxos)
 
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 
 	fmt.Printf("Test: Out-of-order instances ...\n")
 
@@ -168,7 +168,7 @@ func TestBasic(t *testing.T) {
 		t.Fatalf("wrong Max()")
 	}
 
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 }
 
 func TestDeaf(t *testing.T) {
@@ -211,7 +211,7 @@ func TestDeaf(t *testing.T) {
 	pxa[npaxos-1].Start(1, "yyy")
 	waitn(t, pxa, 1, npaxos)
 
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 }
 
 func TestForget(t *testing.T) {
@@ -293,7 +293,7 @@ func TestForget(t *testing.T) {
 		t.Fatalf("Min() did not advance after Done()")
 	}
 
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 }
 
 func TestManyForget(t *testing.T) {
