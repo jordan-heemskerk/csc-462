@@ -30,6 +30,7 @@ import "sync"
 import "sync/atomic"
 import "fmt"
 import "math/rand"
+import "math"
 
 
 // px.Status() return values, indicating
@@ -39,9 +40,9 @@ import "math/rand"
 type Fate int
 
 const (
-	Decided   Fate = iota + 1
-	Pending        // not yet decided.
-	Forgotten      // decided but forgotten.
+	Decided   Fate = iota + 1                // 1
+	Pending        // not yet decided.       // 2
+	Forgotten      // decided but forgotten. // 3
 )
 
 type Paxos struct {
@@ -54,7 +55,32 @@ type Paxos struct {
 	me         int // index into peers[]
 
 
-	// Your data here.
+	// Your data here
+
+	// track the proposals I have received
+	recProposals map[int]Proposal
+}
+
+type Proposal struct {
+	Seq 	int
+	Value 	interface{}
+	Fate 	Fate
+	Majority int // number that must be matched or beaten to be accepted
+}
+
+//
+// I want to return my status?
+// If I am currently in consensus, or a intermediate state?
+//
+type InterrogationReply struct {
+	Test int
+}
+
+//
+// TODO: Do I need to return anything from a decision call?
+//
+type AcceptanceReply struct {
+	Test int
 }
 
 //
@@ -93,16 +119,107 @@ func call(srv string, name string, args interface{}, reply interface{}) bool {
 	return false
 }
 
+//
+// Decision call! The passed in value has won the vote!
+//
+func (px *Paxos) Decide(args *Proposal, reply *AcceptanceReply) error {
+	
+	proposal := px.recProposals[args.Seq]
+	
+	// update proposal
+	proposal.Fate = args.Fate
+
+	px.recProposals[args.Seq] = proposal
+
+	// TODO: error handling?!
+	return nil;
+}
 
 //
-// the application wants paxos to start agreement on
-// instance seq, with proposed value v.
+// Interrogation call; what do I need to return?
+// If I am in an intermediate state? If I am in a consensus state, ready
+// for another value?
+//
+func (px *Paxos) Accept(args *Proposal, reply *InterrogationReply) error {
+	// save proposal
+	px.recProposals[args.Seq] = *args
+
+	return nil;
+}
+
+func calculateMajority(peerCount int) int {
+	temp := float64(peerCount) / 2.0
+	return int(math.Ceil(temp))
+}
+
+//
+// the application wants paxos to start agreement/
+// conensus on instance seq, with proposed value v.
 // Start() returns right away; the application will
 // call Status() to find out if/when agreement
 // is reached.
 //
 func (px *Paxos) Start(seq int, v interface{}) {
 	// Your code here.
+
+	// create proposal
+	prop := &Proposal{}
+	prop.Seq = seq
+	prop.Value = v
+	prop.Majority = calculateMajority(len(px.peers))
+	prop.Fate = Pending
+
+	var my_reply InterrogationReply
+
+
+	//
+	// TODO: Move into function
+	// make RPC calls to my known servers (async! Do not wait)
+	// initially, don't send value, just sequence 
+	// i.e., confirm not an old sequence to discard
+	//
+	for i := 0; i < len(px.peers); i++ {
+		
+		// fmt.Println("Calling ... ", px.peers[i])
+
+		if ok := call(px.peers[i], "Paxos.Accept", prop, &my_reply); !ok {
+			// something went wrong
+			// TODO: What error handling do we need?
+			fmt.Println("FAIL - SOMETHING WENT HORRIBLY HORRIBLY WRONG")
+		} else {
+			// increment the number of servers that have accepted
+			// TODO: define 'accepted'
+			// TODO: Make decrement atomic
+			prop.Majority--;
+		}
+
+		// as soon as we have a majority, mark the proposal as 
+		// decided, and sent out.
+		if prop.Majority == 0 {
+			// fmt.Println("We have majority!\n\n")
+			prop.Fate = Decided
+		}
+	}
+
+	// TODO: Move into function
+	// if we have a majority, finalize agreement
+	if prop.Fate == Decided {
+
+		var my_reply AcceptanceReply
+
+		for i := 0; i < len(px.peers); i++ {
+			if ok := call(px.peers[i], "Paxos.Decide", prop, &my_reply); !ok {
+				// TODO: What error handling do we need?
+				fmt.Println("FAIL - SOMETHING WENT HORRIBLY HORRIBLY WRONG")
+			} else {
+				// TODO: increase done count?
+				// What do?
+			}
+		}
+	}
+
+	// wait for final confirmation; done
+
 }
 
 //
@@ -167,7 +284,10 @@ func (px *Paxos) Min() int {
 //
 func (px *Paxos) Status(seq int) (Fate, interface{}) {
 	// Your code here.
-	return Pending, nil
+	// return Pending, nil
+
+	// TODO: error handling??
+	return px.recProposals[seq].Fate, nil
 }
 
 
@@ -214,8 +334,8 @@ func Make(peers []string, me int, rpcs *rpc.Server) *Paxos {
 	px.peers = peers
 	px.me = me
 
-
 	// Your initialization code here.
+	px.recProposals = make(map[int]Proposal)
 
 	if rpcs != nil {
 		// caller will create socket &c
