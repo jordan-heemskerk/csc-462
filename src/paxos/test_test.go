@@ -29,12 +29,18 @@ func port(tag string, host int) string {
 	return s
 }
 
+//
+// This wants to make sure something has been decided
+//
 func ndecided(t *testing.T, pxa []*Paxos, seq int) int {
 	count := 0
 	var v interface{}
 	for i := 0; i < len(pxa); i++ {
 		if pxa[i] != nil {
+            // fmt.Println(i)
+            // fmt.Println(seq)
 			decided, v1 := pxa[i].Status(seq)
+
 			if decided == Decided {
 				if count > 0 && v != v1 {
 					t.Fatalf("decided values do not match; seq=%v i=%v v=%v v1=%v",
@@ -48,12 +54,16 @@ func ndecided(t *testing.T, pxa []*Paxos, seq int) int {
 	return count
 }
 
+//
+// @eburdon - What this does:
+//
 func waitn(t *testing.T, pxa []*Paxos, seq int, wanted int) {
 	to := 10 * time.Millisecond
 	for iters := 0; iters < 30; iters++ {
 		if ndecided(t, pxa, seq) >= wanted {
 			break
 		}
+        // fmt.Println("Sleeping in waitn...")
 		time.Sleep(to)
 		if to < time.Second {
 			to *= 2
@@ -135,6 +145,7 @@ func TestBasic(t *testing.T) {
 
 	fmt.Printf("Test: Many proposers, same value ...\n")
 
+	// start 3 more proposals, id 1, value 77.
 	for i := 0; i < npaxos; i++ {
 		pxa[i].Start(1, 77)
 	}
@@ -142,7 +153,7 @@ func TestBasic(t *testing.T) {
 
 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 
-	fmt.Printf("Test: Many proposers, different values ...\n")
+	fmt.Println("Test: Many proposers, different values ...\n")
 
 	pxa[0].Start(2, 100)
 	pxa[1].Start(2, 101)
@@ -156,16 +167,24 @@ func TestBasic(t *testing.T) {
 	pxa[0].Start(7, 700)
 	pxa[0].Start(6, 600)
 	pxa[1].Start(5, 500)
+
 	waitn(t, pxa, 7, npaxos)
+
 	pxa[0].Start(4, 400)
 	pxa[1].Start(3, 300)
+
+    fmt.Println("Started 4, 3")
+
 	waitn(t, pxa, 6, npaxos)
+
+    fmt.Println("Waiting on 5...")
+
 	waitn(t, pxa, 5, npaxos)
 	waitn(t, pxa, 4, npaxos)
 	waitn(t, pxa, 3, npaxos)
 
 	if pxa[0].Max() != 7 {
-		t.Fatalf("wrong Max()")
+		t.Fatalf("wrong Max(): %d", pxa[0].Max())
 	}
 
 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
@@ -188,29 +207,40 @@ func TestDeaf(t *testing.T) {
 
 	fmt.Printf("Test: Deaf proposer ...\n")
 
+    // first proposal
 	pxa[0].Start(0, "hello")
 	waitn(t, pxa, 0, npaxos)
 
 	os.Remove(pxh[0])
 	os.Remove(pxh[npaxos-1])
 
+    fmt.Println("\nWe have removed removed first and last peers\n")
+
+    // second proposal
 	pxa[1].Start(1, "goodbye")
 	waitmajority(t, pxa, 1)
 	time.Sleep(1 * time.Second)
+
 	if ndecided(t, pxa, 1) != npaxos-2 {
+        // e.g., two peers died. Thus, we should have 3 peers have have ndecided
+        // to sequence 1, not 5.
+        fmt.Println(ndecided(t, pxa, 1), "VS", npaxos-2)
 		t.Fatalf("a deaf peer heard about a decision")
 	}
 
+    // third proposal
 	pxa[0].Start(1, "xxx")
-	waitn(t, pxa, 1, npaxos-1)
+	waitn(t, pxa, 1, npaxos-1) // @eburdon HANGS HERE
 	time.Sleep(1 * time.Second)
 	if ndecided(t, pxa, 1) != npaxos-1 {
 		t.Fatalf("a deaf peer heard about a decision")
 	}
 
+    // fourth proposal
 	pxa[npaxos-1].Start(1, "yyy")
 	waitn(t, pxa, 1, npaxos)
 
+    // no decision should have been made?
 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 }
 

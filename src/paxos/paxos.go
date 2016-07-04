@@ -31,7 +31,8 @@ import "sync/atomic"
 import "fmt"
 import "math/rand"
 import "math"
-
+// import "errors"
+// import "encoding/gob"
 
 // px.Status() return values, indicating
 // whether an agreement has been decided,
@@ -40,9 +41,9 @@ import "math"
 type Fate int
 
 const (
-	Decided   Fate = iota + 1                // 1
-	Pending        // not yet decided.       // 2
-	Forgotten      // decided but forgotten. // 3
+	Decided   Fate = iota + 1 // 1
+	Pending                   // 2 not yet decided
+	Forgotten                 // 3 decided but forgotten
 )
 
 type Paxos struct {
@@ -54,17 +55,17 @@ type Paxos struct {
 	peers      []string
 	me         int // index into peers[]
 
-
 	// Your data here
 
 	// track the proposals I have received
 	recProposals map[int]Proposal
+    minValue int // the incoming value must be at least this big
 }
 
 type Proposal struct {
-	Seq 	int
-	Value 	interface{}
-	Fate 	Fate
+	Seq      int
+	Value    interface{}
+	Fate     Fate
 	Majority int // number that must be matched or beaten to be accepted
 }
 
@@ -73,7 +74,9 @@ type Proposal struct {
 // If I am currently in consensus, or a intermediate state?
 //
 type InterrogationReply struct {
-	Test int
+	Seq int 
+    Value interface{}
+    Error string
 }
 
 //
@@ -123,28 +126,45 @@ func call(srv string, name string, args interface{}, reply interface{}) bool {
 // Decision call! The passed in value has won the vote!
 //
 func (px *Paxos) Decide(args *Proposal, reply *AcceptanceReply) error {
-	
+
 	proposal := px.recProposals[args.Seq]
-	
-	// update proposal
+
 	proposal.Fate = args.Fate
 
 	px.recProposals[args.Seq] = proposal
 
 	// TODO: error handling?!
-	return nil;
+	return nil
 }
 
 //
-// Interrogation call; what do I need to return?
-// If I am in an intermediate state? If I am in a consensus state, ready
-// for another value?
+// Interrogation call
+//      If current sequence value is greater than what I've already seen,
+//      I promise to accept.
+//      If its the same or less, I must reject
+// TODO?
+//      If I am in an intermediate state? If I am in a consensus state, ready
+//      for another value?
+//      ** I don't want to clean values here! Only check!
 //
-func (px *Paxos) Accept(args *Proposal, reply *InterrogationReply) error {
-	// save proposal
-	px.recProposals[args.Seq] = *args
+func (px *Paxos) AcceptPromise(args *Proposal, reply *InterrogationReply) error {
 
-	return nil;
+    max := px.Max()
+
+    // build reply [always]
+    reply.Seq = max
+    reply.Value = px.recProposals[max].Value
+    // reply.Error = nil
+
+    if args.Seq > max ||  max == 0 {
+        // save proposal
+        px.recProposals[args.Seq] = *args
+    } else {
+        reply.Error = "sequence value is too small / out of date. Rejected!"
+        // fmt.Println("Sequence value was too small! Rejecting!")
+    }
+
+    return nil
 }
 
 func calculateMajority(peerCount int) int {
@@ -160,43 +180,53 @@ func calculateMajority(peerCount int) int {
 // is reached.
 //
 func (px *Paxos) Start(seq int, v interface{}) {
-	// Your code here.
-
 	// create proposal
 	prop := &Proposal{}
 	prop.Seq = seq
 	prop.Value = v
-	prop.Majority = calculateMajority(len(px.peers))
 	prop.Fate = Pending
+    prop.Majority = calculateMajority(len(px.peers))
 
+    fmt.Println("\tMajority needed is:", prop.Majority)
+
+    // latest agreed upon sequence and value of acceptor
 	var my_reply InterrogationReply
 
-
-	//
-	// TODO: Move into function
-	// make RPC calls to my known servers (async! Do not wait)
-	// initially, don't send value, just sequence 
-	// i.e., confirm not an old sequence to discard
-	//
 	for i := 0; i < len(px.peers); i++ {
-		
-		// fmt.Println("Calling ... ", px.peers[i])
 
-		if ok := call(px.peers[i], "Paxos.Accept", prop, &my_reply); !ok {
-			// something went wrong
-			// TODO: What error handling do we need?
-			fmt.Println("FAIL - SOMETHING WENT HORRIBLY HORRIBLY WRONG")
-		} else {
-			// increment the number of servers that have accepted
-			// TODO: define 'accepted'
-			// TODO: Make decrement atomic
-			prop.Majority--;
+		fmt.Println("\tCalling ... ", px.peers[i])
+        fmt.Println("\tSequence...", seq)
+        fmt.Println("\tValue...", v)
+
+		if ok := call(px.peers[i], "Paxos.AcceptPromise", prop, &my_reply); !ok {
+
+			fmt.Println("Failed Accept!")
+
+            // remove from peers [i.e., prevent DECIDE from being called]
+            newPeers := append(px.peers[:i], px.peers[i+1:]...)
+            px.peers = newPeers
+
+            // recalculate majority
+            prop.Majority = calculateMajority(len(px.peers))
+            fmt.Println("\tNew majority needed is:", prop.Majority)
+
+		} else if my_reply.Error != "" {
+            // reach this stage if, e.g., my sequence number is out of date (old)
+            // TODO: Do I need to update my sequence number?
+            
+            // TODO: use error codes instead?!
+            fmt.Println(my_reply.Error)
+
+        } else {
+			// increment the number of servers that have agreed to accept
+			// TODO: Make atomic
+			prop.Majority--
 		}
 
-		// as soon as we have a majority, mark the proposal as 
+		// as soon as we have a majority, mark the proposal as
 		// decided, and sent out.
 		if prop.Majority == 0 {
-			// fmt.Println("We have majority!\n\n")
+			fmt.Println("\t\tWe have majority on: ", seq)
 			prop.Fate = Decided
 		}
 	}
@@ -210,9 +240,10 @@ func (px *Paxos) Start(seq int, v interface{}) {
 		for i := 0; i < len(px.peers); i++ {
 			if ok := call(px.peers[i], "Paxos.Decide", prop, &my_reply); !ok {
 				// TODO: What error handling do we need?
-				fmt.Println("FAIL - SOMETHING WENT HORRIBLY HORRIBLY WRONG")
-			} else {
+				fmt.Println("\nFAIL DECIDE\n")
+            } else {
 				// TODO: increase done count?
+                // TODO: Accept me? here or in DECIDE?
 				// What do?
 			}
 		}
@@ -239,7 +270,23 @@ func (px *Paxos) Done(seq int) {
 //
 func (px *Paxos) Max() int {
 	// Your code here.
-	return 0
+
+	// TODO: map should have a MAX functionality
+	// TODO: THIS IS NOT ROBUST?!
+	// otherwise., assume to return the last item in the map?
+	// max := len(px.recProposals) - 1
+
+    max := 0
+
+    for k, _ := range px.recProposals {
+        if k > max {
+            max = k
+        }
+    }
+
+	// return 0
+    // fmt.Println("\tMax...", max)
+	return max
 }
 
 //
@@ -248,10 +295,14 @@ func (px *Paxos) Max() int {
 // to Done() on peer i. A peers z_i is -1 if it has
 // never called Done().
 //
+// TODO: when/why does it call Done() ?
+//
 // Paxos is required to have forgotten all information
 // about any instances it knows that are < Min().
 // The point is to free up memory in long-running
 // Paxos-based servers.
+//
+// TODO: Periodically check this and DELETE from map!
 //
 // Paxos peers need to exchange their highest Done()
 // arguments in order to implement Min(). These
@@ -270,6 +321,9 @@ func (px *Paxos) Max() int {
 // missed -- the other peers therefor cannot forget these
 // instances.
 //
+// TODO: keep track of a server's DONE sequence value!
+// TODO: Keep track of which ones have 'heard' the min?
+//
 func (px *Paxos) Min() int {
 	// You code here.
 	return 0
@@ -283,14 +337,54 @@ func (px *Paxos) Min() int {
 // it should not contact other Paxos peers.
 //
 func (px *Paxos) Status(seq int) (Fate, interface{}) {
-	// Your code here.
-	// return Pending, nil
 
-	// TODO: error handling??
-	return px.recProposals[seq].Fate, nil
+    // fmt.Println("Status")
+    // fmt.Println(px.recProposals)
+    // fmt.Println("\n\n")
+
+    exists := false
+
+    for p, _ := range px.recProposals {
+        if seq == p {
+            exists = true
+            break
+        }
+    }
+
+     max := px.Max()
+
+    if exists == false {
+        fmt.Println("THE PASSED IN VALUE DOES NOT EXIST")
+
+        var highest int
+
+        for k, v := range px.recProposals {
+            if v.Fate == Decided {
+                highest = k
+            }
+        }
+
+        // the passed in sequence does not exist
+        // I want to reveal if I think we have reached consensus on another
+        // TODO: evaluate all: see which one is highest?
+        // right now -- return value of max
+        return px.recProposals[highest].Fate, nil
+    }
+
+    instance := seq
+    if max > seq {
+        // the passed in sequence is out of date
+        fmt.Println("The passed in sequence of out of date. Actual: ", max)
+        instance = max
+    }
+
+    // this current checks the most recently passed in value
+    if px.recProposals[max].Fate == Decided {
+        instance = max
+    }
+
+    return px.recProposals[instance].Fate, nil
 }
-
-
 
 //
 // tell the peer to shut itself down.
@@ -387,7 +481,6 @@ func Make(peers []string, me int, rpcs *rpc.Server) *Paxos {
 			}
 		}()
 	}
-
 
 	return px
 }
