@@ -41,6 +41,10 @@ func ndecided(t *testing.T, pxa []*Paxos, seq int) int {
 
 			if decided == Decided {
 				if count > 0 && v != v1 {
+
+                    fmt.Println("Count:", count);
+                    fmt.Println(pxa[i]);
+
 					t.Fatalf("decided values do not match; seq=%v i=%v v=%v v1=%v",
 						seq, i, v, v1)
 				}
@@ -167,17 +171,11 @@ func TestBasic(t *testing.T) {
 
     fmt.Println("\n\nnpaxos have agreed on sequence 7\n\n")
 
-    fmt.Println("Started 4, 3")
-
 	pxa[0].Start(4, 400)
 	pxa[1].Start(3, 300)
 
-    fmt.Println("Waiting on 6...")
     // npaxos = 3; I am waiting for 3 paxos to have agreed on 6??
 	waitn(t, pxa, 6, npaxos)
-
-    fmt.Println("Waiting on 5...")
-
 	waitn(t, pxa, 5, npaxos)
 	waitn(t, pxa, 4, npaxos)
 	waitn(t, pxa, 3, npaxos)
@@ -215,7 +213,7 @@ func TestDeaf(t *testing.T) {
 	os.Remove(pxh[0])
 	os.Remove(pxh[npaxos-1])
 
-    fmt.Println("\nWe have removed removed first and last peers\n")
+    // fmt.Println("\nHOLLA \tWe have removed first and last peer!\n")
 
     // second proposal
 	pxa[1].Start(1, "goodbye")
