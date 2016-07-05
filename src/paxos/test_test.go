@@ -37,8 +37,6 @@ func ndecided(t *testing.T, pxa []*Paxos, seq int) int {
 	var v interface{}
 	for i := 0; i < len(pxa); i++ {
 		if pxa[i] != nil {
-            // fmt.Println(i)
-            // fmt.Println(seq)
 			decided, v1 := pxa[i].Status(seq)
 
 			if decided == Decided {
@@ -54,9 +52,6 @@ func ndecided(t *testing.T, pxa []*Paxos, seq int) int {
 	return count
 }
 
-//
-// @eburdon - What this does:
-//
 func waitn(t *testing.T, pxa []*Paxos, seq int, wanted int) {
 	to := 10 * time.Millisecond
 	for iters := 0; iters < 30; iters++ {
@@ -170,11 +165,15 @@ func TestBasic(t *testing.T) {
 
 	waitn(t, pxa, 7, npaxos)
 
-	pxa[0].Start(4, 400)
-	pxa[1].Start(3, 300)
+    fmt.Println("\n\nnpaxos have agreed on sequence 7\n\n")
 
     fmt.Println("Started 4, 3")
 
+	pxa[0].Start(4, 400)
+	pxa[1].Start(3, 300)
+
+    fmt.Println("Waiting on 6...")
+    // npaxos = 3; I am waiting for 3 paxos to have agreed on 6??
 	waitn(t, pxa, 6, npaxos)
 
     fmt.Println("Waiting on 5...")
@@ -209,6 +208,8 @@ func TestDeaf(t *testing.T) {
 
     // first proposal
 	pxa[0].Start(0, "hello")
+
+    // wait for consensus on this
 	waitn(t, pxa, 0, npaxos)
 
 	os.Remove(pxh[0])
@@ -218,6 +219,8 @@ func TestDeaf(t *testing.T) {
 
     // second proposal
 	pxa[1].Start(1, "goodbye")
+
+    // waits to hear from majority about sequence 1
 	waitmajority(t, pxa, 1)
 	time.Sleep(1 * time.Second)
 

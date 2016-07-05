@@ -59,7 +59,7 @@ type Paxos struct {
 
 	// track the proposals I have received
 	recProposals map[int]Proposal
-    minValue int // the incoming value must be at least this big
+    minValue int // the incoming value must be at least this big // todo: delete?
 }
 
 type Proposal struct {
@@ -128,9 +128,7 @@ func call(srv string, name string, args interface{}, reply interface{}) bool {
 func (px *Paxos) Decide(args *Proposal, reply *AcceptanceReply) error {
 
 	proposal := px.recProposals[args.Seq]
-
 	proposal.Fate = args.Fate
-
 	px.recProposals[args.Seq] = proposal
 
 	// TODO: error handling?!
@@ -161,10 +159,34 @@ func (px *Paxos) AcceptPromise(args *Proposal, reply *InterrogationReply) error 
         px.recProposals[args.Seq] = *args
     } else {
         reply.Error = "sequence value is too small / out of date. Rejected!"
-        // fmt.Println("Sequence value was too small! Rejecting!")
     }
 
     return nil
+}
+
+func (px *Paxos) doesKeyExist (seq int) bool {
+    exists := false
+
+    for p, _ := range px.recProposals {
+        if seq == p {
+            exists = true
+            break
+        }
+    }
+
+    return exists
+}
+
+//
+// Similar to decide; I add the current sequence to my list, and
+// give a pending fate
+//
+func (px *Paxos) Update(seq int) {
+    if px.doesKeyExist(seq) == false {
+        proposal := px.recProposals[seq]
+        proposal.Fate = Pending
+        px.recProposals[seq] = proposal
+    }
 }
 
 func calculateMajority(peerCount int) int {
@@ -187,16 +209,16 @@ func (px *Paxos) Start(seq int, v interface{}) {
 	prop.Fate = Pending
     prop.Majority = calculateMajority(len(px.peers))
 
-    fmt.Println("\tMajority needed is:", prop.Majority)
+    // fmt.Println("\tMajority needed is:", prop.Majority)
 
     // latest agreed upon sequence and value of acceptor
 	var my_reply InterrogationReply
 
 	for i := 0; i < len(px.peers); i++ {
 
-		fmt.Println("\tCalling ... ", px.peers[i])
-        fmt.Println("\tSequence...", seq)
-        fmt.Println("\tValue...", v)
+		// fmt.Println("\tCalling ... ", px.peers[i])
+        // fmt.Println("\tSequence...", seq)
+        // fmt.Println("\tValue...", v)
 
 		if ok := call(px.peers[i], "Paxos.AcceptPromise", prop, &my_reply); !ok {
 
@@ -208,14 +230,16 @@ func (px *Paxos) Start(seq int, v interface{}) {
 
             // recalculate majority
             prop.Majority = calculateMajority(len(px.peers))
-            fmt.Println("\tNew majority needed is:", prop.Majority)
+            // fmt.Println("\tNew majority needed is:", prop.Majority)
 
 		} else if my_reply.Error != "" {
             // reach this stage if, e.g., my sequence number is out of date (old)
-            // TODO: Do I need to update my sequence number?
-            
-            // TODO: use error codes instead?!
-            fmt.Println(my_reply.Error)
+            // the latest information is in my_reply. This proposal will not be saved.
+            // MERMAID
+            fmt.Println(seq, my_reply)
+
+            // instead, update with latest values
+            px.Update(seq)
 
         } else {
 			// increment the number of servers that have agreed to accept
@@ -239,7 +263,6 @@ func (px *Paxos) Start(seq int, v interface{}) {
 
 		for i := 0; i < len(px.peers); i++ {
 			if ok := call(px.peers[i], "Paxos.Decide", prop, &my_reply); !ok {
-				// TODO: What error handling do we need?
 				fmt.Println("\nFAIL DECIDE\n")
             } else {
 				// TODO: increase done count?
@@ -248,9 +271,6 @@ func (px *Paxos) Start(seq int, v interface{}) {
 			}
 		}
 	}
-
-	// wait for final confirmation; done
-
 }
 
 //
@@ -331,47 +351,30 @@ func (px *Paxos) Min() int {
 
 //
 // the application wants to know whether this
-// peer thinks an instance has been decided,
+// peer thinks an instance has been decided,        [any instance??]
 // and if so what the agreed value is. Status()
 // should just inspect the local peer state;
 // it should not contact other Paxos peers.
 //
 func (px *Paxos) Status(seq int) (Fate, interface{}) {
 
-    // fmt.Println("Status")
-    // fmt.Println(px.recProposals)
-    // fmt.Println("\n\n")
+    // fmt.Println("Status\n\n")
 
-    exists := false
+    max := px.Max()
 
-    for p, _ := range px.recProposals {
-        if seq == p {
-            exists = true
-            break
-        }
+    if px.doesKeyExist(seq) == false {
+        fmt.Println("THE PASSED IN VALUE DOES NOT EXIST:", seq)
+
+        // What do I want to happen when I don't have a proposal record?
+        // I want to return the value of the instance I *have* agreed on, if exists
+        // [e.g., I want to reveal if I have reached a consensus at all]
+        var v interface{} = px.recProposals[max].Value
+        return px.recProposals[max].Fate, v
     }
 
-     max := px.Max()
-
-    if exists == false {
-        fmt.Println("THE PASSED IN VALUE DOES NOT EXIST")
-
-        var highest int
-
-        for k, v := range px.recProposals {
-            if v.Fate == Decided {
-                highest = k
-            }
-        }
-
-        // the passed in sequence does not exist
-        // I want to reveal if I think we have reached consensus on another
-        // TODO: evaluate all: see which one is highest?
-        // right now -- return value of max
-        return px.recProposals[highest].Fate, nil
-    }
-
+    // max := px.Max()
     instance := seq
+
     if max > seq {
         // the passed in sequence is out of date
         fmt.Println("The passed in sequence of out of date. Actual: ", max)
@@ -383,7 +386,8 @@ func (px *Paxos) Status(seq int) (Fate, interface{}) {
         instance = max
     }
 
-    return px.recProposals[instance].Fate, nil
+    var v interface{} = px.recProposals[instance].Value
+    return px.recProposals[instance].Fate, v
 }
 
 //
