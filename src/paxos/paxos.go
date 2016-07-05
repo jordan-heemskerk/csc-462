@@ -229,21 +229,23 @@ func (px *Paxos) Start(seq int, v interface{}) {
 	prop := &Proposal{}
 	prop.Seq = seq
 	prop.Value = v
+    prop.Majority = calculateMajority(len(px.peers))
 	// prop.Fate = Pending
-    prop.Majority = calculateMajority(len(px.peers)) // for propose_ok
 
-    fmt.Println("We need a majority on: ", prop.Majority)
+    // fmt.Println("We need a majority on: ", prop.Majority)
 
     /* SEND PROPOSAL */
-    // send proposal to all peers, including myself [me first] - TODO
+    // send proposal to all peers, including myself (I'm in the peers list)
 
     var peer_reply InterrogationReply
 
     pok_count := 0
 
+    // TODO: I need to form my own sequence number? From ID and name??
+
 	for i := 0; i < len(px.peers); i++ {
 
-		// fmt.Println("\tCalling ... ", px.peers[i])
+		// fmt.Println("Calling ... ", px.peers[i])
         // fmt.Println("\tSequence...", seq)
         // fmt.Println("\tValue...", v)
 
@@ -390,7 +392,7 @@ func (px *Paxos) Max() int {
 // missed -- the other peers therefor cannot forget these
 // instances.
 //
-// TODO: keep track of a server's DONE sequence value!
+// TODO: keep track of a server's DONE sequence value??
 // TODO: Keep track of which ones have 'heard' the min?
 //
 func (px *Paxos) Min() int {
@@ -400,44 +402,23 @@ func (px *Paxos) Min() int {
 
 //
 // the application wants to know whether this
-// peer thinks an instance has been decided,        [any instance??]
+// peer thinks an instance has been decided,
 // and if so what the agreed value is. Status()
 // should just inspect the local peer state;
 // it should not contact other Paxos peers.
 //
 func (px *Paxos) Status(seq int) (Fate, interface{}) {
+    // fmt.Println("Status")
 
-    fmt.Println("Status")
-    fmt.Println(px.me)
-
-    max := px.Max()
-
-    if px.doesKeyExist(seq) == false {
-        fmt.Println("THE PASSED IN VALUE DOES NOT EXIST:", seq)
-
-        // What do I want to happen when I don't have a proposal record?
-        // I want to return the value of the instance I *have* agreed on, if exists
-        // [e.g., I want to reveal if I have reached a consensus at all]
-        var v interface{} = px.recProposals[max].Value
-        return px.recProposals[max].Fate, v
+    if px.Seq_a == 0 && px.Value_a == nil {
+        // fmt.Println("I have no highest value. I have never agreed to anything.")
+        return Pending, nil
     }
 
-    // max := px.Max()
-    instance := seq
-
-    if max > seq {
-        // the passed in sequence is out of date
-        fmt.Println("The passed in sequence of out of date. Actual: ", max)
-        instance = max
-    }
-
-    // this current checks the most recently passed in value
-    if px.recProposals[max].Fate == Decided {
-        instance = max
-    }
-
-    var v interface{} = px.recProposals[instance].Value
-    return px.recProposals[instance].Fate, v
+    // if application wants to know if I have decided on something, I should
+    // return the highest sequence number, Fate, and Value I have decided on.
+    var v interface{} = px.Value_a
+    return px.recProposals[px.Seq_a].Fate, v
 }
 
 //

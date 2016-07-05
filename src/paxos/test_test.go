@@ -41,10 +41,6 @@ func ndecided(t *testing.T, pxa []*Paxos, seq int) int {
 
 			if decided == Decided {
 				if count > 0 && v != v1 {
-
-                    fmt.Println("Count:", count);
-                    fmt.Println(pxa[i]);
-
 					t.Fatalf("decided values do not match; seq=%v i=%v v=%v v1=%v",
 						seq, i, v, v1)
 				}
@@ -205,6 +201,7 @@ func TestDeaf(t *testing.T) {
 	fmt.Printf("Test: Deaf proposer ...\n")
 
     // first proposal
+    // this proposal sends it, but then dies!
 	pxa[0].Start(0, "hello")
 
     // wait for consensus on this
@@ -212,8 +209,6 @@ func TestDeaf(t *testing.T) {
 
 	os.Remove(pxh[0])
 	os.Remove(pxh[npaxos-1])
-
-    // fmt.Println("\nHOLLA \tWe have removed first and last peer!\n")
 
     // second proposal
 	pxa[1].Start(1, "goodbye")
