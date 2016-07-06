@@ -35,16 +35,32 @@ func port(tag string, host int) string {
 func ndecided(t *testing.T, pxa []*Paxos, seq int) int {
 	count := 0
 	var v interface{}
+
 	for i := 0; i < len(pxa); i++ {
+
 		if pxa[i] != nil {
+			fmt.Println("\n\n\nAbout to call status on: ", i)
+			fmt.Println("Calling ndecided on:", seq)
 			decided, v1 := pxa[i].Status(seq)
 
+			// 1 == Decided
+			fmt.Println("Holla")
+			fmt.Println(decided, Decided)
+
 			if decided == Decided {
+
+				fmt.Println("I have DECIDED on: ", v1, seq)
+
 				if count > 0 && v != v1 {
 					t.Fatalf("decided values do not match; seq=%v i=%v v=%v v1=%v",
 						seq, i, v, v1)
+
 				}
+
 				count++
+
+				fmt.Println("Updating V from ", v, " to ", v1)
+
 				v = v1
 			}
 		}
@@ -175,8 +191,6 @@ func TestBasic(t *testing.T) {
 	waitn(t, pxa, 4, npaxos)
 	waitn(t, pxa, 3, npaxos)
 
-    fmt.Println("Holla")
-
 	if pxa[0].Max() != 7 {
 		t.Fatalf("wrong Max(): %d", pxa[0].Max())
 	}
@@ -205,18 +219,29 @@ func TestDeaf(t *testing.T) {
 	// this proposal sends it, but then dies!
 	pxa[0].Start(0, "hello")
 
+	fmt.Println("\t\t\t\t CHECK 1")
+
 	// wait for consensus on this
 	waitn(t, pxa, 0, npaxos)
+
+	// we have now decided on 0, hello
 
 	os.Remove(pxh[0])
 	os.Remove(pxh[npaxos-1])
 
-	// second proposal
+	// second proposal; should succeed, but the two old ones should have
+	// sequence 0
 	pxa[1].Start(1, "goodbye")
+
+	fmt.Println("\t\t\t\t CHECK 2")
 
 	// waits to hear from majority about sequence 1
 	waitmajority(t, pxa, 1)
 	time.Sleep(1 * time.Second)
+
+	// we have decided on 1, goobye
+
+	fmt.Println("\t\t\t\tFINAL CHECKING")
 
 	if ndecided(t, pxa, 1) != npaxos-2 {
 		// e.g., two peers died. Thus, we should have 3 peers have have ndecided
@@ -227,7 +252,7 @@ func TestDeaf(t *testing.T) {
 
 	// third proposal
 	pxa[0].Start(1, "xxx")
-	waitn(t, pxa, 1, npaxos-1) // @eburdon HANGS HERE
+	waitn(t, pxa, 1, npaxos-1)
 	time.Sleep(1 * time.Second)
 	if ndecided(t, pxa, 1) != npaxos-1 {
 		t.Fatalf("a deaf peer heard about a decision")

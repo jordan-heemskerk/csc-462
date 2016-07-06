@@ -67,10 +67,10 @@ type Paxos struct {
 }
 
 type Proposal struct {
-	Seq      int
-	Value    interface{}
-	Fate     Fate
-	Majority int // number that must be matched or beaten to be accepted
+	Seq   int
+	Value interface{}
+	Fate  Fate
+	// Majority int // number that must be matched or beaten to be accepted
 }
 
 // the propose stage is also an interrogation stage
@@ -94,16 +94,16 @@ type DecideReply struct {
 ////////
 
 func (px *Paxos) doesKeyExist(seq int) bool {
-    exists := false
+	exists := false
 
-    for p, _ := range px.recProposals {
-        if seq == p {
-            exists = true
-            break
-        }
-    }
+	for p, _ := range px.recProposals {
+		if seq == p {
+			exists = true
+			break
+		}
+	}
 
-    return exists
+	return exists
 }
 
 //
@@ -111,22 +111,22 @@ func (px *Paxos) doesKeyExist(seq int) bool {
 // give a pending fate
 //
 func (px *Paxos) Update(seq int) {
-    if px.doesKeyExist(seq) == false {
-        proposal := px.recProposals[seq]
-        proposal.Fate = Pending
-        px.recProposals[seq] = proposal
-    }
+	if px.doesKeyExist(seq) == false {
+		proposal := px.recProposals[seq]
+		proposal.Fate = Pending
+		px.recProposals[seq] = proposal
+	}
 }
 
 //
 // Calculates the greater (whole) half of number of peers required for mjrty
 //
 func calculateMajority(peerCount int) int {
-    temp := float64(peerCount) / 2.0
-    value := int(math.Ceil(temp))
-    // fmt.Println("We need a majority on: ", value)
+	temp := float64(peerCount) / 2.0
+	value := int(math.Ceil(temp))
+	// fmt.Println("We need a majority on: ", value)
 
-    return value
+	return value
 }
 
 //
@@ -174,6 +174,9 @@ func call(srv string, name string, args interface{}, reply interface{}) bool {
 // No response! The passed in value is FINAL
 //
 func (px *Paxos) Decide(args *Proposal, reply *DecideReply) error {
+	px.mu.Lock()
+	defer px.mu.Unlock()
+
 	// update item in my received proposals
 	proposal := px.recProposals[args.Seq]
 	proposal.Fate = Decided
@@ -188,25 +191,26 @@ func (px *Paxos) Decide(args *Proposal, reply *DecideReply) error {
 //
 func (px *Paxos) HandleDecide(seq int, N int, v interface{}) {
 
-    prop := &Proposal{}
-    prop.Seq = seq
-    prop.Value = v
-    prop.Majority = calculateMajority(len(px.peers))
+	prop := &Proposal{}
+	prop.Seq = seq
+	prop.Value = v
 
-    for me, peer := range px.peers {
-        var decide_reply DecideReply
+	for me, peer := range px.peers {
+		var decide_reply DecideReply
 
-        if me == px.me {
-            px.Decide(prop, &decide_reply)
-        } else {
-            if ok := call(peer, "Paxos.Decide", prop, &decide_reply); !ok {
-                // call failed!
-                fmt.Println("DECIDE RPC FAILED")
-            } else {
-                // success; we should be all done
-            }
-        }
-    }
+		if me == px.me {
+			px.Decide(prop, &decide_reply)
+			fmt.Println("Decided: ", peer)
+		} else {
+			if ok := call(peer, "Paxos.Decide", prop, &decide_reply); !ok {
+				// call failed!
+				fmt.Println("Decided call failed: ", peer)
+			} else {
+				// success; we should be all done
+				fmt.Println("Decided: ", peer)
+			}
+		}
+	}
 }
 
 //
@@ -239,38 +243,54 @@ func (px *Paxos) Accept(args *Proposal, reply *AcceptanceReply) error {
 //
 func (px *Paxos) HandleAccept(seq int, N int, V interface{}) bool {
 
-    // create proposal: don't use one from previous, as SEQ or VALUE could
-    // have changed
-    prop := &Proposal{}
-    prop.Seq = seq
-    prop.Value = V
-    prop.Majority = calculateMajority(len(px.peers))
+	// create proposal: don't use one from previous, as SEQ or VALUE could
+	// have changed
+	prop := &Proposal{}
+	prop.Seq = seq
+	prop.Value = V
 
-    ok_count := 0
+	Majority := calculateMajority(len(px.peers))
 
-    for me, peer := range px.peers {
+	fmt.Println("Accept on: ", seq)
 
-        var accept_reply AcceptanceReply
+	ok_count := 0
 
-        if me == px.me {
-            px.Accept(prop, &accept_reply)
-        } else {
-            if ok := call(peer, "Paxos.Accept", prop, &accept_reply); !ok {
-                // call failed!
-                fmt.Println("ACCEPT RPC FAILED")
+	for me, peer := range px.peers {
 
-            } else if accept_reply.Error != "" {
-                // accept_reject
-                fmt.Println("WE HAVE AN ACCEPT REJECT")
+		var accept_reply AcceptanceReply
 
-            } else {
-                // accept_ok success
-                ok_count++
-            }
-        }
-    }
+		if me == px.me {
+			response := px.Accept(prop, &accept_reply)
 
-    return ok_count >= prop.Majority
+			if response == nil {
+				// all is good
+				ok_count++
+				fmt.Println("Accepted: ", peer)
+			}
+		} else {
+			if ok := call(peer, "Paxos.Accept", prop, &accept_reply); !ok {
+				// call failed!
+				fmt.Println("Accept failed: ", peer)
+
+			} else if accept_reply.Error != "" {
+				// accept_reject
+				fmt.Println("Accept rejected: ", peer)
+
+			} else {
+				// accept_ok success
+				ok_count++
+				fmt.Println("Accepted: ", peer)
+			}
+		}
+	}
+
+	ok := ok_count >= Majority
+
+	if ok {
+		fmt.Println("We have acheived ACCEPT majority!")
+	}
+
+	return ok
 }
 
 //
@@ -302,93 +322,98 @@ func (px *Paxos) Propose(args *Proposal, reply *InterrogationReply) error {
 // Send proposal to all peers, including myself
 // Return either: this sequence ready to be accepted, or the seq in consensus
 // Returns propose_ok or propose_reject
-// 
-func (px *Paxos) HandlePropose(seq int, v interface{}) (bool, int, interface{}){
-    // TODO: Create unique sequence number
-    ok_count := 0
-    replySeq := seq 
-    replyValue := v
+//
+func (px *Paxos) HandlePropose(seq int, v interface{}) (bool, int, interface{}) {
+	// TODO: Create unique sequence number
+	ok_count := 0
+	replySeq := seq
+	replyValue := v
 
-    // create proposal
-    prop := &Proposal{}
-    prop.Seq = seq
-    prop.Value = v
-    prop.Majority = calculateMajority(len(px.peers))
+	// create proposal
+	prop := &Proposal{}
+	prop.Seq = seq
+	prop.Value = v
 
-    for me, peer := range px.peers {
-        var peer_reply InterrogationReply
+	Majority := calculateMajority(len(px.peers))
 
-        if me == px.me {
-            response := px.Propose(prop, &peer_reply)
-            if response == nil {
-                // all is good
-                ok_count++
-            } else {
-                fmt.Println("Something went wrong with myself!")
-            }
-        } else {
-            if ok := call(peer, "Paxos.Propose", prop, &peer_reply); !ok {
-                // call crashed
-                fmt.Println("Call Failed!")
-            } else if peer_reply.Error != "" {
-                // something went wrong
-                fmt.Println("Something went wrong!")
-            } else {
-                // all is good
-                ok_count++
+	fmt.Println("Proposal on: ", seq)
 
-                // if the peers accepted a value already, update my proposal
-                // if peer_reply.Seq > replySeq {
-                //     replySeq = peer_reply.Seq
-                //     replyValue = peer_reply.Value
-                // }
-            }
-        }
-    }
+	for me, peer := range px.peers {
+		var peer_reply InterrogationReply
 
-    ok := ok_count > prop.Majority
+		if me == px.me {
+			response := px.Propose(prop, &peer_reply)
+			if response == nil {
+				// all is good
+				ok_count++
+				fmt.Println("Holla! All is good", peer)
+			} else {
+				fmt.Println("Something went wrong with myself!")
+			}
+		} else {
+			if ok := call(peer, "Paxos.Propose", prop, &peer_reply); !ok {
+				// call crashed; as long as a majority does not fail,
+				// we should still be able to pass this sequence
+				fmt.Println("Call Failed! ", peer)
+			} else if peer_reply.Error != "" {
+				// something went wrong
+				// e.g., sequence value of out of date -- REJECT
+				fmt.Println("My sequence is out of date", peer)
+			} else {
+				// all is good
+				ok_count++
+				fmt.Println("Holla! All is good", peer)
+			}
+		}
+	}
 
-    return ok, replySeq, replyValue
+	ok := ok_count >= Majority
+
+	if ok {
+		fmt.Println("We have acheived majority!")
+	}
+
+	return ok, replySeq, replyValue
 }
 
 //
 // Proposer function
-// "Each instance should have it's own instance of the PAXOS protocol" 
+// "Each instance should have it's own instance of the PAXOS protocol"
 // i.e., implemented as a goroutine from Start()
 // Each server has its own acceptance handling; PSEUDO CODE HERE!
 //
 func (px *Paxos) StartProtocol(seq int, v interface{}) {
-    for {
-        propose_ok := false
-        accept_ok := false
+	for {
+		propose_ok := false
+		accept_ok := false
 
-        // initial proposal / interrogation
-        // the returned seq NUM or VALUE could be either 
-        // same as what I sent, or the currently agreed on value
-        // (if in intermediate state)
-        propose_ok, N, V := px.HandlePropose(seq, v)
+		// initial proposal / interrogation
+		// the returned seq NUM or VALUE could be either
+		// same as what I sent, or the currently agreed on value
+		// (if in intermediate state)
+		propose_ok, N, V := px.HandlePropose(seq, v)
 
-        if propose_ok {
-            accept_ok = px.HandleAccept(seq, N, V)
-        } else {
-            // propose_reject: what do?
-            // px.Update(seq)
-        }
+		if propose_ok {
+			accept_ok = px.HandleAccept(seq, N, V)
+		} else {
+			// propose_reject: what do?
+			// px.Update(seq)
+		}
 
-        if accept_ok {
-            // no response : this action is FINAL
-            px.HandleDecide(seq, N, V)
-            // break;
-        } else {
-            // accept_reject: what do
-        }
+		if accept_ok {
+			// no response : this action is FINAL
+			px.HandleDecide(seq, N, V)
+			// break;
+		} else {
+			// accept_reject: what do
+		}
 
-        // break once this seqence has been agreed on
-        state, _ := px.Status(seq)
-        if state == Decided {
-            break
-        }
-    }
+		// break once this seqence has been agreed on
+		state, _ := px.Status(seq)
+		if state == Decided {
+			break
+		}
+	}
 }
 
 //
@@ -399,10 +424,10 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 // is reached; starts concurrent PAXOS protocol
 //
 func (px *Paxos) Start(seq int, v interface{}) {
-    go px.StartProtocol(seq, v)
+	go px.StartProtocol(seq, v)
 
-    // the tests go quickly; allow concurrency calls to run
-    time.Sleep(10 * time.Millisecond)
+	// the tests go quickly; allow concurrency calls to run
+	time.Sleep(10 * time.Millisecond)
 }
 
 //
@@ -435,7 +460,7 @@ func (px *Paxos) Done(seq int) {
 // this peer.
 //
 func (px *Paxos) Max() int {
-    max := 0
+	max := 0
 
 	for k, _ := range px.recProposals {
 		if k > max {
@@ -490,16 +515,28 @@ func (px *Paxos) Min() int {
 // it should not contact other Paxos peers.
 //
 func (px *Paxos) Status(seq int) (Fate, interface{}) {
-	// fmt.Println("Status of", seq, "on: ", px.Seq_a, px.Value_a)
+	// reading lock
+	px.mu.Lock()
+	defer px.mu.Unlock()
+
+	fmt.Println("\nPeer: ", px.peers[px.me])
+	fmt.Println("Status of", seq, "on: ", px.Seq_a, px.Value_a, px.recProposals[px.Seq_a].Fate)
 
 	if px.Seq_a == 0 && px.Value_a == nil {
+		fmt.Println("I HAVE ENTERED HERE")
 		// fmt.Println("I have no highest value. I have never agreed to anything.")
 		return Pending, nil
 	}
 
+	// _, exists := px.recProposals[seq]
+	// if !exists {
+	// return Pending, nil
+	// }
+
 	// if application wants to know if I have decided on something, I should
 	// return the highest sequence number, Fate, and Value I have decided on.
 	var v interface{} = px.Value_a
+
 	return px.recProposals[px.Seq_a].Fate, v
 }
 
