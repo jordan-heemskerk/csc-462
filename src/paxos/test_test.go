@@ -58,7 +58,7 @@ func waitn(t *testing.T, pxa []*Paxos, seq int, wanted int) {
 		if ndecided(t, pxa, seq) >= wanted {
 			break
 		}
-        // fmt.Println("Sleeping in waitn...")
+		// fmt.Println("Sleeping in waitn...")
 		time.Sleep(to)
 		if to < time.Second {
 			to *= 2
@@ -164,17 +164,18 @@ func TestBasic(t *testing.T) {
 	pxa[1].Start(5, 500)
 
 	waitn(t, pxa, 7, npaxos)
-
-    fmt.Println("\n\nnpaxos have agreed on sequence 7\n\n")
+	// npaxos have agreed on sequence 7
 
 	pxa[0].Start(4, 400)
 	pxa[1].Start(3, 300)
 
-    // npaxos = 3; I am waiting for 3 paxos to have agreed on 6??
+	// npaxos = 3; I am waiting for 3 paxos to have agreed on 6??
 	waitn(t, pxa, 6, npaxos)
 	waitn(t, pxa, 5, npaxos)
 	waitn(t, pxa, 4, npaxos)
 	waitn(t, pxa, 3, npaxos)
+
+    fmt.Println("Holla")
 
 	if pxa[0].Max() != 7 {
 		t.Fatalf("wrong Max(): %d", pxa[0].Max())
@@ -200,31 +201,31 @@ func TestDeaf(t *testing.T) {
 
 	fmt.Printf("Test: Deaf proposer ...\n")
 
-    // first proposal
-    // this proposal sends it, but then dies!
+	// first proposal
+	// this proposal sends it, but then dies!
 	pxa[0].Start(0, "hello")
 
-    // wait for consensus on this
+	// wait for consensus on this
 	waitn(t, pxa, 0, npaxos)
 
 	os.Remove(pxh[0])
 	os.Remove(pxh[npaxos-1])
 
-    // second proposal
+	// second proposal
 	pxa[1].Start(1, "goodbye")
 
-    // waits to hear from majority about sequence 1
+	// waits to hear from majority about sequence 1
 	waitmajority(t, pxa, 1)
 	time.Sleep(1 * time.Second)
 
 	if ndecided(t, pxa, 1) != npaxos-2 {
-        // e.g., two peers died. Thus, we should have 3 peers have have ndecided
-        // to sequence 1, not 5.
-        fmt.Println(ndecided(t, pxa, 1), "VS", npaxos-2)
+		// e.g., two peers died. Thus, we should have 3 peers have have ndecided
+		// to sequence 1, not 5.
+		fmt.Println(ndecided(t, pxa, 1), "VS", npaxos-2)
 		t.Fatalf("a deaf peer heard about a decision")
 	}
 
-    // third proposal
+	// third proposal
 	pxa[0].Start(1, "xxx")
 	waitn(t, pxa, 1, npaxos-1) // @eburdon HANGS HERE
 	time.Sleep(1 * time.Second)
@@ -232,11 +233,11 @@ func TestDeaf(t *testing.T) {
 		t.Fatalf("a deaf peer heard about a decision")
 	}
 
-    // fourth proposal
+	// fourth proposal
 	pxa[npaxos-1].Start(1, "yyy")
 	waitn(t, pxa, 1, npaxos)
 
-    // no decision should have been made?
+	// no decision should have been made?
 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 }
 
