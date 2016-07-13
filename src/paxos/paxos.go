@@ -513,10 +513,23 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 // Start() returns IMMEDIATELY; the application will
 // call Status() to find out if/when agreement
 // is reached; starts concurrent PAXOS protocol
+// Caveat: If Start() is called with a sequence number
+// less than Min(), the Start() call should be ignored
 //
 func (px *Paxos) Start(seq int, v interface{}) {
 
-	go px.StartProtocol(seq, v)
+	go func() {
+		if seq < px.Min() {
+			// delete here??
+			fmt.Println("\t", seq, "\t Ignoring start request! ", px.me)
+			return
+		}
+
+		px.StartProtocol(seq, v)
+
+	}()
+
+	// go px.StartProtocol(seq, v)
 
 	// the tests go quickly; allow concurrency calls to run
 	time.Sleep(10 * time.Millisecond)
@@ -575,19 +588,7 @@ func (px *Paxos) Done(seq int) {
 		}
 
 		if ok := call(peer, "Paxos.PutDone", args, &reply); !ok {
-			//			fmt.Println("\n\n\n\n PUT DONE FAILED \n\n\n")
-		} else {
-			min := px.Min()
-
-			// DELETE OLD INSTANCES
-			px.mu.Lock()
-			for k, v := range px.recProposals {
-				if v.Seq < min {
-					delete(px.recProposals, k)
-					fmt.Println("Deleted entry at", k)
-				}
-			}
-			px.mu.Unlock()
+			// fmt.Println("\n\n\n\n PUT DONE FAILED \n\n\n")
 		}
 	}
 }
@@ -653,6 +654,19 @@ func (px *Paxos) Min() int {
 		}
 	}
 
+	for k, v := range px.recProposals {
+		if k > min {
+			continue
+		}
+
+		if v.Fate != Decided {
+			continue
+		}
+
+		delete(px.recProposals, k)
+		fmt.Println("Deleted entry at", k)
+	}
+
 	return min + 1
 }
 
@@ -662,8 +676,15 @@ func (px *Paxos) Min() int {
 // and if so what the agreed value is. Status(seq)
 // should just inspect the local peer state;
 // it should not contact other Paxos peers.
+// caveat: If Status() is called with a sequence
+// number less than Min(), Status()should return Forgotten.
 //
 func (px *Paxos) Status(seq int) (Fate, interface{}) {
+	if seq < px.Min() {
+		fmt.Println("\t", seq, "\t Status: returning forgotten!")
+		return Forgotten, nil
+	}
+
 	// reading lock
 	px.mu.Lock()
 	defer px.mu.Unlock()

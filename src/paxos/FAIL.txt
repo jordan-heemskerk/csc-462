@@ -1,0 +1,17 @@
+--- FAIL: TestDeaf (8.44s)
+	test_test.go:57: decided values do not match; seq=1 i=1 v=xxx v1=yyy
+
+--- FAIL: TestDoneMax (2.15s)
+	test_test.go:553: Max() did not return correct result 10 after calling Done(); returned 0
+
+--- FAIL: TestManyUnreliable (1.03s)
+	test_test.go:57: decided values do not match; seq=8 i=2 v=82 v1=81
+
+--- FAIL: TestPartition (11.59s)
+	test_test.go:57: decided values do not match; seq=1 i=2 v=10 v1=11
+
+--- FAIL: TestLots (25.03s)
+	test_test.go:57: decided values do not match; seq=2 i=1 v=9 v1=5
+	test_test.go:57: decided values do not match; seq=2 i=1 v=9 v1=5
+	test_test.go:57: decided values do not match; seq=2 i=1 v=9 v1=5
+

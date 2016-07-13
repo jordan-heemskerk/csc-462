@@ -199,77 +199,73 @@ func TestBasic(t *testing.T) {
 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 }
 
-//
-// TestDeaf is ICED until Yvonne tells us what to do
-//
+func TestDeaf(t *testing.T) {
+	runtime.GOMAXPROCS(4)
 
-// func TestDeaf(t *testing.T) {
-// 	runtime.GOMAXPROCS(4)
+	const npaxos = 5
+	var pxa []*Paxos = make([]*Paxos, npaxos)
+	var pxh []string = make([]string, npaxos)
+	defer cleanup(pxa)
 
-// 	const npaxos = 5
-// 	var pxa []*Paxos = make([]*Paxos, npaxos)
-// 	var pxh []string = make([]string, npaxos)
-// 	defer cleanup(pxa)
+	for i := 0; i < npaxos; i++ {
+		pxh[i] = port("deaf", i)
+	}
+	for i := 0; i < npaxos; i++ {
+		pxa[i] = Make(pxh, i, nil)
+	}
 
-// 	for i := 0; i < npaxos; i++ {
-// 		pxh[i] = port("deaf", i)
-// 	}
-// 	for i := 0; i < npaxos; i++ {
-// 		pxa[i] = Make(pxh, i, nil)
-// 	}
+	fmt.Printf("Test: Deaf proposer ...\n")
 
-// 	fmt.Printf("Test: Deaf proposer ...\n")
+	// first proposal
+	// this proposal sends it, but then dies!
+	pxa[0].Start(0, "hello")
 
-// 	// first proposal
-// 	// this proposal sends it, but then dies!
-// 	pxa[0].Start(0, "hello")
+	fmt.Println("\t\t\t\t CHECK 1")
 
-// 	fmt.Println("\t\t\t\t CHECK 1")
+	// wait for consensus on this
+	waitn(t, pxa, 0, npaxos)
 
-// 	// wait for consensus on this
-// 	waitn(t, pxa, 0, npaxos)
+	// we have now decided on 0, hello
 
-// 	// we have now decided on 0, hello
+	os.Remove(pxh[0])
+	os.Remove(pxh[npaxos-1])
 
-// 	os.Remove(pxh[0])
-// 	os.Remove(pxh[npaxos-1])
+	// second proposal; should succeed, but the two old ones should have
+	// sequence 0
+	pxa[1].Start(1, "goodbye")
 
-// 	// second proposal; should succeed, but the two old ones should have
-// 	// sequence 0
-// 	pxa[1].Start(1, "goodbye")
+	fmt.Println("\t\t\t\t CHECK 2")
 
-// 	fmt.Println("\t\t\t\t CHECK 2")
+	// waits to hear from majority about sequence 1
+	waitmajority(t, pxa, 1)
+	time.Sleep(1 * time.Second)
 
-// 	// waits to hear from majority about sequence 1
-// 	waitmajority(t, pxa, 1)
-// 	time.Sleep(1 * time.Second)
+	// we have decided on 1, goobye
 
-// 	// we have decided on 1, goobye
+	fmt.Println("\t\t\t\tFINAL CHECKING")
 
-// 	fmt.Println("\t\t\t\tFINAL CHECKING")
+	if ndecided(t, pxa, 1) != npaxos-2 {
+		// e.g., two peers died. Thus, we should have 3 peers have have ndecided
+		// to sequence 1, not 5.
+		fmt.Println(ndecided(t, pxa, 1), "VS", npaxos-2)
+		t.Fatalf("a deaf peer heard about a decision")
+	}
 
-// 	if ndecided(t, pxa, 1) != npaxos-2 {
-// 		// e.g., two peers died. Thus, we should have 3 peers have have ndecided
-// 		// to sequence 1, not 5.
-// 		fmt.Println(ndecided(t, pxa, 1), "VS", npaxos-2)
-// 		t.Fatalf("a deaf peer heard about a decision")
-// 	}
+	// third proposal
+	pxa[0].Start(1, "xxx")
+	waitn(t, pxa, 1, npaxos-1)
+	time.Sleep(1 * time.Second)
+	if ndecided(t, pxa, 1) != npaxos-1 {
+		t.Fatalf("a deaf peer heard about a decision")
+	}
 
-// 	// third proposal
-// 	pxa[0].Start(1, "xxx")
-// 	waitn(t, pxa, 1, npaxos-1)
-// 	time.Sleep(1 * time.Second)
-// 	if ndecided(t, pxa, 1) != npaxos-1 {
-// 		t.Fatalf("a deaf peer heard about a decision")
-// 	}
+	// fourth proposal
+	pxa[npaxos-1].Start(1, "yyy")
+	waitn(t, pxa, 1, npaxos)
 
-// 	// fourth proposal
-// 	pxa[npaxos-1].Start(1, "yyy")
-// 	waitn(t, pxa, 1, npaxos)
-
-// 	// no decision should have been made?
-// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
-// }
+	// no decision should have been made?
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+}
 
 func TestForget(t *testing.T) {
 	runtime.GOMAXPROCS(4)
@@ -841,7 +837,7 @@ func TestPartition(t *testing.T) {
 	pxa[1].Start(seq, 111)
 	checkmax(t, pxa, seq, 0)
 
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 
 	fmt.Printf("Test: Decision in majority partition ...\n")
 
@@ -849,7 +845,7 @@ func TestPartition(t *testing.T) {
 	time.Sleep(2 * time.Second)
 	waitmajority(t, pxa, seq)
 
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 
 	fmt.Printf("Test: All agree after full heal ...\n")
 
