@@ -40,7 +40,7 @@ import "time"
 type Fate int
 
 const (
-	Decided   Fate = iota + 5 // 1
+	Decided   Fate = iota + 1 // 1
 	Pending                   // 2 not yet decided
 	Forgotten                 // 3 decided but forgotten
 )
