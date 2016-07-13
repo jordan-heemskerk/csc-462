@@ -31,6 +31,7 @@ func port(tag string, host int) string {
 
 //
 // This wants to make sure something has been decided
+// TODO: This is the fail point!
 //
 func ndecided(t *testing.T, pxa []*Paxos, seq int) int {
 	count := 0
@@ -39,28 +40,19 @@ func ndecided(t *testing.T, pxa []*Paxos, seq int) int {
 	for i := 0; i < len(pxa); i++ {
 
 		if pxa[i] != nil {
-			// fmt.Println("\n\n\nAbout to call status on: ", i)
-			// fmt.Println("Calling ndecided on:", seq)
 			decided, v1 := pxa[i].Status(seq)
-
-			// 1 == Decided
-			// fmt.Println("Holla")
-			// fmt.Println(decided, Decided)
 
 			if decided == Decided {
 
-				// hello should be zero??
-				// fmt.Println("I have DECIDED on: ", v1, seq)
-
 				if count > 0 && v != v1 {
+					// v1 is what we just retrieved
+					// v was saved previously
 					t.Fatalf("decided values do not match; seq=%v i=%v v=%v v1=%v",
 						seq, i, v, v1)
 
 				}
 
 				count++
-
-				// fmt.Println("Updating V from ", v, " to ", v1)
 
 				v = v1
 			}
