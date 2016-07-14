@@ -1,14 +1,8 @@
---- FAIL: TestDeaf (8.44s)
-	test_test.go:57: decided values do not match; seq=1 i=1 v=xxx v1=yyy
 
---- FAIL: TestManyUnreliable (1.03s)
-	test_test.go:57: decided values do not match; seq=8 i=2 v=82 v1=81
+--- FAIL: TestLots (55.91s)
+	test_test.go:78: too few decided; seq=13 ndecided=2 wanted=3
 
---- FAIL: TestPartition (11.59s)
-	test_test.go:57: decided values do not match; seq=1 i=2 v=10 v1=11
+--- FAIL: TestPartition (55.99s)
+	test_test.go:78: too few decided; seq=24 ndecided=3 wanted=5
 
---- FAIL: TestLots (25.03s)
-	test_test.go:57: decided values do not match; seq=2 i=1 v=9 v1=5
-	test_test.go:57: decided values do not match; seq=2 i=1 v=9 v1=5
-	test_test.go:57: decided values do not match; seq=2 i=1 v=9 v1=5
-
+FAIL	paxos	169.687s
