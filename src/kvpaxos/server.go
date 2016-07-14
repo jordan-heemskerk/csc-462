@@ -27,6 +27,9 @@ type Op struct {
 	// Your definitions here.
 	// Field names must start with capital letters,
 	// otherwise RPC will break.
+	Cmd string
+	Key string
+	Value string
 }
 
 type KVPaxos struct {
@@ -43,11 +46,21 @@ type KVPaxos struct {
 
 func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
 	// Your code here.
+
+	// TODO (later) Dont manage each vote individually
+
 	return nil
 }
 
 func (kv *KVPaxos) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error {
 	// Your code here.
+
+	// RPC'd from client
+
+	// build interface
+	// RPC paxos server
+	// wait for decision (periodically call Status())
+	// return
 
 	return nil
 }
