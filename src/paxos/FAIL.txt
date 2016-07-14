@@ -1,8 +1,0 @@
-
---- FAIL: TestLots (55.91s)
-	test_test.go:78: too few decided; seq=13 ndecided=2 wanted=3
-
---- FAIL: TestPartition (55.99s)
-	test_test.go:78: too few decided; seq=24 ndecided=3 wanted=5
-
-FAIL	paxos	169.687s
