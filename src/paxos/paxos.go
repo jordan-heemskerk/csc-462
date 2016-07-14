@@ -105,44 +105,12 @@ type DoneReply struct {
 
 ////////
 
-func (px *Paxos) doesKeyExist(seq int) bool {
-
-	px.mu.Lock()
-	defer px.mu.Unlock()
-
-	exists := false
-
-	for p, _ := range px.recProposals {
-		if seq == p {
-			exists = true
-			break
-		}
-	}
-
-	return exists
-}
-
-//
-// Similar to decide; I add the current sequence to my list, and
-// give a pending fate
-//
-/*func (px *Paxos) Update(seq int) {
-	if px.doesKeyExist(seq) == false {
-		proposal := px.recProposals[seq]
-		proposal.Fate = Pending
-		px.recProposals[seq] = proposal
-	}
-}*/
-
 //
 // Calculates the greater (whole) half of number of peers required for mjrty
 //
 func calculateMajority(peerCount int) int {
 	temp := float64(peerCount) / 2.0
-	value := int(math.Ceil(temp))
-	// fmt.Println("We need a majority on: ", value)
-
-	return value
+	return int(math.Ceil(temp))
 }
 
 //
@@ -189,18 +157,15 @@ func (px *Paxos) Decide(args *Proposal, reply *DecideReply) error {
 	px.mu.Lock()
 	defer px.mu.Unlock()
 
-	// update item in my received proposals
-	/*	proposal := px.recProposals[args.Seq]
-		proposal.Fate = Decided
-		px.recProposals[args.Seq] = proposal*/
-
 	if _, ok := px.recProposals[args.Seq]; !ok {
 		return nil
 	}
 
-	px.recProposals[args.Seq] = args
 	//fmt.Printf("Decide %d\n", args.Seq)
+	px.recProposals[args.Seq] = args
 	px.recProposals[args.Seq].Fate = Decided
+
+	// add to dones?
 
 	return nil
 }
@@ -254,8 +219,6 @@ func (px *Paxos) Accept(args *Proposal, reply *AcceptanceReply) error {
 	}
 
 	if propnum >= px.recProposals[seq].PropNum {
-
-		// Anything to do here?
 		px.recProposals[seq] = args
 
 	} else {
@@ -304,9 +267,11 @@ func (px *Paxos) HandleAccept(proposal *Proposal, N int, V interface{}) bool {
 					//fmt.Println("\t", prop.Seq, prop.PropNum, "\t Accept: Call failed! ", peer)
 
 					time.Sleep(100 * time.Millisecond)
+
 				} else if accept_reply.Error != "" {
 					fmt.Println("\t", prop.Seq, prop.PropNum, "\t Accept: rejected ", peer)
 					break
+
 				} else {
 					// accept_ok success
 					ok_count++
@@ -344,19 +309,15 @@ func (px *Paxos) Propose(args *Proposal, reply *InterrogationReply) error {
 	_, key_exists := px.recProposals[seq]
 
 	if !key_exists {
-
 		px.recProposals[seq] = args
 
 	} else {
 
 		if px.recProposals[seq].PropNum < propnum {
-
 			px.recProposals[seq] = args
 
 		} else {
-
 			reply.Error = "sequence value is too small / out of date. Rejected!"
-
 		}
 
 	}
@@ -464,6 +425,7 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 		propose_ok := false
 		accept_ok := false
 
+		// build proposal
 		proposal := new(Proposal)
 		proposal.PropNum = px.GenerateID(seq)
 		proposal.Seq = seq
@@ -475,25 +437,15 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 		// initial proposal / interrogation
 		// potentially, a different N or V is returned.
 
-		// propose_ok, N, V := px.HandlePropose(seq, v)
 		propose_ok, N, V := px.HandlePropose(proposal)
 
 		if propose_ok {
-			// TODO: What do with N, V??
-			// accept_ok = px.HandleAccept(seq, N, V)
 			accept_ok = px.HandleAccept(proposal, N, V)
-		} else {
-			// propose_reject: what do?
-			// px.Update(seq)
 		}
 
 		if accept_ok {
-			// no response : this action is FINAL
-			// px.HandleDecide(seq, N, V)
 			px.HandleDecide(proposal)
-			// break;
-		} else {
-			// accept_reject: what do
+
 		}
 
 		// break once this seqence has been agreed on
@@ -502,7 +454,8 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 			fmt.Printf("We decided for %d on %d... state: %d == %d\n", seq, px.me, state, proposal.Fate)
 			break
 		}
-		//fmt.Printf("BREATHE MAN!\n")
+
+		// fmt.Printf("BREATHE MAN!\n")
 		time.Sleep(100 * time.Millisecond)
 	}
 }
@@ -513,10 +466,20 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 // Start() returns IMMEDIATELY; the application will
 // call Status() to find out if/when agreement
 // is reached; starts concurrent PAXOS protocol
+// Caveat: If Start() is called with a sequence number
+// less than Min(), the Start() call should be ignored
 //
 func (px *Paxos) Start(seq int, v interface{}) {
 
-	go px.StartProtocol(seq, v)
+	go func() {
+		if seq < px.Min() {
+			// fmt.Println("\t", seq, "\t Ignoring start request! ", px.me)
+			return
+		}
+
+		px.StartProtocol(seq, v)
+
+	}()
 
 	// the tests go quickly; allow concurrency calls to run
 	time.Sleep(10 * time.Millisecond)
@@ -575,19 +538,7 @@ func (px *Paxos) Done(seq int) {
 		}
 
 		if ok := call(peer, "Paxos.PutDone", args, &reply); !ok {
-			//			fmt.Println("\n\n\n\n PUT DONE FAILED \n\n\n")
-		} else {
-			min := px.Min()
-
-			// DELETE OLD INSTANCES
-			px.mu.Lock()
-			for k, v := range px.recProposals {
-				if v.Seq < min {
-					delete(px.recProposals, k)
-					fmt.Println("Deleted entry at", k)
-				}
-			}
-			px.mu.Unlock()
+			// fmt.Println("\n\n\n\n PUT DONE FAILED \n\n\n")
 		}
 	}
 }
@@ -653,6 +604,19 @@ func (px *Paxos) Min() int {
 		}
 	}
 
+	for k, v := range px.recProposals {
+		if k > min {
+			continue
+		}
+
+		if v.Fate != Decided {
+			continue
+		}
+
+		delete(px.recProposals, k)
+		fmt.Println("Deleted entry at", k)
+	}
+
 	return min + 1
 }
 
@@ -662,8 +626,15 @@ func (px *Paxos) Min() int {
 // and if so what the agreed value is. Status(seq)
 // should just inspect the local peer state;
 // it should not contact other Paxos peers.
+// caveat: If Status() is called with a sequence
+// number less than Min(), Status()should return Forgotten.
 //
 func (px *Paxos) Status(seq int) (Fate, interface{}) {
+	if seq < px.Min() {
+		fmt.Println("\t", seq, "\t Status: returning forgotten!")
+		return Forgotten, nil
+	}
+
 	// reading lock
 	px.mu.Lock()
 	defer px.mu.Unlock()
