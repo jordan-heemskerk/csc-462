@@ -155,7 +155,11 @@ func (px *Paxos) Decide(args *Proposal, reply *DecideReply) error {
 		px.recProposals[args.Seq].Seq = 0
 		px.recProposals[args.Seq].PropNum = 0
 		px.recProposals[args.Seq].Value = ""
+		return nil
 	}
+
+	fmt.Println("\n\nDECIDE\nExisting Sequence!")
+	fmt.Println(args.Seq, px.recProposals[args.Seq].Value, px.recProposals[args.Seq].Fate)
 
 	px.recProposals[args.Seq] = args
 
@@ -538,7 +542,7 @@ func (px *Paxos) Start(seq int, v interface{}) {
 	}()
 
 	// the tests go quickly; allow concurrency calls to run
-	time.Sleep(10 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
 }
 
 func (px *Paxos) PutDone(args *DoneArgs, reply *DoneReply) error {

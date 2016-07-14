@@ -6,9 +6,9 @@ import "strconv"
 import "os"
 import "time"
 import "fmt"
-import "math/rand"
 import crand "crypto/rand"
 import "encoding/base64"
+import "math/rand"
 import "sync/atomic"
 
 func randstring(n int) string {
@@ -31,7 +31,8 @@ func port(tag string, host int) string {
 
 //
 // This wants to make sure something has been decided
-// TODO: This is the fail point!
+// v1 is what we just retrieved
+// v was saved previously
 //
 func ndecided(t *testing.T, pxa []*Paxos, seq int) int {
 	count := 0
@@ -45,8 +46,6 @@ func ndecided(t *testing.T, pxa []*Paxos, seq int) int {
 			if decided == Decided {
 
 				if count > 0 && v != v1 {
-					// v1 is what we just retrieved
-					// v was saved previously
 					t.Fatalf("decided values do not match; seq=%v i=%v v=%v v1=%v",
 						seq, i, v, v1)
 
@@ -67,14 +66,16 @@ func waitn(t *testing.T, pxa []*Paxos, seq int, wanted int) {
 		if ndecided(t, pxa, seq) >= wanted {
 			break
 		}
-		// fmt.Println("Sleeping in waitn...")
 		time.Sleep(to)
 		if to < time.Second {
 			to *= 2
 		}
 	}
+	// ndecided calls Status, which returns a count of how many are in
+	// majority
 	nd := ndecided(t, pxa, seq)
 	if nd < wanted {
+		// TODO: Failing here!
 		t.Fatalf("too few decided; seq=%v ndecided=%v wanted=%v", seq, nd, wanted)
 	}
 }
@@ -331,332 +332,332 @@ func TestForget(t *testing.T) {
 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 }
 
-func TestManyForget(t *testing.T) {
-	runtime.GOMAXPROCS(4)
+// func TestManyForget(t *testing.T) {
+// 	runtime.GOMAXPROCS(4)
 
-	const npaxos = 3
-	var pxa []*Paxos = make([]*Paxos, npaxos)
-	var pxh []string = make([]string, npaxos)
-	defer cleanup(pxa)
+// 	const npaxos = 3
+// 	var pxa []*Paxos = make([]*Paxos, npaxos)
+// 	var pxh []string = make([]string, npaxos)
+// 	defer cleanup(pxa)
 
-	for i := 0; i < npaxos; i++ {
-		pxh[i] = port("manygc", i)
-	}
-	for i := 0; i < npaxos; i++ {
-		pxa[i] = Make(pxh, i, nil)
-		pxa[i].setunreliable(true)
-	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxh[i] = port("manygc", i)
+// 	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxa[i] = Make(pxh, i, nil)
+// 		pxa[i].setunreliable(true)
+// 	}
 
-	fmt.Printf("Test: Lots of forgetting ...\n")
+// 	fmt.Printf("Test: Lots of forgetting ...\n")
 
-	const maxseq = 20
+// 	const maxseq = 20
 
-	go func() {
-		na := rand.Perm(maxseq)
-		for i := 0; i < len(na); i++ {
-			seq := na[i]
-			j := (rand.Int() % npaxos)
-			v := rand.Int()
-			pxa[j].Start(seq, v)
-			runtime.Gosched()
-		}
-	}()
+// 	go func() {
+// 		na := rand.Perm(maxseq)
+// 		for i := 0; i < len(na); i++ {
+// 			seq := na[i]
+// 			j := (rand.Int() % npaxos)
+// 			v := rand.Int()
+// 			pxa[j].Start(seq, v)
+// 			runtime.Gosched()
+// 		}
+// 	}()
 
-	done := make(chan bool)
-	go func() {
-		for {
-			select {
-			case <-done:
-				return
-			default:
-			}
-			seq := (rand.Int() % maxseq)
-			i := (rand.Int() % npaxos)
-			if seq >= pxa[i].Min() {
-				// test decision
-				decided, _ := pxa[i].Status(seq)
-				if decided == Decided {
-					// call done
-					pxa[i].Done(seq)
-				}
-			}
-			runtime.Gosched()
-		}
-	}()
+// 	done := make(chan bool)
+// 	go func() {
+// 		for {
+// 			select {
+// 			case <-done:
+// 				return
+// 			default:
+// 			}
+// 			seq := (rand.Int() % maxseq)
+// 			i := (rand.Int() % npaxos)
+// 			if seq >= pxa[i].Min() {
+// 				// test decision
+// 				decided, _ := pxa[i].Status(seq)
+// 				if decided == Decided {
+// 					// call done
+// 					pxa[i].Done(seq)
+// 				}
+// 			}
+// 			runtime.Gosched()
+// 		}
+// 	}()
 
-	time.Sleep(5 * time.Second)
-	done <- true
-	for i := 0; i < npaxos; i++ {
-		pxa[i].setunreliable(false)
-	}
+// 	time.Sleep(5 * time.Second)
+// 	done <- true
+// 	for i := 0; i < npaxos; i++ {
+// 		pxa[i].setunreliable(false)
+// 	}
 
-	time.Sleep(2 * time.Second)
+// 	time.Sleep(2 * time.Second)
 
-	for seq := 0; seq < maxseq; seq++ {
-		for i := 0; i < npaxos; i++ {
-			if seq >= pxa[i].Min() {
-				pxa[i].Status(seq)
-			}
-		}
-	}
+// 	for seq := 0; seq < maxseq; seq++ {
+// 		for i := 0; i < npaxos; i++ {
+// 			if seq >= pxa[i].Min() {
+// 				pxa[i].Status(seq)
+// 			}
+// 		}
+// 	}
 
-	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
-}
+// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+// }
 
 //
-func TestForgetMem(t *testing.T) {
-	runtime.GOMAXPROCS(4)
+// func TestForgetMem(t *testing.T) {
+// 	runtime.GOMAXPROCS(4)
 
-	fmt.Printf("Test: Paxos frees forgotten instance memory ...\n")
+// 	fmt.Printf("Test: Paxos frees forgotten instance memory ...\n")
 
-	const npaxos = 3
-	var pxa []*Paxos = make([]*Paxos, npaxos)
-	var pxh []string = make([]string, npaxos)
-	defer cleanup(pxa)
+// 	const npaxos = 3
+// 	var pxa []*Paxos = make([]*Paxos, npaxos)
+// 	var pxh []string = make([]string, npaxos)
+// 	defer cleanup(pxa)
 
-	for i := 0; i < npaxos; i++ {
-		pxh[i] = port("gcmem", i)
-	}
-	for i := 0; i < npaxos; i++ {
-		pxa[i] = Make(pxh, i, nil)
-	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxh[i] = port("gcmem", i)
+// 	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxa[i] = Make(pxh, i, nil)
+// 	}
 
-	pxa[0].Start(0, "x")
-	waitn(t, pxa, 0, npaxos)
+// 	pxa[0].Start(0, "x")
+// 	waitn(t, pxa, 0, npaxos)
 
-	runtime.GC()
-	var m0 runtime.MemStats
-	runtime.ReadMemStats(&m0)
-	// m0.Alloc about a megabyte
+// 	runtime.GC()
+// 	var m0 runtime.MemStats
+// 	runtime.ReadMemStats(&m0)
+// 	// m0.Alloc about a megabyte
 
-	for i := 1; i <= 10; i++ {
-		big := make([]byte, 1000000)
-		for j := 0; j < len(big); j++ {
-			big[j] = byte('a' + rand.Int()%26)
-		}
-		pxa[0].Start(i, string(big))
-		waitn(t, pxa, i, npaxos)
-	}
+// 	for i := 1; i <= 10; i++ {
+// 		big := make([]byte, 1000000)
+// 		for j := 0; j < len(big); j++ {
+// 			big[j] = byte('a' + rand.Int()%26)
+// 		}
+// 		pxa[0].Start(i, string(big))
+// 		waitn(t, pxa, i, npaxos)
+// 	}
 
-	runtime.GC()
-	var m1 runtime.MemStats
-	runtime.ReadMemStats(&m1)
-	// m1.Alloc about 90 megabytes
+// 	runtime.GC()
+// 	var m1 runtime.MemStats
+// 	runtime.ReadMemStats(&m1)
+// 	// m1.Alloc about 90 megabytes
 
-	for i := 0; i < npaxos; i++ {
-		pxa[i].Done(10)
-	}
-	for i := 0; i < npaxos; i++ {
-		pxa[i].Start(11+i, "z")
-	}
-	time.Sleep(3 * time.Second)
-	for i := 0; i < npaxos; i++ {
-		if pxa[i].Min() != 11 {
-			t.Fatalf("expected Min() %v, got %v\n", 11, pxa[i].Min())
-		}
-	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxa[i].Done(10)
+// 	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxa[i].Start(11+i, "z")
+// 	}
+// 	time.Sleep(3 * time.Second)
+// 	for i := 0; i < npaxos; i++ {
+// 		if pxa[i].Min() != 11 {
+// 			t.Fatalf("expected Min() %v, got %v\n", 11, pxa[i].Min())
+// 		}
+// 	}
 
-	runtime.GC()
-	var m2 runtime.MemStats
-	runtime.ReadMemStats(&m2)
-	// m2.Alloc about 10 megabytes
+// 	runtime.GC()
+// 	var m2 runtime.MemStats
+// 	runtime.ReadMemStats(&m2)
+// 	// m2.Alloc about 10 megabytes
 
-	if m2.Alloc > (m1.Alloc / 2) {
-		t.Fatalf("memory use did not shrink enough")
-	}
+// 	if m2.Alloc > (m1.Alloc / 2) {
+// 		t.Fatalf("memory use did not shrink enough")
+// 	}
 
-	again := make([]string, 10)
-	for seq := 0; seq < npaxos && seq < 10; seq++ {
-		again[seq] = randstring(20)
-		for i := 0; i < npaxos; i++ {
-			fate, _ := pxa[i].Status(seq)
-			if fate != Forgotten {
-				t.Fatalf("seq %d < Min() %d but not Forgotten", seq, pxa[i].Min())
-			}
-			pxa[i].Start(seq, again[seq])
-		}
-	}
-	time.Sleep(1 * time.Second)
-	for seq := 0; seq < npaxos && seq < 10; seq++ {
-		for i := 0; i < npaxos; i++ {
-			fate, v := pxa[i].Status(seq)
-			if fate != Forgotten || v == again[seq] {
-				t.Fatalf("seq %d < Min() %d but not Forgotten", seq, pxa[i].Min())
-			}
-		}
-	}
+// 	again := make([]string, 10)
+// 	for seq := 0; seq < npaxos && seq < 10; seq++ {
+// 		again[seq] = randstring(20)
+// 		for i := 0; i < npaxos; i++ {
+// 			fate, _ := pxa[i].Status(seq)
+// 			if fate != Forgotten {
+// 				t.Fatalf("seq %d < Min() %d but not Forgotten", seq, pxa[i].Min())
+// 			}
+// 			pxa[i].Start(seq, again[seq])
+// 		}
+// 	}
+// 	time.Sleep(1 * time.Second)
+// 	for seq := 0; seq < npaxos && seq < 10; seq++ {
+// 		for i := 0; i < npaxos; i++ {
+// 			fate, v := pxa[i].Status(seq)
+// 			if fate != Forgotten || v == again[seq] {
+// 				t.Fatalf("seq %d < Min() %d but not Forgotten", seq, pxa[i].Min())
+// 			}
+// 		}
+// 	}
 
-	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
-}
+// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+// }
 
 //
 // does Max() work after Done()s?
 //
-func TestDoneMax(t *testing.T) {
-	runtime.GOMAXPROCS(4)
+// func TestDoneMax(t *testing.T) {
+// 	runtime.GOMAXPROCS(4)
 
-	fmt.Printf("Test: Paxos Max() after Done()s ...\n")
+// 	fmt.Printf("Test: Paxos Max() after Done()s ...\n")
 
-	const npaxos = 3
-	var pxa []*Paxos = make([]*Paxos, npaxos)
-	var pxh []string = make([]string, npaxos)
-	defer cleanup(pxa)
+// 	const npaxos = 3
+// 	var pxa []*Paxos = make([]*Paxos, npaxos)
+// 	var pxh []string = make([]string, npaxos)
+// 	defer cleanup(pxa)
 
-	for i := 0; i < npaxos; i++ {
-		pxh[i] = port("donemax", i)
-	}
-	for i := 0; i < npaxos; i++ {
-		pxa[i] = Make(pxh, i, nil)
-	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxh[i] = port("donemax", i)
+// 	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxa[i] = Make(pxh, i, nil)
+// 	}
 
-	pxa[0].Start(0, "x")
-	waitn(t, pxa, 0, npaxos)
+// 	pxa[0].Start(0, "x")
+// 	waitn(t, pxa, 0, npaxos)
 
-	for i := 1; i <= 10; i++ {
-		pxa[0].Start(i, "y")
-		waitn(t, pxa, i, npaxos)
-	}
+// 	for i := 1; i <= 10; i++ {
+// 		pxa[0].Start(i, "y")
+// 		waitn(t, pxa, i, npaxos)
+// 	}
 
-	for i := 0; i < npaxos; i++ {
-		pxa[i].Done(10)
-	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxa[i].Done(10)
+// 	}
 
-	// Propagate messages so everyone knows about Done(10)
-	for i := 0; i < npaxos; i++ {
-		pxa[i].Start(10, "z")
-	}
-	time.Sleep(2 * time.Second)
-	for i := 0; i < npaxos; i++ {
-		mx := pxa[i].Max()
-		if mx != 10 {
-			t.Fatalf("Max() did not return correct result %d after calling Done(); returned %d", 10, mx)
-		}
-	}
+// 	// Propagate messages so everyone knows about Done(10)
+// 	for i := 0; i < npaxos; i++ {
+// 		pxa[i].Start(10, "z")
+// 	}
+// 	time.Sleep(2 * time.Second)
+// 	for i := 0; i < npaxos; i++ {
+// 		mx := pxa[i].Max()
+// 		if mx != 10 {
+// 			t.Fatalf("Max() did not return correct result %d after calling Done(); returned %d", 10, mx)
+// 		}
+// 	}
 
-	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
-}
+// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+// }
 
-func TestRPCCount(t *testing.T) {
-	runtime.GOMAXPROCS(4)
+// func TestRPCCount(t *testing.T) {
+// 	runtime.GOMAXPROCS(4)
 
-	fmt.Printf("Test: RPC counts aren't too high ...\n")
+// 	fmt.Printf("Test: RPC counts aren't too high ...\n")
 
-	const npaxos = 3
-	var pxa []*Paxos = make([]*Paxos, npaxos)
-	var pxh []string = make([]string, npaxos)
-	defer cleanup(pxa)
+// 	const npaxos = 3
+// 	var pxa []*Paxos = make([]*Paxos, npaxos)
+// 	var pxh []string = make([]string, npaxos)
+// 	defer cleanup(pxa)
 
-	for i := 0; i < npaxos; i++ {
-		pxh[i] = port("count", i)
-	}
-	for i := 0; i < npaxos; i++ {
-		pxa[i] = Make(pxh, i, nil)
-	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxh[i] = port("count", i)
+// 	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxa[i] = Make(pxh, i, nil)
+// 	}
 
-	ninst1 := 5
-	seq := 0
-	for i := 0; i < ninst1; i++ {
-		pxa[0].Start(seq, "x")
-		waitn(t, pxa, seq, npaxos)
-		seq++
-	}
+// 	ninst1 := 5
+// 	seq := 0
+// 	for i := 0; i < ninst1; i++ {
+// 		pxa[0].Start(seq, "x")
+// 		waitn(t, pxa, seq, npaxos)
+// 		seq++
+// 	}
 
-	time.Sleep(2 * time.Second)
+// 	time.Sleep(2 * time.Second)
 
-	total1 := int32(0)
-	for j := 0; j < npaxos; j++ {
-		total1 += atomic.LoadInt32(&pxa[j].rpcCount)
-	}
+// 	total1 := int32(0)
+// 	for j := 0; j < npaxos; j++ {
+// 		total1 += atomic.LoadInt32(&pxa[j].rpcCount)
+// 	}
 
-	// per agreement:
-	// 3 prepares
-	// 3 accepts
-	// 3 decides
-	expected1 := int32(ninst1 * npaxos * npaxos)
-	if total1 > expected1 {
-		t.Fatalf("too many RPCs for serial Start()s; %v instances, got %v, expected %v",
-			ninst1, total1, expected1)
-	}
+// 	// per agreement:
+// 	// 3 prepares
+// 	// 3 accepts
+// 	// 3 decides
+// 	expected1 := int32(ninst1 * npaxos * npaxos)
+// 	if total1 > expected1 {
+// 		t.Fatalf("too many RPCs for serial Start()s; %v instances, got %v, expected %v",
+// 			ninst1, total1, expected1)
+// 	}
 
-	ninst2 := 5
-	for i := 0; i < ninst2; i++ {
-		for j := 0; j < npaxos; j++ {
-			go pxa[j].Start(seq, j+(i*10))
-		}
-		waitn(t, pxa, seq, npaxos)
-		seq++
-	}
+// 	ninst2 := 5
+// 	for i := 0; i < ninst2; i++ {
+// 		for j := 0; j < npaxos; j++ {
+// 			go pxa[j].Start(seq, j+(i*10))
+// 		}
+// 		waitn(t, pxa, seq, npaxos)
+// 		seq++
+// 	}
 
-	time.Sleep(2 * time.Second)
+// 	time.Sleep(2 * time.Second)
 
-	total2 := int32(0)
-	for j := 0; j < npaxos; j++ {
-		total2 += atomic.LoadInt32(&pxa[j].rpcCount)
-	}
-	total2 -= total1
+// 	total2 := int32(0)
+// 	for j := 0; j < npaxos; j++ {
+// 		total2 += atomic.LoadInt32(&pxa[j].rpcCount)
+// 	}
+// 	total2 -= total1
 
-	// worst case per agreement:
-	// Proposer 1: 3 prep, 3 acc, 3 decides.
-	// Proposer 2: 3 prep, 3 acc, 3 prep, 3 acc, 3 decides.
-	// Proposer 3: 3 prep, 3 acc, 3 prep, 3 acc, 3 prep, 3 acc, 3 decides.
-	expected2 := int32(ninst2 * npaxos * 15)
-	if total2 > expected2 {
-		t.Fatalf("too many RPCs for concurrent Start()s; %v instances, got %v, expected %v",
-			ninst2, total2, expected2)
-	}
+// 	// worst case per agreement:
+// 	// Proposer 1: 3 prep, 3 acc, 3 decides.
+// 	// Proposer 2: 3 prep, 3 acc, 3 prep, 3 acc, 3 decides.
+// 	// Proposer 3: 3 prep, 3 acc, 3 prep, 3 acc, 3 prep, 3 acc, 3 decides.
+// 	expected2 := int32(ninst2 * npaxos * 15)
+// 	if total2 > expected2 {
+// 		t.Fatalf("too many RPCs for concurrent Start()s; %v instances, got %v, expected %v",
+// 			ninst2, total2, expected2)
+// 	}
 
-	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
-}
+// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+// }
 
 //
 // many agreements (without failures)
 //
 
-func TestMany(t *testing.T) {
-	runtime.GOMAXPROCS(4)
+// func TestMany(t *testing.T) {
+// 	runtime.GOMAXPROCS(4)
 
-	fmt.Printf("Test: Many instances ...\n")
+// 	fmt.Printf("Test: Many instances ...\n")
 
-	const npaxos = 3
-	var pxa []*Paxos = make([]*Paxos, npaxos)
-	var pxh []string = make([]string, npaxos)
-	defer cleanup(pxa)
+// 	const npaxos = 3
+// 	var pxa []*Paxos = make([]*Paxos, npaxos)
+// 	var pxh []string = make([]string, npaxos)
+// 	defer cleanup(pxa)
 
-	for i := 0; i < npaxos; i++ {
-		pxh[i] = port("many", i)
-	}
-	for i := 0; i < npaxos; i++ {
-		pxa[i] = Make(pxh, i, nil)
-		pxa[i].Start(0, 0)
-	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxh[i] = port("many", i)
+// 	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxa[i] = Make(pxh, i, nil)
+// 		pxa[i].Start(0, 0)
+// 	}
 
-	const ninst = 50
-	for seq := 1; seq < ninst; seq++ {
-		// only 5 active instances, to limit the
-		// number of file descriptors.
-		for seq >= 5 && ndecided(t, pxa, seq-5) < npaxos {
-			time.Sleep(20 * time.Millisecond)
-		}
-		for i := 0; i < npaxos; i++ {
-			pxa[i].Start(seq, (seq*10)+i)
-		}
-	}
+// 	const ninst = 50
+// 	for seq := 1; seq < ninst; seq++ {
+// 		// only 5 active instances, to limit the
+// 		// number of file descriptors.
+// 		for seq >= 5 && ndecided(t, pxa, seq-5) < npaxos {
+// 			time.Sleep(20 * time.Millisecond)
+// 		}
+// 		for i := 0; i < npaxos; i++ {
+// 			pxa[i].Start(seq, (seq*10)+i)
+// 		}
+// 	}
 
-	for {
-		done := true
-		for seq := 1; seq < ninst; seq++ {
-			if ndecided(t, pxa, seq) < npaxos {
-				done = false
-			}
-		}
-		if done {
-			break
-		}
-		time.Sleep(100 * time.Millisecond)
-	}
+// 	for {
+// 		done := true
+// 		for seq := 1; seq < ninst; seq++ {
+// 			if ndecided(t, pxa, seq) < npaxos {
+// 				done = false
+// 			}
+// 		}
+// 		if done {
+// 			break
+// 		}
+// 		time.Sleep(100 * time.Millisecond)
+// 	}
 
-	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
-}
+// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+// }
 
 // a peer starts up, with proposal, after others decide.
 // then another peer starts, without a proposal.
@@ -697,52 +698,52 @@ func TestMany(t *testing.T) {
 
 // many agreements, with unreliable RPC
 
-func TestManyUnreliable(t *testing.T) {
-	runtime.GOMAXPROCS(4)
+// func TestManyUnreliable(t *testing.T) {
+// 	runtime.GOMAXPROCS(4)
 
-	fmt.Printf("Test: Many instances, unreliable RPC ...\n")
+// 	fmt.Printf("Test: Many instances, unreliable RPC ...\n")
 
-	const npaxos = 3
-	var pxa []*Paxos = make([]*Paxos, npaxos)
-	var pxh []string = make([]string, npaxos)
-	defer cleanup(pxa)
+// 	const npaxos = 3
+// 	var pxa []*Paxos = make([]*Paxos, npaxos)
+// 	var pxh []string = make([]string, npaxos)
+// 	defer cleanup(pxa)
 
-	for i := 0; i < npaxos; i++ {
-		pxh[i] = port("manyun", i)
-	}
-	for i := 0; i < npaxos; i++ {
-		pxa[i] = Make(pxh, i, nil)
-		pxa[i].setunreliable(true)
-		pxa[i].Start(0, 0)
-	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxh[i] = port("manyun", i)
+// 	}
+// 	for i := 0; i < npaxos; i++ {
+// 		pxa[i] = Make(pxh, i, nil)
+// 		pxa[i].setunreliable(true)
+// 		pxa[i].Start(0, 0)
+// 	}
 
-	const ninst = 50
-	for seq := 1; seq < ninst; seq++ {
-		// only 3 active instances, to limit the
-		// number of file descriptors.
-		for seq >= 3 && ndecided(t, pxa, seq-3) < npaxos {
-			time.Sleep(20 * time.Millisecond)
-		}
-		for i := 0; i < npaxos; i++ {
-			pxa[i].Start(seq, (seq*10)+i)
-		}
-	}
+// 	const ninst = 50
+// 	for seq := 1; seq < ninst; seq++ {
+// 		// only 3 active instances, to limit the
+// 		// number of file descriptors.
+// 		for seq >= 3 && ndecided(t, pxa, seq-3) < npaxos {
+// 			time.Sleep(20 * time.Millisecond)
+// 		}
+// 		for i := 0; i < npaxos; i++ {
+// 			pxa[i].Start(seq, (seq*10)+i)
+// 		}
+// 	}
 
-	for {
-		done := true
-		for seq := 1; seq < ninst; seq++ {
-			if ndecided(t, pxa, seq) < npaxos {
-				done = false
-			}
-		}
-		if done {
-			break
-		}
-		time.Sleep(100 * time.Millisecond)
-	}
+// 	for {
+// 		done := true
+// 		for seq := 1; seq < ninst; seq++ {
+// 			if ndecided(t, pxa, seq) < npaxos {
+// 				done = false
+// 			}
+// 		}
+// 		if done {
+// 			break
+// 		}
+// 		time.Sleep(100 * time.Millisecond)
+// 	}
 
-	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
-}
+// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+// }
 
 func pp(tag string, src int, dst int) string {
 	s := "/var/tmp/824-"
@@ -785,208 +786,214 @@ func part(t *testing.T, tag string, npaxos int, p1 []int, p2 []int, p3 []int) {
 	}
 }
 
-//func TestPartition(t *testing.T) {
-// 	runtime.GOMAXPROCS(4)
+func TestPartition(t *testing.T) {
+	runtime.GOMAXPROCS(4)
 
-// 	tag := "partition"
-// 	const npaxos = 5
-// 	var pxa []*Paxos = make([]*Paxos, npaxos)
-// 	defer cleanup(pxa)
-// 	defer cleanpp(tag, npaxos)
+	tag := "partition"
+	const npaxos = 5
+	var pxa []*Paxos = make([]*Paxos, npaxos)
+	defer cleanup(pxa)
+	defer cleanpp(tag, npaxos)
 
-// 	for i := 0; i < npaxos; i++ {
-// 		var pxh []string = make([]string, npaxos)
-// 		for j := 0; j < npaxos; j++ {
-// 			if j == i {
-// 				pxh[j] = port(tag, i)
-// 			} else {
-// 				pxh[j] = pp(tag, i, j)
-// 			}
-// 		}
-// 		pxa[i] = Make(pxh, i, nil)
-// 	}
-// 	defer part(t, tag, npaxos, []int{}, []int{}, []int{})
+	for i := 0; i < npaxos; i++ {
+		var pxh []string = make([]string, npaxos)
+		for j := 0; j < npaxos; j++ {
+			if j == i {
+				pxh[j] = port(tag, i)
+			} else {
+				pxh[j] = pp(tag, i, j)
+			}
+		}
+		pxa[i] = Make(pxh, i, nil)
+	}
+	defer part(t, tag, npaxos, []int{}, []int{}, []int{})
 
-// 	seq := 0
+	seq := 0
 
-// 	fmt.Printf("Test: No decision if partitioned ...\n")
+	// passing
+	fmt.Printf("Test: No decision if partitioned ...\n")
 
-// 	part(t, tag, npaxos, []int{0, 2}, []int{1, 3}, []int{4})
-// 	pxa[1].Start(seq, 111)
-// 	checkmax(t, pxa, seq, 0)
+	part(t, tag, npaxos, []int{0, 2}, []int{1, 3}, []int{4})
+	pxa[1].Start(seq, 111)
+	checkmax(t, pxa, seq, 0)
 
-// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 
-// 	fmt.Printf("Test: Decision in majority partition ...\n")
+	// passing
+	fmt.Printf("Test: Decision in majority partition ...\n")
 
-// 	part(t, tag, npaxos, []int{0}, []int{1, 2, 3}, []int{4})
-// 	time.Sleep(2 * time.Second)
-// 	waitmajority(t, pxa, seq)
+	part(t, tag, npaxos, []int{0}, []int{1, 2, 3}, []int{4})
+	time.Sleep(2 * time.Second)
+	waitmajority(t, pxa, seq)
 
-// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 
-// 	fmt.Printf("Test: All agree after full heal ...\n")
+	// passing
+	fmt.Printf("Test: All agree after full heal ...\n")
 
-// 	pxa[0].Start(seq, 1000) // poke them
-// 	pxa[4].Start(seq, 1004)
-// 	part(t, tag, npaxos, []int{0, 1, 2, 3, 4}, []int{}, []int{})
+	pxa[0].Start(seq, 1000) // poke them
+	pxa[4].Start(seq, 1004)
+	part(t, tag, npaxos, []int{0, 1, 2, 3, 4}, []int{}, []int{})
 
-// 	waitn(t, pxa, seq, npaxos)
+	waitn(t, pxa, seq, npaxos)
 
-// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 
-// 	fmt.Printf("Test: One peer switches partitions ...\n")
+	// passing
+	fmt.Printf("Test: One peer switches partitions ...\n")
 
-// 	for iters := 0; iters < 20; iters++ {
-// 		seq++
+	for iters := 0; iters < 20; iters++ {
+		seq++
 
-// 		part(t, tag, npaxos, []int{0, 1, 2}, []int{3, 4}, []int{})
-// 		pxa[0].Start(seq, seq*10)
-// 		pxa[3].Start(seq, (seq*10)+1)
-// 		waitmajority(t, pxa, seq)
-// 		if ndecided(t, pxa, seq) > 3 {
-// 			t.Fatalf("too many decided")
-// 		}
+		part(t, tag, npaxos, []int{0, 1, 2}, []int{3, 4}, []int{})
+		pxa[0].Start(seq, seq*10)
+		pxa[3].Start(seq, (seq*10)+1)
+		waitmajority(t, pxa, seq)
+		if ndecided(t, pxa, seq) > 3 {
+			t.Fatalf("too many decided")
+		}
 
-// 		part(t, tag, npaxos, []int{0, 1}, []int{2, 3, 4}, []int{})
-// 		waitn(t, pxa, seq, npaxos)
-// 	}
+		part(t, tag, npaxos, []int{0, 1}, []int{2, 3, 4}, []int{})
+		waitn(t, pxa, seq, npaxos)
+	}
 
-// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
 
-// 	fmt.Printf("Test: One peer switches partitions, unreliable ...\n")
+	// TODO: FAILING
+	fmt.Printf("Test: One peer switches partitions, unreliable ...\n")
 
-// 	for iters := 0; iters < 20; iters++ {
-// 		seq++
+	for iters := 0; iters < 20; iters++ {
+		seq++
 
-// 		for i := 0; i < npaxos; i++ {
-// 			pxa[i].setunreliable(true)
-// 		}
+		for i := 0; i < npaxos; i++ {
+			pxa[i].setunreliable(true)
+		}
 
-// 		part(t, tag, npaxos, []int{0, 1, 2}, []int{3, 4}, []int{})
-// 		for i := 0; i < npaxos; i++ {
-// 			pxa[i].Start(seq, (seq*10)+i)
-// 		}
-// 		waitn(t, pxa, seq, 3)
-// 		if ndecided(t, pxa, seq) > 3 {
-// 			t.Fatalf("too many decided")
-// 		}
+		part(t, tag, npaxos, []int{0, 1, 2}, []int{3, 4}, []int{})
+		for i := 0; i < npaxos; i++ {
+			pxa[i].Start(seq, (seq*10)+i)
+		}
+		waitn(t, pxa, seq, 3)
+		if ndecided(t, pxa, seq) > 3 {
+			t.Fatalf("too many decided")
+		}
 
-// 		part(t, tag, npaxos, []int{0, 1}, []int{2, 3, 4}, []int{})
+		part(t, tag, npaxos, []int{0, 1}, []int{2, 3, 4}, []int{})
 
-// 		for i := 0; i < npaxos; i++ {
-// 			pxa[i].setunreliable(false)
-// 		}
+		for i := 0; i < npaxos; i++ {
+			pxa[i].setunreliable(false)
+		}
 
-// 		waitn(t, pxa, seq, 5)
-// 	}
+		waitn(t, pxa, seq, 5)
+	}
 
-// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
-// }
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+}
 
-// func TestLots(t *testing.T) {
-// 	runtime.GOMAXPROCS(4)
+// TODO: Failing!
+func TestLots(t *testing.T) {
+	runtime.GOMAXPROCS(4)
 
-// 	fmt.Printf("Test: Many requests, changing partitions ...\n")
+	fmt.Printf("Test: Many requests, changing partitions ...\n")
 
-// 	tag := "lots"
-// 	const npaxos = 5
-// 	var pxa []*Paxos = make([]*Paxos, npaxos)
-// 	defer cleanup(pxa)
-// 	defer cleanpp(tag, npaxos)
+	tag := "lots"
+	const npaxos = 5
+	var pxa []*Paxos = make([]*Paxos, npaxos)
+	defer cleanup(pxa)
+	defer cleanpp(tag, npaxos)
 
-// 	for i := 0; i < npaxos; i++ {
-// 		var pxh []string = make([]string, npaxos)
-// 		for j := 0; j < npaxos; j++ {
-// 			if j == i {
-// 				pxh[j] = port(tag, i)
-// 			} else {
-// 				pxh[j] = pp(tag, i, j)
-// 			}
-// 		}
-// 		pxa[i] = Make(pxh, i, nil)
-// 		pxa[i].setunreliable(true)
-// 	}
-// 	defer part(t, tag, npaxos, []int{}, []int{}, []int{})
+	for i := 0; i < npaxos; i++ {
+		var pxh []string = make([]string, npaxos)
+		for j := 0; j < npaxos; j++ {
+			if j == i {
+				pxh[j] = port(tag, i)
+			} else {
+				pxh[j] = pp(tag, i, j)
+			}
+		}
+		pxa[i] = Make(pxh, i, nil)
+		pxa[i].setunreliable(true)
+	}
+	defer part(t, tag, npaxos, []int{}, []int{}, []int{})
 
-// 	done := int32(0)
+	done := int32(0)
 
-// 	// re-partition periodically
-// 	ch1 := make(chan bool)
-// 	go func() {
-// 		defer func() { ch1 <- true }()
-// 		for atomic.LoadInt32(&done) == 0 {
-// 			var a [npaxos]int
-// 			for i := 0; i < npaxos; i++ {
-// 				a[i] = (rand.Int() % 3)
-// 			}
-// 			pa := make([][]int, 3)
-// 			for i := 0; i < 3; i++ {
-// 				pa[i] = make([]int, 0)
-// 				for j := 0; j < npaxos; j++ {
-// 					if a[j] == i {
-// 						pa[i] = append(pa[i], j)
-// 					}
-// 				}
-// 			}
-// 			part(t, tag, npaxos, pa[0], pa[1], pa[2])
-// 			time.Sleep(time.Duration(rand.Int63()%200) * time.Millisecond)
-// 		}
-// 	}()
+	// re-partition periodically
+	ch1 := make(chan bool)
+	go func() {
+		defer func() { ch1 <- true }()
+		for atomic.LoadInt32(&done) == 0 {
+			var a [npaxos]int
+			for i := 0; i < npaxos; i++ {
+				a[i] = (rand.Int() % 3)
+			}
+			pa := make([][]int, 3)
+			for i := 0; i < 3; i++ {
+				pa[i] = make([]int, 0)
+				for j := 0; j < npaxos; j++ {
+					if a[j] == i {
+						pa[i] = append(pa[i], j)
+					}
+				}
+			}
+			part(t, tag, npaxos, pa[0], pa[1], pa[2])
+			time.Sleep(time.Duration(rand.Int63()%200) * time.Millisecond)
+		}
+	}()
 
-// 	seq := int32(0)
+	seq := int32(0)
 
-// 	// periodically start a new instance
-// 	ch2 := make(chan bool)
-// 	go func() {
-// 		defer func() { ch2 <- true }()
-// 		for atomic.LoadInt32(&done) == 0 {
-// 			// how many instances are in progress?
-// 			nd := 0
-// 			sq := int(atomic.LoadInt32(&seq))
-// 			for i := 0; i < sq; i++ {
-// 				if ndecided(t, pxa, i) == npaxos {
-// 					nd++
-// 				}
-// 			}
-// 			if sq-nd < 10 {
-// 				for i := 0; i < npaxos; i++ {
-// 					pxa[i].Start(sq, rand.Int()%10)
-// 				}
-// 				atomic.AddInt32(&seq, 1)
-// 			}
-// 			time.Sleep(time.Duration(rand.Int63()%300) * time.Millisecond)
-// 		}
-// 	}()
+	// periodically start a new instance
+	ch2 := make(chan bool)
+	go func() {
+		defer func() { ch2 <- true }()
+		for atomic.LoadInt32(&done) == 0 {
+			// how many instances are in progress?
+			nd := 0
+			sq := int(atomic.LoadInt32(&seq))
+			for i := 0; i < sq; i++ {
+				if ndecided(t, pxa, i) == npaxos {
+					nd++
+				}
+			}
+			if sq-nd < 10 {
+				for i := 0; i < npaxos; i++ {
+					pxa[i].Start(sq, rand.Int()%10)
+				}
+				atomic.AddInt32(&seq, 1)
+			}
+			time.Sleep(time.Duration(rand.Int63()%300) * time.Millisecond)
+		}
+	}()
 
-// 	// periodically check that decisions are consistent
-// 	ch3 := make(chan bool)
-// 	go func() {
-// 		defer func() { ch3 <- true }()
-// 		for atomic.LoadInt32(&done) == 0 {
-// 			for i := 0; i < int(atomic.LoadInt32(&seq)); i++ {
-// 				ndecided(t, pxa, i)
-// 			}
-// 			time.Sleep(time.Duration(rand.Int63()%300) * time.Millisecond)
-// 		}
-// 	}()
+	// periodically check that decisions are consistent
+	ch3 := make(chan bool)
+	go func() {
+		defer func() { ch3 <- true }()
+		for atomic.LoadInt32(&done) == 0 {
+			for i := 0; i < int(atomic.LoadInt32(&seq)); i++ {
+				ndecided(t, pxa, i)
+			}
+			time.Sleep(time.Duration(rand.Int63()%300) * time.Millisecond)
+		}
+	}()
 
-// 	time.Sleep(20 * time.Second)
-// 	atomic.StoreInt32(&done, 1)
-// 	<-ch1
-// 	<-ch2
-// 	<-ch3
+	time.Sleep(20 * time.Second)
+	atomic.StoreInt32(&done, 1)
+	<-ch1
+	<-ch2
+	<-ch3
 
-// 	// repair, then check that all instances decided.
-// 	for i := 0; i < npaxos; i++ {
-// 		pxa[i].setunreliable(false)
-// 	}
-// 	part(t, tag, npaxos, []int{0, 1, 2, 3, 4}, []int{}, []int{})
-// 	time.Sleep(5 * time.Second)
+	// repair, then check that all instances decided.
+	for i := 0; i < npaxos; i++ {
+		pxa[i].setunreliable(false)
+	}
+	part(t, tag, npaxos, []int{0, 1, 2, 3, 4}, []int{}, []int{})
+	time.Sleep(5 * time.Second)
 
-// 	for i := 0; i < int(atomic.LoadInt32(&seq)); i++ {
-// 		waitmajority(t, pxa, i)
-// 	}
+	for i := 0; i < int(atomic.LoadInt32(&seq)); i++ {
+		waitmajority(t, pxa, i)
+	}
 
-// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
-// }
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+}
