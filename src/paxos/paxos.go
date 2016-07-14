@@ -538,7 +538,7 @@ func (px *Paxos) Start(seq int, v interface{}) {
 	}()
 
 	// the tests go quickly; allow concurrency calls to run
-	time.Sleep(10 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
 }
 
 func (px *Paxos) PutDone(args *DoneArgs, reply *DoneReply) error {

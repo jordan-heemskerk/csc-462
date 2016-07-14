@@ -661,39 +661,39 @@ func TestMany(t *testing.T) {
 // a peer starts up, with proposal, after others decide.
 // then another peer starts, without a proposal.
 
-// func TestOld(t *testing.T) {
-// 	runtime.GOMAXPROCS(4)
+func TestOld(t *testing.T) {
+	runtime.GOMAXPROCS(4)
 
-// 	fmt.Printf("Test: Minority proposal ignored ...\n")
+	fmt.Printf("Test: Minority proposal ignored ...\n")
 
-// 	const npaxos = 5
-// 	var pxa []*Paxos = make([]*Paxos, npaxos)
-// 	var pxh []string = make([]string, npaxos)
-// 	defer cleanup(pxa)
+	const npaxos = 5
+	var pxa []*Paxos = make([]*Paxos, npaxos)
+	var pxh []string = make([]string, npaxos)
+	defer cleanup(pxa)
 
-// 	for i := 0; i < npaxos; i++ {
-// 		pxh[i] = port("old", i)
-// 	}
+	for i := 0; i < npaxos; i++ {
+		pxh[i] = port("old", i)
+	}
 
-// 	pxa[1] = Make(pxh, 1, nil)
-// 	pxa[2] = Make(pxh, 2, nil)
-// 	pxa[3] = Make(pxh, 3, nil)
-// 	pxa[1].Start(1, 111)
+	pxa[1] = Make(pxh, 1, nil)
+	pxa[2] = Make(pxh, 2, nil)
+	pxa[3] = Make(pxh, 3, nil)
+	pxa[1].Start(1, 111)
 
-// 	waitmajority(t, pxa, 1)
+	waitmajority(t, pxa, 1)
 
-// 	pxa[0] = Make(pxh, 0, nil)
-// 	pxa[0].Start(1, 222)
+	pxa[0] = Make(pxh, 0, nil)
+	pxa[0].Start(1, 222)
 
-// 	waitn(t, pxa, 1, 4)
+	waitn(t, pxa, 1, 4)
 
-// 	if false {
-// 		pxa[4] = Make(pxh, 4, nil)
-// 		waitn(t, pxa, 1, npaxos)
-// 	}
+	if false {
+		pxa[4] = Make(pxh, 4, nil)
+		waitn(t, pxa, 1, npaxos)
+	}
 
-// 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
-// }
+	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
+}
 
 // many agreements, with unreliable RPC
 
