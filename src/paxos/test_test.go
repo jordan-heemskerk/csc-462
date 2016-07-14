@@ -874,9 +874,13 @@ func TestPartition(t *testing.T) {
 			pxa[i].Start(seq, (seq*10)+i)
 		}
 		waitn(t, pxa, seq, 3)
+
 		if ndecided(t, pxa, seq) > 3 {
 			t.Fatalf("too many decided")
 		}
+
+		// 5 of these
+		fmt.Println("MERMAID 3")
 
 		part(t, tag, npaxos, []int{0, 1}, []int{2, 3, 4}, []int{})
 
@@ -884,7 +888,11 @@ func TestPartition(t *testing.T) {
 			pxa[i].setunreliable(false)
 		}
 
+		// TODO: failing exactly here.
 		waitn(t, pxa, seq, 5)
+
+		// 4 of these
+		fmt.Println("MERMAID 4")
 	}
 
 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")
