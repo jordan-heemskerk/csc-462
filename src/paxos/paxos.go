@@ -189,7 +189,7 @@ func (px *Paxos) HandleDecide(proposal *Proposal) {
 			for i := 0; i < 5; i++ {
 				if ok := call(peer, "Paxos.Decide", prop, &decide_reply); !ok {
 					//fmt.Println("\t", prop.Seq, prop.PropNum, "\t Decide: call failed! ", peer)
-					time.Sleep(100 * time.Millisecond)
+					time.Sleep(10 * time.Millisecond)
 
 				} else {
 					// success; we should be all done
@@ -268,7 +268,7 @@ func (px *Paxos) HandleAccept(proposal *Proposal, N int, V interface{}) bool {
 				if ok := call(peer, "Paxos.Accept", prop, &accept_reply); !ok {
 					//fmt.Println("\t", prop.Seq, prop.PropNum, "\t Accept: Call failed! ", peer)
 
-					time.Sleep(100 * time.Millisecond)
+					time.Sleep(10 * time.Millisecond)
 
 				} else if accept_reply.Error != "" {
 					fmt.Println("\t", prop.Seq, prop.PropNum, "\t Accept: rejected ", peer)
@@ -404,7 +404,7 @@ func (px *Paxos) HandlePropose(proposal *Proposal) (bool, int, interface{}) {
 			for i := 0; i < 5; i++ {
 
 				if ok := call(peer, "Paxos.Propose", prop, &peer_reply); !ok {
-					time.Sleep(100 * time.Millisecond)
+					time.Sleep(10 * time.Millisecond)
 
 					//fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: Call Failed! ", peer)
 
@@ -512,7 +512,7 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 		}
 
 		// fmt.Printf("BREATHE MAN!\n")
-		time.Sleep(100 * time.Millisecond)
+		//time.Sleep(100 * time.Millisecond)
 	}
 }
 
