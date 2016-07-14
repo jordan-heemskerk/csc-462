@@ -605,7 +605,7 @@ func (px *Paxos) Min() int {
 	}
 
 	for k, v := range px.recProposals {
-		if k > min {
+		if k >= min {
 			continue
 		}
 
