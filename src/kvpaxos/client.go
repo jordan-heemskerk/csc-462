@@ -74,6 +74,8 @@ func (ck *Clerk) Get(key string) string {
 //
 func (ck *Clerk) PutAppend(key string, value string, op string) {
 	// You will have to modify this function.
+
+	// RPC Our kvpaxos server!
 }
 
 func (ck *Clerk) Put(key string, value string) {
