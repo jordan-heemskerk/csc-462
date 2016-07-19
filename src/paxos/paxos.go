@@ -316,7 +316,9 @@ func (px *Paxos) Propose(args *Proposal, reply *InterrogationReply) error {
 
 	if !key_exists {
 		px.recProposals[seq] = args
-
+		reply.Seq = args.Seq
+		reply.Value = args.Value
+		reply.Num = args.PropNum
 	} else {
 		// fmt.Println("Propose: THIS SEQUENCE NUM EXISTS!")
 
@@ -367,6 +369,8 @@ func (px *Paxos) HandlePropose(proposal *Proposal) (bool, int, interface{}) {
 
 	Majority := calculateMajority(len(px.peers))
 
+	var highestN = 0
+
 	// fmt.Println("Proposal on: ", proposal.Seq)
 
 	// send interrogation to ALL peers
@@ -383,17 +387,10 @@ func (px *Paxos) HandlePropose(proposal *Proposal) (bool, int, interface{}) {
 				// no error
 				ok_count++
 
-				// set reply
-				// replySeq = peer_reply.Seq
-				// replyValue = peer_reply.Value
-				if peer_reply.Value != proposal.Value {
-
-					// fmt.Println(peer_reply.Value, " self vs ", proposal.Value)
-
-					if peer_reply.Value != nil {
-						replySeq = peer_reply.Seq
-						replyValue = peer_reply.Value
-					}
+				if peer_reply.Num > highestN {
+					highestN = peer_reply.Num
+					replySeq = peer_reply.Seq
+					replyValue = peer_reply.Value
 				}
 
 				// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: (self) All is good! ", peer)
@@ -426,11 +423,10 @@ func (px *Paxos) HandlePropose(proposal *Proposal) (bool, int, interface{}) {
 					// must have been DECIDED previously
 					// what if I have two values, from two servers with
 					// the same sequence? Tiebreaker == highest PropNum
-					if peer_reply.Value != proposal.Value {
-						if peer_reply.Value != nil {
-							replySeq = peer_reply.Seq
-							replyValue = peer_reply.Value
-						}
+					if peer_reply.Num > highestN {
+						highestN = peer_reply.Num
+						replySeq = peer_reply.Seq
+						replyValue = peer_reply.Value
 					}
 
 					// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: All is good", peer)
