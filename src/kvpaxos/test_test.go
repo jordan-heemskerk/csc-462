@@ -44,11 +44,13 @@ func NextValue(prev string, val string) string {
 func TestBasic(t *testing.T) {
 	runtime.GOMAXPROCS(4)
 
+	// create 3 servers
 	const nservers = 3
 	var kva []*KVPaxos = make([]*KVPaxos, nservers)
 	var kvh []string = make([]string, nservers)
 	defer cleanup(kva)
 
+	// start each server
 	for i := 0; i < nservers; i++ {
 		kvh[i] = port("basic", i)
 	}
@@ -56,6 +58,7 @@ func TestBasic(t *testing.T) {
 		kva[i] = StartServer(kvh, i)
 	}
 
+	// make KV clerk WITH Paxos servers
 	ck := MakeClerk(kvh)
 	var cka [nservers]*Clerk
 	for i := 0; i < nservers; i++ {
@@ -64,6 +67,7 @@ func TestBasic(t *testing.T) {
 
 	fmt.Printf("Test: Basic put/append/get ...\n")
 
+	// APPEND VALUE TO LOG
 	ck.Append("app", "x")
 	ck.Append("app", "y")
 	check(t, ck, "app", "xy")

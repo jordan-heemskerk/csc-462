@@ -522,7 +522,7 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 // less than Min(), the Start() call should be ignored
 //
 func (px *Paxos) Start(seq int, v interface{}) {
-	// fmt.Println("Starting...", seq, px.Min())
+	fmt.Println("Starting PAXOS...", seq, px.Min())
 
 	go func() {
 		if seq < px.Min() {

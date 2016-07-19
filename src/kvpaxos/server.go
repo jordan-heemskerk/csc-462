@@ -22,7 +22,6 @@ func DPrintf(format string, a ...interface{}) (n int, err error) {
 	return
 }
 
-
 type Op struct {
 	// Your definitions here.
 	// Field names must start with capital letters,
@@ -30,6 +29,10 @@ type Op struct {
 	Cmd string
 	Key string
 	Value string
+}
+
+
+type OpReply struct {
 }
 
 type KVPaxos struct {
@@ -52,15 +55,35 @@ func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
 	return nil
 }
 
+//
+// I need to call Paxos.Start(key int, value interface)
+// build key & interface
+// RPC paxos server
+// wait for decision (periodically call Status())
+// return
+//
 func (kv *KVPaxos) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error {
-	// Your code here.
+	// RPC'd from client.go. Add mutex protection
+	kv.mu.Lock()
+	defer kv.mu.Unlock()
 
-	// RPC'd from client
+	fmt.Println("\nKv Server PutAppend!")
 
-	// build interface
-	// RPC paxos server
-	// wait for decision (periodically call Status())
-	// return
+	// enter PUT op on paxos log
+	// i.e., use Paxos to allocate a Paxos instance, whose value includes the 
+	// key and value
+
+	// your server should try to assign the next available Paxos instance 
+	// (sequence number) to each incoming client RPC
+
+	start_args := new(Op)
+	start_args.Key = args.Key
+	start_args.Value = args.Value
+	start_args.Cmd = args.Op
+
+	// kv.px is an actual PAXOS instance that has started; we don't need
+	// to RPC to our other server.
+	kv.px.Start(1, start_args)
 
 	return nil
 }

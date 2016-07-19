@@ -76,6 +76,36 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 	// You will have to modify this function.
 
 	// RPC Our kvpaxos server!
+	var reply PutAppendReply
+
+	args := new(PutAppendArgs)
+	args.Key = key
+	args.Value = value
+	args.Op = op
+
+	var peer string
+
+	if len(ck.servers) > 0 {
+		peer = ck.servers[0]
+	} else {
+		fmt.Println("\nWE HAVE NO KVPAXOS SERVERS TO CONTACT. EXIT.\n")
+		return
+	}
+
+	fmt.Println(peer)
+
+	if ok := call(peer, "KVPaxos.PutAppend", args, &reply); !ok {
+		// failed RPC error handling -- try another server?
+		fmt.Println("RPC Call literally failed.")
+
+	} else if reply.Err != "" {
+		// error handling -- try another server?
+		fmt.Println("RPC Returned an Error")
+
+	} else {
+		// success
+		fmt.Println("Call succeeded")
+	}
 }
 
 func (ck *Clerk) Put(key string, value string) {
@@ -84,3 +114,16 @@ func (ck *Clerk) Put(key string, value string) {
 func (ck *Clerk) Append(key string, value string) {
 	ck.PutAppend(key, value, "Append")
 }
+
+
+// RPC TEMPLATE
+// if ok := call(peer, "KVPaxos.PutAppend", args, &reply); !ok {
+// 	// failed RPC error handling
+// 	fmt.Println("RPC Call literally failed.")
+// } else if reply.Err != "" {
+// 	// error handling
+// 	fmt.Println("RPC Returned an Error")
+// } else {
+// 	// success
+// 	fmt.Println("Call succeeded")
+// }
