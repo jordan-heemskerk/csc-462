@@ -66,6 +66,30 @@ func call(srv string, rpcname string,
 //
 func (ck *Clerk) Get(key string) string {
 	// You will have to modify this function.
+
+	fmt.Println("\tGet value for: ", key)
+
+	args := new(GetArgs)
+	args.Key = key
+	args.Seq = nrand()
+
+	// try ALL kv.peers forever until we get a response!
+	for _, peer := range ck.servers {
+		var reply GetReply
+
+		if ok := call(peer, "KVPaxos.Get", args, &reply); !ok {
+			// retry forever
+			continue
+		} else if reply.Err != "" {
+			fmt.Println("Error: ", reply.Err)
+			return reply.Value
+		} else {
+			fmt.Println("\tValue: ", reply.Value)
+			return reply.Value
+
+		}
+	}
+
 	return ""
 }
 
@@ -75,6 +99,8 @@ func (ck *Clerk) Get(key string) string {
 func (ck *Clerk) PutAppend(key string, value string, op string) {
 	// You will have to modify this function.
 
+	fmt.Println("\n\n(1) Clerk PutAppend")
+
 	// RPC Our kvpaxos server!
 	var reply PutAppendReply
 
@@ -82,17 +108,15 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 	args.Key = key
 	args.Value = value
 	args.Op = op
+	args.Seq = nrand()
 
 	var peer string
 
 	if len(ck.servers) > 0 {
 		peer = ck.servers[0]
 	} else {
-		fmt.Println("\nWE HAVE NO KVPAXOS SERVERS TO CONTACT. EXIT.\n")
 		return
 	}
-
-	fmt.Println(peer)
 
 	if ok := call(peer, "KVPaxos.PutAppend", args, &reply); !ok {
 		// failed RPC error handling -- try another server?
@@ -103,8 +127,8 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 		fmt.Println("RPC Returned an Error")
 
 	} else {
-		// success
-		fmt.Println("Call succeeded")
+		// success == immediately returned
+		// fmt.Println("KVPaxos PutAppend Call succeeded")
 	}
 }
 

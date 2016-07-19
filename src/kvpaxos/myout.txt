@@ -1,0 +1,45 @@
+Test: Basic put/append/get ...
+
+
+(1) Clerk PutAppend
+(2) KV Server PutAppend!
+	Paxos	Status of: 0
+(3) Starting PAXOS... 3154348003876889160 0
+	Paxos	Status of: 3154348003876889160
+		Starting Protocol with interface... &{Append app x}
+Proposal value &{Append app x}
+PAXOS Propose
+PAXOS Propose
+
+
+
+wHAT.
+<nil> &{Append app x}
+PAXOS Propose
+
+
+
+wHAT.
+<nil> &{Append app x}
+Proposal value (2) <nil>
+ACCEPTING...
+&{3154348003876889160 <nil> 2 376053389608704}
+ACCEPTING...
+&{3154348003876889160 <nil> 2 376053389608704}
+ACCEPTING...
+&{3154348003876889160 <nil> 2 376053389608704}
+	 3154348003876889160 376053389608704 	 Decide: success!  /var/tmp/824-1000/kv-15637-basic-1
+	 3154348003876889160 376053389608704 	 Decide: success!  /var/tmp/824-1000/kv-15637-basic-2
+	Paxos	Status of: 3154348003876889160
+	Paxos	Status of: 3154348003876889160
+WAIT RETURNED: <nil>
+	Paxos	Status of: 3154348003876889160
+WAIT RETURNED: <nil>
+	Paxos	Status of: 3154348003876889160
+WAIT RETURNED: <nil>
+	Paxos	Status of: 3154348003876889160
+WAIT RETURNED: <nil>
+	Paxos	Status of: 3154348003876889160
+WAIT RETURNED: <nil>
+	Paxos	Status of: 3154348003876889160
+WAIT RETURNED: <nil>

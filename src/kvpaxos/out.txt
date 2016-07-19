@@ -1,0 +1,354 @@
+Test: Basic put/append/get ...
+/var/tmp/824-1000/kv-8928-basic-0
+
+Kv Server PutAppend!
+Starting PAXOS... 1805048917784639008 0
+Call succeeded
+/var/tmp/824-1000/kv-8928-basic-0
+
+Kv Server PutAppend!
+Starting PAXOS... 3362005948552213629 0
+Call succeeded
+--- FAIL: TestBasic (0.00s)
+	test_test.go:16: Get(app) -> , expected xy
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+Test: server frees Paxos log memory...
+/var/tmp/824-1000/kv-8928-done-0
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+
+Kv Server PutAppend!
+Starting PAXOS... 3678006931514527445 0
+Call succeeded
+--- FAIL: TestDone (0.00s)
+	test_test.go:16: Get(a) -> , expected aa
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+Test: No partition ...
+/var/tmp/824-1000/kv-8928-partition-0
+
+Kv Server PutAppend!
+Starting PAXOS... 279219078312574903 0
+Call succeeded
+/var/tmp/824-1000/kv-8928-partition-2
+
+Kv Server PutAppend!
+Starting PAXOS... 802607682801448537 0
+Call succeeded
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-1: connect: no such file or directory
+--- FAIL: TestPartition (0.00s)
+	test_test.go:16: Get(1) -> , expected 13
+Test: Basic put/get, unreliable ...
+/var/tmp/824-1000/kv-8928-un-0
+
+Kv Server PutAppend!
+Starting PAXOS... 791884575417117583 0
+unexpected EOF
+Call succeeded
+--- FAIL: TestUnreliable (0.00s)
+	test_test.go:16: Get(a) -> , expected aa
+Test: Tolerates holes in paxos sequence ...
+/var/tmp/824-1000/kv-8928-hole-2
+
+Kv Server PutAppend!
+Starting PAXOS... 1696806182470509778 0
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-0
+/var/tmp/824-1000/kv-8928-hole-0
+/var/tmp/824-1000/kv-8928-hole-0
+/var/tmp/824-1000/kv-8928-hole-0
+/var/tmp/824-1000/kv-8928-hole-0
+/var/tmp/824-1000/kv-8928-hole-0
+
+Kv Server PutAppend!
+Starting PAXOS... 2026980990709408530 0
+/var/tmp/824-1000/kv-8928-hole-0
+/var/tmp/824-1000/kv-8928-hole-0
+/var/tmp/824-1000/kv-8928-hole-0
+/var/tmp/824-1000/kv-8928-hole-0
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-1
+
+Kv Server PutAppend!
+Starting PAXOS... 2333983376439655864 0
+
+Kv Server PutAppend!
+Starting PAXOS... 2804198639071290594 0
+
+Kv Server PutAppend!
+Starting PAXOS... 843170923036014189 0
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-0
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-0
+
+Kv Server PutAppend!
+Starting PAXOS... 4359289918010834447 0
+Call succeeded
+
+Kv Server PutAppend!
+Starting PAXOS... 2520882502559701014 0
+
+Kv Server PutAppend!
+Starting PAXOS... 1870734755594930120 0
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-1
+Call succeeded
+
+Kv Server PutAppend!
+Starting PAXOS... 2227546653297268103 0
+
+Kv Server PutAppend!
+Starting PAXOS... 4098989010361252917 0
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-0
+
+Kv Server PutAppend!
+Starting PAXOS... 1438521897260764280 0
+
+Kv Server PutAppend!
+Starting PAXOS... 3413675976071293425 0
+
+Kv Server PutAppend!
+Starting PAXOS... 588331164026236026 0
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-1
+
+Kv Server PutAppend!
+Starting PAXOS... 2819066310129689207 0
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-1
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-0
+
+Kv Server PutAppend!
+Starting PAXOS... 2951437549054991721 0
+
+Kv Server PutAppend!
+Starting PAXOS... 3400632182211475544 0
+
+Kv Server PutAppend!
+Starting PAXOS... 950387751849555436 0
+Call succeeded
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-0
+/var/tmp/824-1000/kv-8928-hole-0
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-1
+
+Kv Server PutAppend!
+Starting PAXOS... 3693949707026003444 0
+Call succeeded
+
+Kv Server PutAppend!
+Starting PAXOS... 2112171770681022769 0
+
+Kv Server PutAppend!
+Starting PAXOS... 1152070533931798087 0
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-1: connect: no such file or directory
+
+Kv Server PutAppend!
+Starting PAXOS... 954728810645763363 0
+Call succeeded
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-1
+
+Kv Server PutAppend!
+Starting PAXOS... 1755237003009024924 0
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-0
+Call succeeded
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-0
+
+Kv Server PutAppend!
+Starting PAXOS... 2476246974626472235 0
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-1
+Call succeeded
+
+Kv Server PutAppend!
+Starting PAXOS... 1481833512988745897 0
+
+Kv Server PutAppend!
+Starting PAXOS... 3628711579959048542 0
+Call succeeded
+Call succeeded
+
+Kv Server PutAppend!
+Starting PAXOS... 1984783197279921023 0
+Call succeeded
+Call succeeded
+/var/tmp/824-1000/kv-8928-hole-1
+
+Kv Server PutAppend!
+Starting PAXOS... 151427466337228062 0
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+Call succeeded
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-0: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-0: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-0: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-0: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-0: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-3: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-0-4: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-un-2: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-basic-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-8928-done-1: connect: no such file or directory
+paxos Dial() failed: dial unix /var/tmp/824-1000/kv-partition-8928-2-3: connect: no such file or directory
+signal: interrupt
+FAIL	kvpaxos	0.332s

@@ -67,19 +67,30 @@ func TestBasic(t *testing.T) {
 
 	fmt.Printf("Test: Basic put/append/get ...\n")
 
-	// APPEND VALUE TO LOG
 	ck.Append("app", "x")
 	ck.Append("app", "y")
 	check(t, ck, "app", "xy")
 
+	fmt.Printf("Passed xy check\n\n")
+
 	ck.Put("a", "aa")
 	check(t, ck, "a", "aa")
+
+	fmt.Printf("Passed aa check\n\n")
 
 	cka[1].Put("a", "aaa")
 
 	check(t, cka[2], "a", "aaa")
+
+	fmt.Printf("Passed cka[2] check\n\n")
+
 	check(t, cka[1], "a", "aaa")
+
+	fmt.Printf("Passed cka[1] check\n\n")
+
 	check(t, ck, "a", "aaa")
+
+	fmt.Printf("Passed cka check\n\n")
 
 	fmt.Printf("  ... Passed\n")
 
