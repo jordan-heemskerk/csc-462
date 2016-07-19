@@ -11,7 +11,7 @@ import "os"
 import "syscall"
 import "encoding/gob"
 import "math/rand"
-
+import "time"
 
 const Debug = 0
 
@@ -26,11 +26,10 @@ type Op struct {
 	// Your definitions here.
 	// Field names must start with capital letters,
 	// otherwise RPC will break.
-	Cmd string
-	Key string
+	Cmd   string
+	Key   string
 	Value string
 }
-
 
 type OpReply struct {
 }
@@ -44,15 +43,88 @@ type KVPaxos struct {
 	px         *paxos.Paxos
 
 	// Your definitions here.
+	op_num int
+	store  map[string]string
 }
 
+func (kv *KVPaxos) doPutAppend(cmd string, key string, val string) {
+
+	// DO NOT LOCK THE MUTEX HERE
+
+	if cmd == "Put" {
+		kv.store[key] = val
+	}
+
+	if cmd == "Append" {
+		kv.store[key] += val
+	}
+
+}
 
 func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
-	// Your code here.
 
-	// TODO (later) Dont manage each vote individually
+	// RPC'd from client.go. Add mutex protection
+	kv.mu.Lock()
+	defer kv.mu.Unlock()
+
+	fmt.Println("\nKv Server Get!")
+
+	// enter PUT op on paxos log
+	// i.e., use Paxos to allocate a Paxos instance, whose value includes the
+	// key and value
+
+	// your server should try to assign the next available Paxos instance
+	// (sequence number) to each incoming client RPC
+
+	var start_args Op
+	start_args.Key = args.Key
+	start_args.Cmd = "Get"
+
+	// kv.px is an actual PAXOS instance that has started; we don't need
+	// to RPC to our other server.
+	kv.px.Start(kv.op_num, start_args)
+
+	fmt.Printf("Trying operation (Op: %s, K: %s, V: %s) for %d\n", start_args.Cmd, start_args.Key, start_args.Value, kv.op_num)
+	for {
+		fate, val := kv.px.Status(kv.op_num)
+
+		fmt.Printf("fate: %d\n", fate)
+		if fate != paxos.Pending {
+
+			end_args := val.(Op)
+
+			if end_args.Cmd != "Get" {
+
+				fmt.Printf("Decided to do (Op: %s, K: %s, V: %s) for %d\n", end_args.Cmd, end_args.Key, end_args.Value, kv.op_num)
+				kv.doPutAppend(end_args.Cmd, end_args.Key, end_args.Value)
+			} else {
+				fmt.Printf("Skip Get for %d\n", kv.op_num)
+			}
+
+			kv.op_num++
+			if end_args == start_args {
+				// may proceed with the Get now
+
+				if val, ok := kv.store[end_args.Key]; ok {
+					reply.Value = val
+					fmt.Printf("Get returning %s\n", val)
+				} else {
+					reply.Err = ErrNoKey
+				}
+
+				break
+
+			}
+
+		}
+
+		fmt.Printf("Get: Another one\n")
+		time.Sleep(10 * time.Millisecond)
+
+	}
 
 	return nil
+
 }
 
 //
@@ -70,22 +142,56 @@ func (kv *KVPaxos) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error {
 	fmt.Println("\nKv Server PutAppend!")
 
 	// enter PUT op on paxos log
-	// i.e., use Paxos to allocate a Paxos instance, whose value includes the 
+	// i.e., use Paxos to allocate a Paxos instance, whose value includes the
 	// key and value
 
-	// your server should try to assign the next available Paxos instance 
+	// your server should try to assign the next available Paxos instance
 	// (sequence number) to each incoming client RPC
 
-	start_args := new(Op)
+	var start_args Op
 	start_args.Key = args.Key
 	start_args.Value = args.Value
 	start_args.Cmd = args.Op
 
 	// kv.px is an actual PAXOS instance that has started; we don't need
 	// to RPC to our other server.
-	kv.px.Start(1, start_args)
+	kv.px.Start(kv.op_num, start_args)
+
+	fmt.Printf("Trying operation (Op: %s, K: %s, V: %s) for %d\n", start_args.Cmd, start_args.Key, start_args.Value, kv.op_num)
+
+	for {
+		fate, val := kv.px.Status(kv.op_num)
+
+		fmt.Printf("fate: %d\n", fate)
+		if fate != paxos.Pending {
+
+			end_args := val.(Op)
+
+			fmt.Printf("Got (Op: %s, K: %s, V: %s) for %d\n", end_args.Cmd, end_args.Key, end_args.Value, kv.op_num)
+
+			if end_args.Cmd != "Get" {
+
+				fmt.Printf("Decided to do (Op: %s, K: %s, V: %s) for %d\n", end_args.Cmd, end_args.Key, end_args.Value, kv.op_num)
+				kv.doPutAppend(end_args.Cmd, end_args.Key, end_args.Value)
+			} else {
+				fmt.Printf("Skip Get for %d\n", kv.op_num)
+			}
+
+			kv.op_num++
+			if end_args == start_args {
+				break
+			} else {
+				kv.px.Start(kv.op_num, start_args)
+			}
+
+		}
+		fmt.Printf("Put: Another one\n")
+		time.Sleep(10 * time.Millisecond)
+
+	}
 
 	return nil
+
 }
 
 // tell the server to shut itself down.
@@ -130,6 +236,8 @@ func StartServer(servers []string, me int) *KVPaxos {
 	kv.me = me
 
 	// Your initialization code here.
+	kv.op_num = 1
+	kv.store = make(map[string]string)
 
 	rpcs := rpc.NewServer()
 	rpcs.Register(kv)
@@ -142,7 +250,6 @@ func StartServer(servers []string, me int) *KVPaxos {
 		log.Fatal("listen error: ", e)
 	}
 	kv.l = l
-
 
 	// please do not change any of the following code,
 	// or do anything to subvert it.
