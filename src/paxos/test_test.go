@@ -879,9 +879,6 @@ func TestPartition(t *testing.T) {
 			t.Fatalf("too many decided")
 		}
 
-		// 5 of these
-		fmt.Println("MERMAID 3")
-
 		part(t, tag, npaxos, []int{0, 1}, []int{2, 3, 4}, []int{})
 
 		for i := 0; i < npaxos; i++ {
@@ -890,9 +887,6 @@ func TestPartition(t *testing.T) {
 
 		// TODO: failing exactly here.
 		waitn(t, pxa, seq, 5)
-
-		// 4 of these
-		fmt.Println("MERMAID 4")
 	}
 
 	fmt.Printf("  ... Passed\n\n\n\n\n\n\n")

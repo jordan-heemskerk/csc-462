@@ -44,11 +44,13 @@ func NextValue(prev string, val string) string {
 func TestBasic(t *testing.T) {
 	runtime.GOMAXPROCS(4)
 
+	// create 3 servers
 	const nservers = 3
 	var kva []*KVPaxos = make([]*KVPaxos, nservers)
 	var kvh []string = make([]string, nservers)
 	defer cleanup(kva)
 
+	// start each server
 	for i := 0; i < nservers; i++ {
 		kvh[i] = port("basic", i)
 	}
@@ -56,6 +58,7 @@ func TestBasic(t *testing.T) {
 		kva[i] = StartServer(kvh, i)
 	}
 
+	// make KV clerk WITH Paxos servers
 	ck := MakeClerk(kvh)
 	var cka [nservers]*Clerk
 	for i := 0; i < nservers; i++ {
@@ -64,20 +67,25 @@ func TestBasic(t *testing.T) {
 
 	fmt.Printf("Test: Basic put/append/get ...\n")
 
+	// Check logging on a single server
 	ck.Append("app", "x")
 	ck.Append("app", "y")
 	check(t, ck, "app", "xy")
 
+	fmt.Printf("\nPassed xy check\n\n")
+
 	ck.Put("a", "aa")
 	check(t, ck, "a", "aa")
 
-	cka[1].Put("a", "aaa")
+	fmt.Printf("\nPassed aa check\n\n")
 
+	// Check logging / consistency across 3 different servers
+	cka[1].Put("a", "aaa")
 	check(t, cka[2], "a", "aaa")
 	check(t, cka[1], "a", "aaa")
 	check(t, ck, "a", "aaa")
 
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n")
 
 	fmt.Printf("Test: Concurrent clients ...\n")
 
@@ -109,7 +117,7 @@ func TestBasic(t *testing.T) {
 		}
 	}
 
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n")
 
 	time.Sleep(1 * time.Second)
 }

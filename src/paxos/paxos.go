@@ -161,7 +161,7 @@ func (px *Paxos) Decide(args *Proposal, reply *DecideReply) error {
 	px.recProposals[args.Seq] = args
 	px.recProposals[args.Seq].Fate = Decided
 
-	//  fmt.Println("Decided on..... ", args.Value) //, px.recProposals[args.Seq].Value)
+	 // fmt.Println("\n\tDecided on..... ", args.Value) //, px.recProposals[args.Seq].Value)
 
 	return nil
 }
@@ -190,9 +190,6 @@ func (px *Paxos) HandleDecide(proposal *Proposal) {
 
 				if ok := call(peer, "Paxos.Decide", prop, &decide_reply); !ok {
 					//fmt.Println("\t", prop.Seq, prop.PropNum, "\t Decide: call failed! ", peer)
-					
-					// SOLVES ONE TEST | MERMAID
-					fmt.Println("Mermaid | Waiting before retry")
 					time.Sleep(100 * time.Millisecond)
 
 				} else {
@@ -212,7 +209,6 @@ func (px *Paxos) HandleDecide(proposal *Proposal) {
 // else, I must reject
 //
 func (px *Paxos) Accept(args *Proposal, reply *AcceptanceReply) error {
-
 	// atomically do this
 	px.mu.Lock()
 	defer px.mu.Unlock()
@@ -228,9 +224,7 @@ func (px *Paxos) Accept(args *Proposal, reply *AcceptanceReply) error {
 		px.recProposals[seq] = args
 
 	} else {
-
-		reply.Error = "proposed value is too small / out of date. Accept Rejected!"
-
+		reply.Error = "Proposed value is too small / out of date. Accept Rejected!"
 	}
 
 	return nil
@@ -291,9 +285,9 @@ func (px *Paxos) HandleAccept(proposal *Proposal, N int, V interface{}) bool {
 
 	ok := ok_count >= Majority
 
-	// if ok {
-	// 	fmt.Println("\t", prop.Seq, prop.PropNum, "\t Accept: majority!")
-	// }
+	if ok {
+		// fmt.Println("\tAccept: majority!")
+	}
 
 	return ok
 }
@@ -304,7 +298,6 @@ func (px *Paxos) HandleAccept(proposal *Proposal, N int, V interface{}) bool {
 // Interrogation call;  Ok if sequence value is GREATER than what I've already seen,
 //                      Else, I must reject.
 func (px *Paxos) Propose(args *Proposal, reply *InterrogationReply) error {
-
 	// atomically access
 	px.mu.Lock()
 	defer px.mu.Unlock()
@@ -376,18 +369,12 @@ func (px *Paxos) HandlePropose(proposal *Proposal) (bool, int, interface{}) {
 		var peer_reply InterrogationReply
 
 		if me == px.me {
-
 			response := px.Propose(prop, &peer_reply)
 
 			if response == nil {
-				// no error
 				ok_count++
 
-				// set reply
-				// replySeq = peer_reply.Seq
-				// replyValue = peer_reply.Value
 				if peer_reply.Value != proposal.Value {
-
 					// fmt.Println(peer_reply.Value, " self vs ", proposal.Value)
 
 					if peer_reply.Value != nil {
@@ -403,37 +390,31 @@ func (px *Paxos) HandlePropose(proposal *Proposal) (bool, int, interface{}) {
 			}
 
 		} else {
-
 			// 5 retries if call fails
 			for i := 0; i < 5; i++ {
 
 				if ok := call(peer, "Paxos.Propose", prop, &peer_reply); !ok {
 					time.Sleep(10 * time.Millisecond)
-
 					//fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: Call Failed! ", peer)
 
 				} else if peer_reply.Error != "" {
 					// something is out of date -- REJECT & BREAK
-
-					// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: My sequence is out of date", peer)
 					break
 				} else {
-					// no error - SET & BREAK
 					ok_count++
 
-					// set reply
-					// if it doesn't equal my proposed value, I know it
-					// must have been DECIDED previously
-					// what if I have two values, from two servers with
-					// the same sequence? Tiebreaker == highest PropNum
+					// fmt.Println("\tPaxos Propose! My two values...")
+					// fmt.Println(peer_reply.Value, proposal.Value)
+
 					if peer_reply.Value != proposal.Value {
 						if peer_reply.Value != nil {
 							replySeq = peer_reply.Seq
 							replyValue = peer_reply.Value
+						} else {
+							replySeq = proposal.Seq
+							replyValue = proposal.Value
 						}
 					}
-
-					// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: All is good", peer)
 					break
 				}
 			}
@@ -442,9 +423,10 @@ func (px *Paxos) HandlePropose(proposal *Proposal) (bool, int, interface{}) {
 
 	ok := ok_count >= Majority
 
-	// if ok {
-	// 	fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: Majority")
-	// }
+	if ok {
+		// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: Majority")
+		// fmt.Println("\tPropose: Majority on:", replyValue)
+	}
 
 	return ok, replySeq, replyValue
 }
@@ -473,6 +455,9 @@ func (px *Paxos) GenerateID(seq int) int {
 // Each server has its own acceptance handling; PSEUDO CODE HERE!
 //
 func (px *Paxos) StartProtocol(seq int, v interface{}) {
+
+	fmt.Println("\tStarting Protocol with interface...", v)
+
 	for {
 		// fmt.Printf("Trying to decide instance %d request from %d\n", seq, px.me)
 
@@ -487,12 +472,14 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 		proposal.Fate = Pending
 
 		// fmt.Println("\t", seq, proposal.PropNum, "\tStart protocol!")
+		// fmt.Println("Proposal value", proposal.Value)
 
 		propose_ok, N, V := px.HandlePropose(proposal)
 
 		if propose_ok {
 			// propogate value forward (potentially different)
 			proposal.Value = V
+			// fmt.Println("Proposal value (2)", proposal.Value)
 			accept_ok = px.HandleAccept(proposal, N, V)
 		}
 
@@ -522,7 +509,7 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 // less than Min(), the Start() call should be ignored
 //
 func (px *Paxos) Start(seq int, v interface{}) {
-	// fmt.Println("Starting...", seq, px.Min())
+	fmt.Println("(3) Starting PAXOS...", seq, px.Min())
 
 	go func() {
 		if seq < px.Min() {
@@ -663,11 +650,12 @@ func (px *Paxos) Min() int {
 		}
 
 		delete(px.recProposals, k)
-		// fmt.Println("Deleted entry at", k)
+		fmt.Println("Paxos Min():\tDeleted entry at", k)
 	}
 
 	return min + 1
 }
+
 
 //
 // the application wants to know whether this
@@ -679,6 +667,9 @@ func (px *Paxos) Min() int {
 // number less than Min(), Status()should return Forgotten.
 //
 func (px *Paxos) Status(seq int) (Fate, interface{}) {
+
+	// fmt.Println("\tPaxos\tStatus of:", seq)
+
 	if seq < px.Min() {
 		return Forgotten, nil
 	}
@@ -693,7 +684,7 @@ func (px *Paxos) Status(seq int) (Fate, interface{}) {
 		return Pending, nil
 	}
 
-	// fmt.Println("STATUS returning...", px.me, seq, px.recProposals[seq].PropNum, px.recProposals[seq].Fate, px.recProposals[seq].Value)
+	// fmt.Println("\n\tStatus: ", px.recProposals[seq].Fate, px.recProposals[seq].Value)
 
 	return px.recProposals[seq].Fate, px.recProposals[seq].Value
 }

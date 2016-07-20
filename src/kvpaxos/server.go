@@ -11,7 +11,7 @@ import "os"
 import "syscall"
 import "encoding/gob"
 import "math/rand"
-
+import "time"
 
 const Debug = 0
 
@@ -22,14 +22,16 @@ func DPrintf(format string, a ...interface{}) (n int, err error) {
 	return
 }
 
-
 type Op struct {
 	// Your definitions here.
 	// Field names must start with capital letters,
 	// otherwise RPC will break.
-	Cmd string
-	Key string
+	Cmd   string
+	Key   string
 	Value string
+}
+
+type OpReply struct {
 }
 
 type KVPaxos struct {
@@ -41,26 +43,166 @@ type KVPaxos struct {
 	px         *paxos.Paxos
 
 	// Your definitions here.
+
+	// log should be a LIST, not a KV map
+	// may potentially have the same operations on the same key
+	Log []Op
+
+	// map to maintain Key, Value pairs; "f"
+	KeyVals map[string]string
+
+	// map of sequence values seen
+	Seqs map[int64]bool
+
+	// latest PAXOS sequence
+	PSeq int
 }
 
+// shamelessly stolen from the lab writeup
+func (kv *KVPaxos) wait(seq int) interface{} {
+	to := 10 * time.Millisecond
+	for {
+		fate, v := kv.px.Status(seq)
 
+		if fate == paxos.Decided {
+			// convert / parse interface without panicking
+			reply_value, _ := v.(*Op)
+			return reply_value
+		}
+
+		time.Sleep(to)
+		if to < time.Second {
+			to *= 2
+		}
+	}
+}
+
+//
+// Implement a Get() handler. It should enter a Get Op in the Paxos log,
+// and then "interpret" the the log before that point to make sure its
+// key/value database reflects all recent Put()s.
+//
+// TODO (later??) Dont manage each vote individually
+// Whatever Ryan was talking about... ?
+//
 func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
-	// Your code here.
+	// RPC'd from client.go. Add mutex protection
+	kv.mu.Lock()
+	defer kv.mu.Unlock()
 
-	// TODO (later) Dont manage each vote individually
+	operation := new(Op)
+	operation.Cmd = "Get"
+	operation.Key = args.Key
+
+	// add Get to log
+	kv.Process(operation, args.Seq, kv.PSeq)
+
+	// intepret values and log to see if correct
+
+	// retrieve value
+	if value, ok := kv.KeyVals[operation.Key]; ok {
+		// reply.Err = "OK"
+		reply.Value = value
+	} else {
+		reply.Err = "KvPaxos Get:\tValue does not exist! Returning empty."
+		reply.Value = ""
+	}
 
 	return nil
 }
 
+func (kv *KVPaxos) Process(operation *Op, Seq int64, PSeq int) {
+	// try infinitely
+	for {
+		var log_item interface{}
+
+		// get the latest sequence from the server; has this
+		// sequence already been decided?
+		fate, value := kv.px.Status(PSeq)
+
+		if fate == paxos.Decided {
+			fmt.Println("This sequence has already been voted on. Ignoring.")
+
+			log_item = value
+
+		} else {
+			// Start paxos! (returns immediately)
+			kv.px.Start(int(Seq), operation)
+			log_item = kv.wait(int(Seq))
+		}
+
+		if log_item == operation {
+			// -- APPLY OPERATION -- //
+
+			// add to log
+			kv.Log = append(kv.Log, *operation)
+			fmt.Println("\n\tUpdated log with: ", kv.Log)
+
+			if operation.Cmd != "Get" {
+				// update key / value store
+				if operation.Cmd == "Append" {
+					value, exists := kv.KeyVals[operation.Key]
+
+					if !exists {
+						kv.KeyVals[operation.Key] = operation.Value
+					} else {
+						value = value + operation.Value
+						kv.KeyVals[operation.Key] = value
+					}
+
+				} else if operation.Cmd == "Put" {
+					fmt.Println("\n\n\n\nPUTTING ", operation.Value, operation.Key)
+					kv.KeyVals[operation.Key] = operation.Value
+
+				} else {
+					fmt.Println("\n\n\tUnknown Command. Something went terribly terribly wrong.\n\n")
+				}
+			}
+
+			kv.Seqs[Seq] = true
+
+			// call the Paxos Done() method when a kvpaxos has processed an instance and
+			// will no longer need it or any previous instance.
+			kv.px.Done(kv.PSeq)
+			kv.PSeq++
+
+			// exit for loop
+			break
+		} else {
+			continue
+		}
+	}
+}
+
+//
+// I need to call Paxos.Start(key int, value interface)
+// build key & interface
+// RPC paxos server
+// wait for decision (periodically call Status())
+// return
+//
 func (kv *KVPaxos) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error {
-	// Your code here.
+	// RPC'd from client.go. Add mutex protection
+	kv.mu.Lock()
+	defer kv.mu.Unlock()
 
-	// RPC'd from client
+	fmt.Println("(2) KV Server PutAppend!")
 
-	// build interface
-	// RPC paxos server
-	// wait for decision (periodically call Status())
-	// return
+	// my sequence should be unique!
+	_, exists := kv.Seqs[args.Seq]
+	if exists {
+		reply.Err = "OK"
+		return nil
+	}
+
+	// create operation
+	operation := new(Op)
+	operation.Key = args.Key
+	operation.Value = args.Value
+	operation.Cmd = args.Op
+
+	// -- PROCESS OPERATION -- //
+	kv.Process(operation, args.Seq, kv.PSeq)
 
 	return nil
 }
@@ -107,6 +249,10 @@ func StartServer(servers []string, me int) *KVPaxos {
 	kv.me = me
 
 	// Your initialization code here.
+	kv.Log = []Op{}
+	kv.KeyVals = make(map[string]string)
+	kv.Seqs = make(map[int64]bool)
+	kv.PSeq = 0
 
 	rpcs := rpc.NewServer()
 	rpcs.Register(kv)
@@ -119,7 +265,6 @@ func StartServer(servers []string, me int) *KVPaxos {
 		log.Fatal("listen error: ", e)
 	}
 	kv.l = l
-
 
 	// please do not change any of the following code,
 	// or do anything to subvert it.
