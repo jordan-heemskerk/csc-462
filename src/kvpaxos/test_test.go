@@ -67,32 +67,25 @@ func TestBasic(t *testing.T) {
 
 	fmt.Printf("Test: Basic put/append/get ...\n")
 
+	// Check logging on a single server
 	ck.Append("app", "x")
 	ck.Append("app", "y")
 	check(t, ck, "app", "xy")
 
-	fmt.Printf("Passed xy check\n\n")
+	fmt.Printf("\nPassed xy check\n\n")
 
 	ck.Put("a", "aa")
 	check(t, ck, "a", "aa")
 
-	fmt.Printf("Passed aa check\n\n")
+	fmt.Printf("\nPassed aa check\n\n")
 
+	// Check logging / consistency across 3 different servers
 	cka[1].Put("a", "aaa")
-
 	check(t, cka[2], "a", "aaa")
-
-	fmt.Printf("Passed cka[2] check\n\n")
-
 	check(t, cka[1], "a", "aaa")
-
-	fmt.Printf("Passed cka[1] check\n\n")
-
 	check(t, ck, "a", "aaa")
 
-	fmt.Printf("Passed cka check\n\n")
-
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n")
 
 	fmt.Printf("Test: Concurrent clients ...\n")
 
@@ -124,7 +117,7 @@ func TestBasic(t *testing.T) {
 		}
 	}
 
-	fmt.Printf("  ... Passed\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n")
 
 	time.Sleep(1 * time.Second)
 }

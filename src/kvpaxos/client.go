@@ -65,10 +65,6 @@ func call(srv string, rpcname string,
 // keeps trying forever in the face of all other errors.
 //
 func (ck *Clerk) Get(key string) string {
-	// You will have to modify this function.
-
-	fmt.Println("\tGet value for: ", key)
-
 	args := new(GetArgs)
 	args.Key = key
 	args.Seq = nrand()
@@ -84,7 +80,7 @@ func (ck *Clerk) Get(key string) string {
 			fmt.Println("Error: ", reply.Err)
 			return reply.Value
 		} else {
-			fmt.Println("\tValue: ", reply.Value)
+			// fmt.Println("\tValue: ", reply.Value)
 			return reply.Value
 
 		}
@@ -138,16 +134,3 @@ func (ck *Clerk) Put(key string, value string) {
 func (ck *Clerk) Append(key string, value string) {
 	ck.PutAppend(key, value, "Append")
 }
-
-
-// RPC TEMPLATE
-// if ok := call(peer, "KVPaxos.PutAppend", args, &reply); !ok {
-// 	// failed RPC error handling
-// 	fmt.Println("RPC Call literally failed.")
-// } else if reply.Err != "" {
-// 	// error handling
-// 	fmt.Println("RPC Returned an Error")
-// } else {
-// 	// success
-// 	fmt.Println("Call succeeded")
-// }
