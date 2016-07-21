@@ -75,7 +75,7 @@ func (kv *KVPaxos) Apply(operation Op) {
 	if operation.Cmd != "Get" {
 
 		if operation.Cmd == "Append" {
-			fmt.Println("\tAPPENDING -", operation.Value, operation.Key)
+			// fmt.Println("\tAPPENDING -", operation.Value, operation.Key)
 			value, exists := kv.KeyVals[operation.Key]
 
 			if !exists {
@@ -86,7 +86,7 @@ func (kv *KVPaxos) Apply(operation Op) {
 			}
 
 		} else if operation.Cmd == "Put" {
-			fmt.Println("\tPUTTING - ", operation.Value, operation.Key)
+			// fmt.Println("\tPUTTING - ", operation.Value, operation.Key)
 			kv.KeyVals[operation.Key] = operation.Value
 
 		} else {
@@ -161,7 +161,7 @@ func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
 //  Seq is a random client number; PSeq is the value of our server
 //
 func (kv *KVPaxos) Process(operation *Op, Seq int64, PSeq int) {
-	fmt.Println("\tKvServer: Starting Process", operation, Seq, PSeq)
+	// fmt.Println("\tKvServer: Starting Process", operation, Seq, PSeq)
 
 	// try infinitely
 	for {
