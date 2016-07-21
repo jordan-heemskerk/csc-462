@@ -72,20 +72,18 @@ func TestBasic(t *testing.T) {
 	ck.Append("app", "y")
 	check(t, ck, "app", "xy")
 
-	fmt.Printf("\nPassed xy check\n\n")
-
 	ck.Put("a", "aa")
 	check(t, ck, "a", "aa")
 
-	fmt.Printf("\nPassed aa check\n\n")
-
 	// Check logging / consistency across 3 different servers
+	// this needs to catch up with everything first.
 	cka[1].Put("a", "aaa")
+
 	check(t, cka[2], "a", "aaa")
 	check(t, cka[1], "a", "aaa")
 	check(t, ck, "a", "aaa")
 
-	fmt.Printf("  ... Passed\n\n\n\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n")
 
 	fmt.Printf("Test: Concurrent clients ...\n")
 

@@ -65,6 +65,8 @@ func call(srv string, rpcname string,
 // keeps trying forever in the face of all other errors.
 //
 func (ck *Clerk) Get(key string) string {
+	fmt.Println("\n\n(1) Clerk Get")
+
 	args := new(GetArgs)
 	args.Key = key
 	args.Seq = nrand()

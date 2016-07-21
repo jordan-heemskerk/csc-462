@@ -456,7 +456,7 @@ func (px *Paxos) GenerateID(seq int) int {
 //
 func (px *Paxos) StartProtocol(seq int, v interface{}) {
 
-	fmt.Println("\tStarting Protocol with interface...", v)
+	// fmt.Println("\tStarting Protocol with interface...", v)
 
 	for {
 		// fmt.Printf("Trying to decide instance %d request from %d\n", seq, px.me)
@@ -528,6 +528,8 @@ func (px *Paxos) PutDone(args *DoneArgs, reply *DoneReply) error {
 	px.mu.Lock()
 	defer px.mu.Unlock()
 
+	// fmt.Println("\tPaxos PutDone(): ", args.MaxValue)
+
 	px.donePeers[args.Me] = args.MaxValue
 
 	return nil
@@ -554,6 +556,8 @@ func (px *Paxos) PutDone(args *DoneArgs, reply *DoneReply) error {
 //
 func (px *Paxos) Done(seq int) {
 	px.mu.Lock()
+
+	fmt.Println("\tPaxos Done(): Updating DONE value of ", seq)
 
 	// update my own done value
 	if seq > px.donePeers[px.me] {
@@ -668,8 +672,6 @@ func (px *Paxos) Min() int {
 //
 func (px *Paxos) Status(seq int) (Fate, interface{}) {
 
-	// fmt.Println("\tPaxos\tStatus of:", seq)
-
 	if seq < px.Min() {
 		return Forgotten, nil
 	}
@@ -681,10 +683,11 @@ func (px *Paxos) Status(seq int) (Fate, interface{}) {
 	_, key_exists := px.recProposals[seq]
 
 	if !key_exists {
+		fmt.Println("\tPaxos: Status - Key does not exist.")
 		return Pending, nil
 	}
 
-	// fmt.Println("\n\tStatus: ", px.recProposals[seq].Fate, px.recProposals[seq].Value)
+	fmt.Println("\n\tPaxos: Status of ", seq, px.recProposals[seq].Fate, px.recProposals[seq].Value)
 
 	return px.recProposals[seq].Fate, px.recProposals[seq].Value
 }
