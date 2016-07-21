@@ -65,6 +65,8 @@ func call(srv string, rpcname string,
 // keeps trying forever in the face of all other errors.
 //
 func (ck *Clerk) Get(key string) string {
+	fmt.Println("\n\n(1) Clerk Get")
+
 	args := new(GetArgs)
 	args.Key = key
 	args.Seq = nrand()
@@ -74,15 +76,13 @@ func (ck *Clerk) Get(key string) string {
 		var reply GetReply
 
 		if ok := call(peer, "KVPaxos.Get", args, &reply); !ok {
-			// retry forever
+			fmt.Println("\n\n\nGet Call failed!")
 			continue
 		} else if reply.Err != "" {
 			fmt.Println("Error: ", reply.Err)
 			return reply.Value
 		} else {
-			// fmt.Println("\tValue: ", reply.Value)
 			return reply.Value
-
 		}
 	}
 
@@ -93,8 +93,6 @@ func (ck *Clerk) Get(key string) string {
 // shared by Put and Append.
 //
 func (ck *Clerk) PutAppend(key string, value string, op string) {
-	// You will have to modify this function.
-
 	fmt.Println("\n\n(1) Clerk PutAppend")
 
 	// RPC Our kvpaxos server!
@@ -117,14 +115,10 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 	if ok := call(peer, "KVPaxos.PutAppend", args, &reply); !ok {
 		// failed RPC error handling -- try another server?
 		fmt.Println("RPC Call literally failed.")
-
+		fmt.Println("\n\n\nPutAppend RPC Call failed!")
 	} else if reply.Err != "" {
 		// error handling -- try another server?
-		fmt.Println("RPC Returned an Error")
-
-	} else {
-		// success == immediately returned
-		// fmt.Println("KVPaxos PutAppend Call succeeded")
+		fmt.Println("\n\n\nPutAppend Call failed!")
 	}
 }
 

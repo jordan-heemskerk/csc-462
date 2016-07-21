@@ -72,26 +72,26 @@ func TestBasic(t *testing.T) {
 	ck.Append("app", "y")
 	check(t, ck, "app", "xy")
 
-	fmt.Printf("\nPassed xy check\n\n")
-
 	ck.Put("a", "aa")
 	check(t, ck, "a", "aa")
 
-	fmt.Printf("\nPassed aa check\n\n")
-
 	// Check logging / consistency across 3 different servers
+	// this needs to catch up with everything first.
 	cka[1].Put("a", "aaa")
+
 	check(t, cka[2], "a", "aaa")
 	check(t, cka[1], "a", "aaa")
 	check(t, ck, "a", "aaa")
 
-	fmt.Printf("  ... Passed\n\n\n\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n")
 
 	fmt.Printf("Test: Concurrent clients ...\n")
 
 	for iters := 0; iters < 20; iters++ {
 		const npara = 15
 		var ca [npara]chan bool
+
+		// creates 15 go functions! Vary between Get and Put
 		for nth := 0; nth < npara; nth++ {
 			ca[nth] = make(chan bool)
 			go func(me int) {
@@ -108,6 +108,8 @@ func TestBasic(t *testing.T) {
 		for nth := 0; nth < npara; nth++ {
 			<-ca[nth]
 		}
+
+		// Calls GET on each server; each must match the first (and eachother)
 		var va [nservers]string
 		for i := 0; i < nservers; i++ {
 			va[i] = cka[i].Get("b")
@@ -117,7 +119,7 @@ func TestBasic(t *testing.T) {
 		}
 	}
 
-	fmt.Printf("  ... Passed\n\n\n\n\n")
+	fmt.Printf("  ... Passed\n\n\n\n\n\n")
 
 	time.Sleep(1 * time.Second)
 }
