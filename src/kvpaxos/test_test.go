@@ -78,10 +78,12 @@ func TestBasic(t *testing.T) {
 	// Check logging / consistency across 3 different servers
 	// this needs to catch up with everything first.
 	cka[1].Put("a", "aaa")
-
 	check(t, cka[2], "a", "aaa")
 	check(t, cka[1], "a", "aaa")
-	check(t, ck, "a", "aaa")
+
+	fmt.Printf("MERMAID 4")
+
+	check(t, ck, "a", "aaa") // FAILING!
 
 	fmt.Printf("  ... Passed\n\n\n\n\n\n")
 

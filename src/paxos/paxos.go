@@ -510,7 +510,7 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 // less than Min(), the Start() call should be ignored
 //
 func (px *Paxos) Start(seq int, v interface{}) {
-	fmt.Println("(3) Starting PAXOS...", seq, px.Min())
+	fmt.Println("(3) Starting PAXOS...", seq, px.Min(), px.Max())
 
 	go func() {
 		if seq < px.Min() {
@@ -688,7 +688,7 @@ func (px *Paxos) Status(seq int) (Fate, interface{}) {
 		return Pending, nil
 	}
 
-	fmt.Println("\n\tPaxos: Status of ", seq, px.recProposals[seq].Fate, px.recProposals[seq].Value)
+	// fmt.Println("\n\tPaxos: Status of ", seq, px.recProposals[seq].Fate, px.recProposals[seq].Value)
 
 	return px.recProposals[seq].Fate, px.recProposals[seq].Value
 }

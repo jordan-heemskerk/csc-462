@@ -1,0 +1,268 @@
+Test: Basic put/append/get ...
+
+
+(1) Clerk PutAppend
+(2) KV Server PutAppend!
+(3) Starting PAXOS... 1 0 0
+	Paxos: Status - Key does not exist.
+&{Append app x}
+
+
+(1) Clerk PutAppend
+(2) KV Server PutAppend!
+(3) Starting PAXOS... 2 0 1
+	Paxos: Status - Key does not exist.
+&{Append app y}
+
+
+(1) Clerk Get
+(2) KV Server Get!
+IN Synchronize
+Apply log...
+APPLY LOG:  {Append app x}
+APPLY LOG:  {Append app y}
+(3) Starting PAXOS... 3 0 2
+	Paxos: Status - Key does not exist.
+	Paxos Done(): Updating DONE value of  3
+
+
+(1) Clerk PutAppend
+(2) KV Server PutAppend!
+(3) Starting PAXOS... 4 0 3
+	Paxos: Status - Key does not exist.
+&{Put a aa}
+
+
+(1) Clerk Get
+(2) KV Server Get!
+IN Synchronize
+[{Put a aa}]
+map[app:xy]
+Apply log...
+APPLY LOG:  {Put a aa}
+(3) Starting PAXOS... 5 0 4
+	Paxos: Status - Key does not exist.
+	Paxos Done(): Updating DONE value of  5
+
+
+(1) Clerk PutAppend
+(2) KV Server PutAppend!
+(3) Starting PAXOS... 6 0 5
+	Paxos: Status - Key does not exist.
+&{Put a aaa}
+
+
+(1) Clerk Get
+(2) KV Server Get!
+IN Synchronize
+[]
+map[]
+	Paxos: Status - Key does not exist.
+APPLY COMMAND:  {Append app x}
+	Paxos Done(): Updating DONE value of  1
+APPLY COMMAND:  {Append app y}
+	Paxos Done(): Updating DONE value of  2
+APPLY COMMAND:  {Get app }
+	Paxos Done(): Updating DONE value of  3
+APPLY COMMAND:  {Put a aa}
+	Paxos Done(): Updating DONE value of  4
+APPLY COMMAND:  {Get a }
+	Paxos Done(): Updating DONE value of  5
+APPLY COMMAND:  {Put a aaa}
+	Paxos Done(): Updating DONE value of  6
+Apply log...
+(3) Starting PAXOS... 7 0 6
+	Paxos: Status - Key does not exist.
+	Paxos Done(): Updating DONE value of  7
+
+
+(1) Clerk Get
+(2) KV Server Get!
+IN Synchronize
+[{Put a aaa}]
+map[]
+APPLY COMMAND:  {Append app x}
+	Paxos Done(): Updating DONE value of  1
+APPLY COMMAND:  {Append app y}
+	Paxos Done(): Updating DONE value of  2
+APPLY COMMAND:  {Get app }
+	Paxos Done(): Updating DONE value of  3
+APPLY COMMAND:  {Put a aa}
+	Paxos Done(): Updating DONE value of  4
+APPLY COMMAND:  {Get a }
+	Paxos Done(): Updating DONE value of  5
+APPLY COMMAND:  {Put a aaa}
+	Paxos Done(): Updating DONE value of  6
+APPLY COMMAND:  {Get a }
+	Paxos Done(): Updating DONE value of  7
+Apply log...
+APPLY LOG:  {Put a aaa}
+(3) Starting PAXOS... 8 6 7
+	Paxos: Status - Key does not exist.
+	Paxos Done(): Updating DONE value of  8
+MERMAID 4
+
+(1) Clerk Get
+(2) KV Server Get!
+IN Synchronize
+[]
+map[app:xy a:aa]
+APPLY COMMAND:  {Put a aaa}
+	Paxos Done(): Updating DONE value of  6
+APPLY COMMAND:  {Get a }
+	Paxos Done(): Updating DONE value of  7
+APPLY COMMAND:  {Get a }
+	Paxos Done(): Updating DONE value of  8
+Apply log...
+(3) Starting PAXOS... 9 8 8
+	Paxos: Status - Key does not exist.
+	Paxos Done(): Updating DONE value of  9
+  ... Passed
+
+
+
+
+
+Test: Concurrent clients ...
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk Get
+
+
+(1) Clerk Get
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk Get
+
+
+(1) Clerk Get
+(2) KV Server Get!
+IN Synchronize
+(2) KV Server PutAppend!
+
+
+(1) Clerk Get
+(3) Starting PAXOS... 10 8 9
+[]
+	Paxos: Status - Key does not exist.
+map[app:xy a:aaa]
+APPLY COMMAND:  {Get a }
+	Paxos Done(): Updating DONE value of  8
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk Get
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk Get
+
+
+(1) Clerk PutAppend
+(2) KV Server Get!
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk Get
+(2) KV Server Get!
+(2) KV Server Get!
+(2) KV Server PutAppend!
+(3) Starting PAXOS... 11 8 10
+(2) KV Server Get!
+	Paxos: Status - Key does not exist.
+(2) KV Server PutAppend!
+(2) KV Server Get!
+(2) KV Server PutAppend!
+(2) KV Server PutAppend!
+(2) KV Server PutAppend!
+(2) KV Server PutAppend!
+(2) KV Server Get!
+(2) KV Server Get!
+APPLY COMMAND:  {Get a }
+	Paxos Done(): Updating DONE value of  9
+Apply log...
+(3) Starting PAXOS... 10 9 11
+&{Put b 8995016276575641803}
+IN Synchronize
+Apply log...
+APPLY LOG:  {Put b 8995016276575641803}
+(3) Starting PAXOS... 12 9 11
+	Paxos: Status - Key does not exist.
+	Paxos Done(): Updating DONE value of  10
+IN Synchronize
+[]
+map[app:xy a:aaa]
+APPLY COMMAND:  {Get a }
+	Paxos Done(): Updating DONE value of  9
+APPLY COMMAND:  {Put b 3916589616287113937}
+	Paxos Done(): Updating DONE value of  10
+Error:  KvPaxos Get:	Value does not exist! Returning empty.
+APPLY COMMAND:  {Put b 8995016276575641803}
+	Paxos Done(): Updating DONE value of  11
+APPLY COMMAND:  {Get b }
+	Paxos Done(): Updating DONE value of  12
+Apply log...
+(3) Starting PAXOS... 13 9 12
+	Paxos: Status - Key does not exist.
+	Paxos Done(): Updating DONE value of  12
+(3) Starting PAXOS... 12 9 13
+&{Get b }
+(3) Starting PAXOS... 12 9 13
+<nil>
+IN Synchronize
+[{Put b 3916589616287113937}]
+map[app:xy a:aaa]
+APPLY COMMAND:  {Put b 3916589616287113937}
+	Paxos Done(): Updating DONE value of  10
+	Paxos Done(): Updating DONE value of  13
+(3) Starting PAXOS... 10 9 13
+<nil>
+(3) Starting PAXOS... 11 11 13
+<nil>
+IN Synchronize
+Apply log...
+APPLY LOG:  {Put b 261049867304784443}
+APPLY LOG:  {Put b 2775422040480279449}
+(3) Starting PAXOS... 14 11 13
+	Paxos: Status - Key does not exist.
+APPLY COMMAND:  {Put b 8995016276575641803}
+	Paxos Done(): Updating DONE value of  11
+APPLY COMMAND:  {Put b 3328451335138149956}
+	Paxos Done(): Updating DONE value of  12
+APPLY COMMAND:  {Get b }
+	Paxos Done(): Updating DONE value of  13
+Apply log...
+APPLY LOG:  {Put b 3916589616287113937}
+(3) Starting PAXOS... 14 13 14
+	Paxos Done(): Updating DONE value of  14
+IN Synchronize
+[]
+map[b:3916589616287113937 app:xy a:aaa]
+APPLY COMMAND:  {Get b }
+	Paxos Done(): Updating DONE value of  13
+Apply log...
+(3) Starting PAXOS... 15 13 14
+	Paxos: Status - Key does not exist.
+	Paxos Done(): Updating DONE value of  14
+	Paxos Done(): Updating DONE value of  15
+IN Synchronize
+Apply log...
+(3) Starting PAXOS... 16 13 15
+	Paxos: Status - Key does not exist.
+	Paxos Done(): Updating DONE value of  16
+(3) Starting PAXOS... 10 13 16

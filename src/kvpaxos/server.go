@@ -47,9 +47,14 @@ type KVPaxos struct {
 
 	// latest PAXOS sequence; send to server!
 	PSeq int
+
+	// todo: later -- don't store the value?! But we need!
+	SelfLog []Op
 }
 
-// shamelessly stolen from the lab writeup
+//
+// Shamelessly stolen from the lab writeup; wait for PAXOS to return
+//
 func (kv *KVPaxos) wait(seq int) interface{} {
 	to := 10 * time.Millisecond
 	for {
@@ -69,13 +74,75 @@ func (kv *KVPaxos) wait(seq int) interface{} {
 }
 
 //
-// Apply action without adding to log
+//	Apply an external operation to my database
 //
-func (kv *KVPaxos) Apply(operation Op) {
-	if operation.Cmd != "Get" {
+func (kv *KVPaxos) Apply(operation Op, seq int) {
+
+	if operation.Cmd == "Get" {
+		kv.px.Done(seq)
+		return
+	}
+
+	if operation.Cmd == "Append" {
+		value, exists := kv.KeyVals[operation.Key]
+
+		if !exists {
+			kv.KeyVals[operation.Key] = operation.Value
+		} else {
+			value = value + operation.Value
+			kv.KeyVals[operation.Key] = value
+		}
+
+	} else if operation.Cmd == "Put" {
+		kv.KeyVals[operation.Key] = operation.Value
+
+	} else {
+		fmt.Println("\n\n\tUnknown Command. Something went terribly terribly wrong.\n\n")
+	}
+
+	// call the Paxos Done() method when a kvpaxos has processed an instance and
+	// will no longer need it or any previous instance.
+	kv.px.Done(seq)
+}
+
+//
+// What value is my server at? What value does my PAXOS think it's at?
+// If I'm already there; return
+// Otherwise, retrieve the PAXOS log. If decided, apply.
+//
+func (kv *KVPaxos) Synchronize(currSeq int) int {
+	max := kv.px.Max()
+
+	if currSeq == max {
+		return max + 1
+	}
+
+	for i := currSeq; i <= max; i++ {
+		fate, item := kv.px.Status(i)
+
+		if fate == paxos.Decided {
+			operation, ok := item.(Op)
+
+			if !ok {
+				operation, _ := item.(*Op)
+				kv.Apply(*operation, i)
+			} else {
+				kv.Apply(operation, i)
+			}
+		}
+	}
+	return max + 1
+}
+
+//
+// Go through all items in my self log and apply to my key value database
+// once finished, clear the log so I dont do it again
+//
+func (kv *KVPaxos) ApplyLog() {
+	for i := 0; i < len(kv.SelfLog); i++ {
+		operation := kv.SelfLog[i]
 
 		if operation.Cmd == "Append" {
-			fmt.Println("\tAPPENDING -", operation.Value, operation.Key)
 			value, exists := kv.KeyVals[operation.Key]
 
 			if !exists {
@@ -86,38 +153,14 @@ func (kv *KVPaxos) Apply(operation Op) {
 			}
 
 		} else if operation.Cmd == "Put" {
-			fmt.Println("\tPUTTING - ", operation.Value, operation.Key)
 			kv.KeyVals[operation.Key] = operation.Value
 
 		} else {
 			fmt.Println("\n\n\tUnknown Command. Something went terribly terribly wrong.\n\n")
 		}
-	} else {
-		fmt.Println("\tGET - Skipping...")
 	}
 
-	// kv.Seqs[Seq] = true
-
-	// call the Paxos Done() method when a kvpaxos has processed an instance and
-	// will no longer need it or any previous instance.
-	kv.px.Done(kv.PSeq)
-	kv.PSeq++
-}
-
-//
-// What value is my server at? What value does my PAXOS think it's at?
-// Skip if Paxos min is 0? (e.g., nothing has happened yet)
-//
-func (kv *KVPaxos) Synchronize() {
-	// fmt.Println("\nSYNC: current sequence", kv.PSeq)
-
-	fate, item := kv.px.Status(kv.PSeq)
-
-	if fate == paxos.Decided {
-		// Apply operation / Update server...
-		operation, _ := item.(Op)
-		kv.Apply(operation)
-	}
+	kv.SelfLog = []Op{}
 }
 
 //
@@ -125,106 +168,41 @@ func (kv *KVPaxos) Synchronize() {
 // and then "interpret" the the log before that point to make sure its
 // key/value database reflects all recent Put()s.
 //
-// TODO (later??) Dont manage each vote individually
-// Whatever Ryan was talking about... ?
+// PROCESSING == Actually applying SelfLog to the database after "interpreting"
+//				existing
 //
 func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
-	// RPC'd from client.go. Add mutex protection
-	kv.mu.Lock()
-	defer kv.mu.Unlock()
-
 	fmt.Println("(2) KV Server Get!")
 
 	operation := new(Op)
 	operation.Cmd = "Get"
 	operation.Key = args.Key
 
-	kv.Process(operation, args.Seq, kv.PSeq)
+	kv.mu.Lock()
 
-	// intepret values and log to see if correct
-	// if not, APPLY (don't need other values in MY Log?)
-	kv.Synchronize()
+	startSeq := kv.Synchronize(kv.PSeq)
 
-	// retrieve value
+	kv.ApplyLog()
+
+	kv.px.Start(startSeq, operation)
+
+	_ = kv.wait(startSeq)
+
+	kv.mu.Unlock()
+
+	// get and return the value
 	if value, ok := kv.KeyVals[operation.Key]; ok {
-		// reply.Err = "OK"
 		reply.Value = value
+
 	} else {
 		reply.Err = "KvPaxos Get:\tValue does not exist! Returning empty."
 		reply.Value = ""
 	}
 
+	kv.px.Done(startSeq)
+	kv.PSeq = startSeq + 1
+
 	return nil
-}
-
-//
-//  Seq is a random client number; PSeq is the value of our server
-//
-func (kv *KVPaxos) Process(operation *Op, Seq int64, PSeq int) {
-	fmt.Println("\tKvServer: Starting Process", operation, Seq, PSeq)
-
-	// try infinitely
-	for {
-		var log_item interface{}
-
-		fate, value := kv.px.Status(kv.PSeq)
-
-		if fate == paxos.Decided {
-			operation, _ := value.(Op)
-
-			fmt.Println("\tKVProcess: Updating with decided ", kv.PSeq)
-
-			// TODO: How is this different than SYNC?
-			// fmt.Println("\tKVProcess: This sequence has already been voted on.")
-			// fmt.Println("\tThe operation that needs to be applied is...", operation)
-
-			kv.Apply(operation)
-
-			// fmt.Println("\n\tDone applying: New PSeq is:", kv.PSeq)
-			continue
-		} else {
-
-			fmt.Println("\tKVProcess: Starting paxos, and waiting on", kv.PSeq)
-			kv.px.Start(kv.PSeq, operation)
-
-			// wait for PAXOS decision
-			log_item = kv.wait(kv.PSeq)
-		}
-
-		if log_item == operation {
-			// -- APPLY OPERATION -- //
-
-			// CLEANUP -- Can we use the Apply() Function here?!
-			if operation.Cmd != "Get" {
-				if operation.Cmd == "Append" {
-					value, exists := kv.KeyVals[operation.Key]
-
-					if !exists {
-						kv.KeyVals[operation.Key] = operation.Value
-					} else {
-						value = value + operation.Value
-						kv.KeyVals[operation.Key] = value
-					}
-
-				} else if operation.Cmd == "Put" {
-					kv.KeyVals[operation.Key] = operation.Value
-
-				} else {
-					fmt.Println("\n\n\tUnknown Command. Something went terribly terribly wrong.\n\n")
-				}
-			}
-
-			// call the Paxos Done() method when a kvpaxos has processed an instance and
-			// will no longer need it or any previous instance.
-			kv.px.Done(kv.PSeq)
-			kv.PSeq++
-
-			break
-		} else {
-			fmt.Println("\tKvProcess: Wait does not match.")
-			continue
-		}
-	}
 }
 
 //
@@ -235,10 +213,6 @@ func (kv *KVPaxos) Process(operation *Op, Seq int64, PSeq int) {
 // return
 //
 func (kv *KVPaxos) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error {
-	// RPC'd from client.go. Add mutex protection
-	kv.mu.Lock()
-	defer kv.mu.Unlock()
-
 	fmt.Println("(2) KV Server PutAppend!")
 
 	// create operation
@@ -247,8 +221,23 @@ func (kv *KVPaxos) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error {
 	operation.Value = args.Value
 	operation.Cmd = args.Op
 
-	// -- PROCESS OPERATION -- //
-	kv.Process(operation, args.Seq, kv.PSeq)
+	mySeq := kv.px.Max() + 1
+
+	// call paxos; append on majority
+	kv.mu.Lock()
+
+	kv.px.Start(mySeq, operation)
+
+	what := kv.wait(mySeq)
+
+	fmt.Println(what)
+
+	// todo: check that WAIT matches OPERATION?
+	kv.SelfLog = append(kv.SelfLog, *operation)
+
+	kv.PSeq++
+
+	kv.mu.Unlock()
 
 	return nil
 }
@@ -297,6 +286,8 @@ func StartServer(servers []string, me int) *KVPaxos {
 	// Your initialization code here.
 	// kv.Log = []Op{}
 	kv.KeyVals = make(map[string]string)
+
+	kv.SelfLog = []Op{}
 
 	// start with seq 0; monotonically increasing
 	kv.PSeq = 0
