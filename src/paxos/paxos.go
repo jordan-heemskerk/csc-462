@@ -178,6 +178,7 @@ func (px *Paxos) HandleDecide(proposal *Proposal) {
 
 		if me == px.me {
 			px.mu.Lock()
+			// CAUSES PANIC?!
 			px.recProposals[proposal.Seq].Fate = Decided
 			px.recProposals[proposal.Seq].Value = prop.Value
 			// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Decide --myself --: success! ", peer)
