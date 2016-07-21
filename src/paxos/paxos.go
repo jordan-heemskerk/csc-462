@@ -655,7 +655,7 @@ func (px *Paxos) Min() int {
 		}
 
 		delete(px.recProposals, k)
-		fmt.Println("Paxos Min():\tDeleted entry at", k)
+		// fmt.Println("Paxos Min():\tDeleted entry at", k)
 	}
 
 	return min + 1
