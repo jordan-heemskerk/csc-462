@@ -688,7 +688,7 @@ func (px *Paxos) Status(seq int) (Fate, interface{}) {
 		return Pending, nil
 	}
 
-	fmt.Println("\n\tPaxos: Status of ", seq, px.recProposals[seq].Fate, px.recProposals[seq].Value)
+	// fmt.Println("\n\tPaxos: Status of ", seq, px.recProposals[seq].Fate, px.recProposals[seq].Value)
 
 	return px.recProposals[seq].Fate, px.recProposals[seq].Value
 }
