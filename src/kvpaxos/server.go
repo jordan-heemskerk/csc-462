@@ -47,9 +47,6 @@ type KVPaxos struct {
 
 	// latest PAXOS sequence; send to server!
 	PSeq int
-
-	// todo: later -- don't store the value?! But we need!
-	SelfLog []Op
 }
 
 //
@@ -58,11 +55,13 @@ type KVPaxos struct {
 func (kv *KVPaxos) wait(seq int) interface{} {
 	to := 10 * time.Millisecond
 	for {
+		fmt.Println("Wait for", seq, "on", kv.me)
 		fate, v := kv.px.Status(seq)
 
 		if fate == paxos.Decided {
 			// convert / parse interface without panicking
 			reply_value, _ := v.(*Op)
+			fmt.Println("Got", seq)
 			return reply_value
 		}
 
@@ -73,94 +72,113 @@ func (kv *KVPaxos) wait(seq int) interface{} {
 	}
 }
 
-//
-//	Apply an external operation to my database
-//
-func (kv *KVPaxos) Apply(operation Op, seq int) {
+func val2op(val interface{}) Op {
 
-	if operation.Cmd == "Get" {
-		kv.px.Done(seq)
-		return
-	}
+	_, ok := val.(Op)
 
-	if operation.Cmd == "Append" {
-		value, exists := kv.KeyVals[operation.Key]
-
-		if !exists {
-			kv.KeyVals[operation.Key] = operation.Value
-		} else {
-			value = value + operation.Value
-			kv.KeyVals[operation.Key] = value
-		}
-
-	} else if operation.Cmd == "Put" {
-		kv.KeyVals[operation.Key] = operation.Value
-
+	if !ok {
+		op, _ := val.(*Op)
+		return *op
 	} else {
-		fmt.Println("\n\n\tUnknown Command. Something went terribly terribly wrong.\n\n")
+		op, _ := val.(Op)
+		return op
 	}
 
-	// call the Paxos Done() method when a kvpaxos has processed an instance and
-	// will no longer need it or any previous instance.
-	kv.px.Done(seq)
 }
 
-//
-// What value is my server at? What value does my PAXOS think it's at?
-// If I'm already there; return
-// Otherwise, retrieve the PAXOS log. If decided, apply.
-//
-func (kv *KVPaxos) Synchronize(currSeq int) int {
-	max := kv.px.Max()
+func (kv *KVPaxos) doPaxos(op interface{}) {
 
-	if currSeq == max {
-		return max + 1
-	}
+	for {
 
-	for i := currSeq; i <= max; i++ {
-		fate, item := kv.px.Status(i)
+		kv.mu.Lock()
 
-		if fate == paxos.Decided {
-			operation, ok := item.(Op)
+		seq := kv.px.Max() + 1 // What the instance we will create will be
+		kv.Sync(seq - 1)       // Need to sync up to the one before what we will be
+		kv.px.Start(seq, op)
 
-			if !ok {
-				operation, _ := item.(*Op)
-				kv.Apply(*operation, i)
-			} else {
-				kv.Apply(operation, i)
-			}
+		kv.mu.Unlock()
+
+		pxop := kv.wait(seq)
+
+		if pxop == op {
+			kv.mu.Lock()
+			kv.Sync(seq) // will actually apply our now decided operation
+			kv.mu.Unlock()
+			break
 		}
+
 	}
-	return max + 1
+
 }
 
-//
-// Go through all items in my self log and apply to my key value database
-// once finished, clear the log so I dont do it again
-//
-func (kv *KVPaxos) ApplyLog() {
-	for i := 0; i < len(kv.SelfLog); i++ {
-		operation := kv.SelfLog[i]
+func (kv *KVPaxos) Sync(max_seq int) {
 
-		if operation.Cmd == "Append" {
-			value, exists := kv.KeyVals[operation.Key]
+	// protected upstream by a mutex
 
-			if !exists {
-				kv.KeyVals[operation.Key] = operation.Value
-			} else {
-				value = value + operation.Value
-				kv.KeyVals[operation.Key] = value
+	fmt.Printf("%d: currently @ %d -> %d\n", kv.me, kv.PSeq, max_seq)
+
+	for kv.PSeq <= max_seq {
+
+		sleep_for := 10 * time.Millisecond
+
+		for {
+
+			fate, v := kv.px.Status(kv.PSeq)
+
+			if fate == paxos.Decided {
+				// Apply this operation
+
+				operation := val2op(v)
+
+				//fmt.Printf("Applying Operation %s on %d for %d\n", operation, kv.me, kv.PSeq)
+				if operation.Cmd == "Get" {
+					break // we are good if its a get
+				} else {
+
+					if operation.Cmd == "Put" {
+
+						// do put
+						kv.KeyVals[operation.Key] = operation.Value
+
+					} else if operation.Cmd == "Append" {
+
+						// do append
+						if _, exists := kv.KeyVals[operation.Key]; exists {
+
+							kv.KeyVals[operation.Key] += operation.Value
+
+						} else {
+
+							kv.KeyVals[operation.Key] = operation.Value
+
+						}
+
+					} else {
+
+						log.Fatal("Unexpected operation!\n")
+					}
+					break
+
+				}
+
 			}
 
-		} else if operation.Cmd == "Put" {
-			kv.KeyVals[operation.Key] = operation.Value
+			// Give PAXOS some time
+			time.Sleep(sleep_for)
 
-		} else {
-			fmt.Println("\n\n\tUnknown Command. Something went terribly terribly wrong.\n\n")
+			// Gradually increase sleep more and more
+			if sleep_for < 5*time.Second {
+				sleep_for *= 2
+			}
+
 		}
+
+		kv.PSeq++
+
 	}
 
-	kv.SelfLog = []Op{}
+	//	kv.px.Done(kv.PSeq - 1)
+
 }
 
 //
@@ -172,23 +190,15 @@ func (kv *KVPaxos) ApplyLog() {
 //				existing
 //
 func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
-	fmt.Println("(2) KV Server Get!")
+	fmt.Printf("KV Server Get key %s on %d!\n", args.Key, kv.me)
 
 	operation := new(Op)
 	operation.Cmd = "Get"
 	operation.Key = args.Key
 
-	kv.mu.Lock()
+	kv.doPaxos(operation)
 
-	startSeq := kv.Synchronize(kv.PSeq)
-
-	kv.ApplyLog()
-
-	kv.px.Start(startSeq, operation)
-
-	_ = kv.wait(startSeq)
-
-	kv.mu.Unlock()
+	// we should have been updated now
 
 	// get and return the value
 	if value, ok := kv.KeyVals[operation.Key]; ok {
@@ -198,8 +208,6 @@ func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
 		reply.Err = "KvPaxos Get:\tValue does not exist! Returning empty."
 		reply.Value = ""
 	}
-
-	kv.PSeq = startSeq + 1
 
 	return nil
 }
@@ -212,7 +220,7 @@ func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
 // return
 //
 func (kv *KVPaxos) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error {
-	fmt.Println("(2) KV Server PutAppend!")
+	//fmt.Println("KV Server PutAppend! key %s value %s on %d", args.Key, args.Value, kv.me)
 
 	// create operation
 	operation := new(Op)
@@ -220,23 +228,9 @@ func (kv *KVPaxos) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error {
 	operation.Value = args.Value
 	operation.Cmd = args.Op
 
-	mySeq := kv.px.Max() + 1
+	kv.doPaxos(operation)
 
-	// call paxos; append on majority
-	kv.mu.Lock()
-
-	kv.px.Start(mySeq, operation)
-
-	what := kv.wait(mySeq)
-
-	fmt.Println(what)
-
-	// todo: check that WAIT matches OPERATION?
-	kv.SelfLog = append(kv.SelfLog, *operation)
-
-	kv.PSeq++
-
-	kv.mu.Unlock()
+	reply.Err = OK
 
 	return nil
 }
@@ -286,10 +280,8 @@ func StartServer(servers []string, me int) *KVPaxos {
 	// kv.Log = []Op{}
 	kv.KeyVals = make(map[string]string)
 
-	kv.SelfLog = []Op{}
-
-	// start with seq 0; monotonically increasing
-	kv.PSeq = 0
+	// start with seq 1; monotonically increasing
+	kv.PSeq = 1
 
 	rpcs := rpc.NewServer()
 	rpcs.Register(kv)
