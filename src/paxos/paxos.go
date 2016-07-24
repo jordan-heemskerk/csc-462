@@ -565,32 +565,11 @@ func (px *Paxos) PutDone(args *DoneArgs, reply *DoneReply) error {
 // sequence number plus one.
 //
 func (px *Paxos) Done(seq int) {
+
 	px.mu.Lock()
+	defer px.mu.Unlock()
+	px.donePeers[px.me] = seq
 
-	fmt.Println("\tPaxos Done(): Updating DONE value of ", seq)
-
-	// update my own done value
-	if seq > px.donePeers[px.me] {
-		px.donePeers[px.me] = seq
-	}
-
-	args := &DoneArgs{}
-	args.Me = px.me
-	args.MaxValue = px.donePeers[px.me]
-
-	px.mu.Unlock()
-
-	// tell my peers what my latest & greatest done value is
-	for me, peer := range px.peers {
-
-		var reply DoneReply
-
-		if me == px.me {
-			continue
-		}
-
-		call(peer, "Paxos.PutDone", args, &reply)
-	}
 }
 
 //
