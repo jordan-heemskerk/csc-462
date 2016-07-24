@@ -104,22 +104,26 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 	args.Op = op
 	args.Hash = nrand()
 
-	var peer string
-
-	if len(ck.servers) > 0 {
-		peer = ck.servers[0]
-	} else {
+	if len(ck.servers) == 0 {
 		return
 	}
 
-	if ok := call(peer, "KVPaxos.PutAppend", args, &reply); !ok {
-		// failed RPC error handling -- try another server?
-		fmt.Println("RPC Call literally failed.")
-		fmt.Println("\n\n\nPutAppend RPC Call failed!")
-	} else if reply.Err != "" {
-		// error handling -- try another server?
-		fmt.Println("\n\n\nPutAppend Call failed!")
+	// try ALL kv.peers forever until we get a response!
+	for _, peer := range ck.servers {
+		if ok := call(peer, "KVPaxos.PutAppend", args, &reply); !ok {
+			// failed RPC error handling -- try another server?
+			fmt.Println("RPC Call literally failed.")
+			fmt.Println("\n\n\nPutAppend RPC Call failed!")
+		} else if reply.Err != "" {
+			// error handling -- try another server?
+			fmt.Println("\n\n\nPutAppend Call failed!")
+			return
+
+		} else {
+			return
+		}
 	}
+
 }
 
 func (ck *Clerk) Put(key string, value string) {
