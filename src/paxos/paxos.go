@@ -584,8 +584,8 @@ func (px *Paxos) Max() int {
 
 	max := 0
 
-	for k, _ := range px.recProposals {
-		if k > max {
+	for k, v := range px.recProposals {
+		if k > max && v.Fate == Decided {
 			max = k
 		}
 	}
