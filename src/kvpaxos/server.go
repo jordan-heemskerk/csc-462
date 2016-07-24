@@ -199,7 +199,6 @@ func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
 		reply.Value = ""
 	}
 
-	kv.px.Done(startSeq)
 	kv.PSeq = startSeq + 1
 
 	return nil
