@@ -69,7 +69,7 @@ func (ck *Clerk) Get(key string) string {
 
 	args := new(GetArgs)
 	args.Key = key
-	args.Seq = nrand()
+	args.Hash = nrand()
 
 	// try ALL kv.peers forever until we get a response!
 	for _, peer := range ck.servers {
@@ -102,7 +102,7 @@ func (ck *Clerk) PutAppend(key string, value string, op string) {
 	args.Key = key
 	args.Value = value
 	args.Op = op
-	args.Seq = nrand()
+	args.Hash = nrand()
 
 	var peer string
 

@@ -29,6 +29,7 @@ type Op struct {
 	Cmd   string
 	Key   string
 	Value string
+	Hash  int64
 }
 
 type OpReply struct {
@@ -45,6 +46,9 @@ type KVPaxos struct {
 	// map to maintain Key, Value pairs; "f"
 	KeyVals map[string]string
 
+	// Keep track of which operations have been applied
+	AppliedHash map[int64]bool
+
 	// latest PAXOS sequence; send to server!
 	PSeq int
 }
@@ -55,9 +59,10 @@ type KVPaxos struct {
 func (kv *KVPaxos) wait(seq int) interface{} {
 	to := 10 * time.Millisecond
 	for {
-		fmt.Println("Wait for", seq, "on", kv.me)
+
 		fate, v := kv.px.Status(seq)
 
+		fmt.Println("Wait for", seq, "on", kv.me, "=", fate)
 		if fate == paxos.Decided {
 			// convert / parse interface without panicking
 			reply_value, _ := v.(*Op)
@@ -131,7 +136,13 @@ func (kv *KVPaxos) Sync(max_seq int) {
 				operation := val2op(v)
 
 				//fmt.Printf("Applying Operation %s on %d for %d\n", operation, kv.me, kv.PSeq)
+				if _, applied := kv.AppliedHash[operation.Hash]; applied {
+					// We have already applied this
+					break
+				}
+
 				if operation.Cmd == "Get" {
+					kv.AppliedHash[operation.Hash] = true
 					break // we are good if its a get
 				} else {
 
@@ -157,6 +168,7 @@ func (kv *KVPaxos) Sync(max_seq int) {
 
 						log.Fatal("Unexpected operation!\n")
 					}
+					kv.AppliedHash[operation.Hash] = true
 					break
 
 				}
@@ -177,7 +189,7 @@ func (kv *KVPaxos) Sync(max_seq int) {
 
 	}
 
-	//	kv.px.Done(kv.PSeq - 1)
+	kv.px.Done(kv.PSeq - 1)
 
 }
 
@@ -195,6 +207,7 @@ func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
 	operation := new(Op)
 	operation.Cmd = "Get"
 	operation.Key = args.Key
+	operation.Hash = args.Hash
 
 	kv.doPaxos(operation)
 
@@ -227,6 +240,7 @@ func (kv *KVPaxos) PutAppend(args *PutAppendArgs, reply *PutAppendReply) error {
 	operation.Key = args.Key
 	operation.Value = args.Value
 	operation.Cmd = args.Op
+	operation.Hash = args.Hash
 
 	kv.doPaxos(operation)
 
@@ -279,6 +293,8 @@ func StartServer(servers []string, me int) *KVPaxos {
 	// Your initialization code here.
 	// kv.Log = []Op{}
 	kv.KeyVals = make(map[string]string)
+
+	kv.AppliedHash = make(map[int64]bool)
 
 	// start with seq 1; monotonically increasing
 	kv.PSeq = 1
