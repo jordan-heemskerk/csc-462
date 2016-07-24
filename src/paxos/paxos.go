@@ -382,6 +382,10 @@ func (px *Paxos) HandlePropose(proposal *Proposal) (bool, int, interface{}) {
 						replySeq = peer_reply.Seq
 						replyValue = peer_reply.Value
 					}
+				} else {
+
+					replySeq = peer_reply.Seq
+					replyValue = peer_reply.Value
 				}
 
 				// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: (self) All is good! ", peer)
