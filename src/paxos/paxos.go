@@ -179,6 +179,11 @@ func (px *Paxos) HandleDecide(proposal *Proposal) {
 		if me == px.me {
 			px.mu.Lock()
 			// CAUSES PANIC?!
+
+			if _, exists := px.recProposals[proposal.Seq]; !exists {
+				px.recProposals[proposal.Seq] = prop
+			}
+
 			px.recProposals[proposal.Seq].Fate = Decided
 			px.recProposals[proposal.Seq].Value = prop.Value
 			// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Decide --myself --: success! ", peer)
@@ -560,32 +565,11 @@ func (px *Paxos) PutDone(args *DoneArgs, reply *DoneReply) error {
 // sequence number plus one.
 //
 func (px *Paxos) Done(seq int) {
+
 	px.mu.Lock()
+	defer px.mu.Unlock()
+	px.donePeers[px.me] = seq
 
-	fmt.Println("\tPaxos Done(): Updating DONE value of ", seq)
-
-	// update my own done value
-	if seq > px.donePeers[px.me] {
-		px.donePeers[px.me] = seq
-	}
-
-	args := &DoneArgs{}
-	args.Me = px.me
-	args.MaxValue = px.donePeers[px.me]
-
-	px.mu.Unlock()
-
-	// tell my peers what my latest & greatest done value is
-	for me, peer := range px.peers {
-
-		var reply DoneReply
-
-		if me == px.me {
-			continue
-		}
-
-		call(peer, "Paxos.PutDone", args, &reply)
-	}
 }
 
 //
@@ -600,8 +584,8 @@ func (px *Paxos) Max() int {
 
 	max := 0
 
-	for k, _ := range px.recProposals {
-		if k > max {
+	for k, v := range px.recProposals {
+		if k > max && v.Fate == Decided {
 			max = k
 		}
 	}
