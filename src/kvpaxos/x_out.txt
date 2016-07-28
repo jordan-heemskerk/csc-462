@@ -1,0 +1,5486 @@
+Test: Basic put/append/get ...
+
+
+(1) Clerk PutAppend
+0: currently @ 1 -> 0
+(3) Starting PAXOS... 1 0 0
+	Paxos: Status - Key does not exist.
+Wait for 1 on 0 = 2
+Wait for 1 on 0 = 1
+Got 1
+0: currently @ 1 -> 1
+
+
+
+PutAppend Call failed!
+
+
+(1) Clerk PutAppend
+0: currently @ 2 -> 1
+(3) Starting PAXOS... 2 0 1
+	Paxos: Status - Key does not exist.
+Wait for 2 on 0 = 2
+Wait for 2 on 0 = 1
+Got 2
+0: currently @ 2 -> 2
+
+
+
+PutAppend Call failed!
+
+
+(1) Clerk Get
+KV Server Get key app on 0!
+0: currently @ 3 -> 2
+(3) Starting PAXOS... 3 0 2
+	Paxos: Status - Key does not exist.
+Wait for 3 on 0 = 2
+Wait for 3 on 0 = 1
+Got 3
+0: currently @ 3 -> 3
+
+
+(1) Clerk PutAppend
+0: currently @ 4 -> 3
+(3) Starting PAXOS... 4 0 3
+	Paxos: Status - Key does not exist.
+Wait for 4 on 0 = 2
+Wait for 4 on 0 = 1
+Got 4
+0: currently @ 4 -> 4
+
+
+
+PutAppend Call failed!
+
+
+(1) Clerk Get
+KV Server Get key a on 0!
+0: currently @ 5 -> 4
+(3) Starting PAXOS... 5 0 4
+	Paxos: Status - Key does not exist.
+Wait for 5 on 0 = 2
+Wait for 5 on 0 = 1
+Got 5
+0: currently @ 5 -> 5
+
+
+(1) Clerk PutAppend
+1: currently @ 1 -> 5
+(3) Starting PAXOS... 6 0 5
+	Paxos: Status - Key does not exist.
+Wait for 6 on 1 = 2
+Wait for 6 on 1 = 1
+Got 6
+1: currently @ 6 -> 6
+
+
+
+PutAppend Call failed!
+
+
+(1) Clerk Get
+KV Server Get key a on 2!
+2: currently @ 1 -> 6
+(3) Starting PAXOS... 7 0 6
+	Paxos: Status - Key does not exist.
+Wait for 7 on 2 = 2
+Wait for 7 on 2 = 1
+Got 7
+2: currently @ 7 -> 7
+
+
+(1) Clerk Get
+KV Server Get key a on 1!
+1: currently @ 7 -> 7
+(3) Starting PAXOS... 8 0 7
+	Paxos: Status - Key does not exist.
+Wait for 8 on 1 = 2
+Wait for 8 on 1 = 1
+Got 8
+1: currently @ 8 -> 8
+
+
+(1) Clerk Get
+KV Server Get key a on 0!
+0: currently @ 6 -> 8
+(3) Starting PAXOS... 9 0 8
+	Paxos: Status - Key does not exist.
+Wait for 9 on 0 = 2
+Wait for 9 on 0 = 1
+Got 9
+0: currently @ 9 -> 9
+  ... Passed
+
+
+
+
+
+Test: Concurrent clients ...
+num eye:  14 get
+
+
+(1) Clerk Get
+num eye:  6 put  3916589616287113937
+
+
+(1) Clerk PutAppend
+num eye:  2 get
+num eye:  7 put  2775422040480279449
+
+
+(1) Clerk PutAppend
+num eye:  3 put  1976235410884491574
+
+
+(1) Clerk PutAppend
+num eye:  8 get
+
+
+(1) Clerk Get
+num eye:  4 get
+
+
+(1) Clerk Get
+KV Server Get key b on 2!
+2: currently @ 8 -> 9
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 2 = 2
+num eye:  9 get
+
+
+(1) Clerk Get
+num eye:  5 put  3328451335138149956
+
+
+(1) Clerk PutAppend
+num eye:  10 get
+
+
+(1) Clerk Get
+num eye:  11 put  6941261091797652072
+
+
+(1) Clerk PutAppend
+num eye:  12 get
+
+
+(1) Clerk Get
+num eye:  13 put  261049867304784443
+
+
+(1) Clerk PutAppend
+KV Server Get key b on 1!
+1: currently @ 9 -> 9
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 1 = 2
+2: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 2 = 2
+2: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 2 = 2
+
+
+(1) Clerk Get
+num eye:  0 put  8995016276575641803
+
+
+(1) Clerk PutAppend
+KV Server Get key b on 2!
+2: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 2 = 2
+num eye:  1 get
+
+
+(1) Clerk Get
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+KV Server Get key b on 0!
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+KV Server Get key b on 2!
+2: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 2 = 2
+KV Server Get key b on 1!
+1: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 1 = 2
+1: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 1 = 2
+KV Server Get key b on 0!
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+KV Server Get key b on 1!
+	Paxos: Status - Key does not exist.
+Wait for 10 on 2 = 2
+	Paxos: Status - Key does not exist.
+0: currently @ 10 -> 9
+Wait for 10 on 2 = 2
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+1: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 1 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 1976235410884491574 1524704998885021430} &{Get b  2736691192924630259}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 1976235410884491574 1524704998885021430} &{Get b  3470304846819852136}
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 261049867304784443 28148766896088458} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  2742915632471288888} &{Put b 2775422040480279449 3885376224733148152}
+Wait for 10 on 0 = 1
+Wait for 10 on 1 = 1
+Got 10
+Got 10
+0: currently @ 10 -> 10
+1: currently @ 10 -> 10
+(3) Starting PAXOS... 11 0 10
+(3) Starting PAXOS... 11 0 10
+Wait for 10 on 2 = 1
+	Paxos: Status - Key does not exist.
+Wait for 11 on 0 = 2
+	Paxos: Status - Key does not exist.
+Wait for 10 on 2 = 1
+Wait for 11 on 1 = 2
+Wait for 10 on 1 = 1
+Got 10
+1: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+Wait for 11 on 1 = 2
+Wait for 10 on 0 = 1
+Wait for 10 on 1 = 1
+Got 10
+Got 10
+1: currently @ 11 -> 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 1 = 2
+Wait for 11 on 0 = 2
+Wait for 10 on 2 = 1
+Got 10
+2: currently @ 10 -> 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+Wait for 11 on 2 = 2
+Got 10
+2: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+Wait for 11 on 2 = 2
+Wait for 10 on 0 = 1
+Got 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 0 = 2
+Wait for 10 on 2 = 1
+Got 10
+2: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+Wait for 11 on 2 = 2
+Wait for 10 on 1 = 1
+Got 10
+1: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 1 = 2
+Wait for 10 on 2 = 1
+Got 10
+2: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+Wait for 11 on 2 = 2
+Wait for 10 on 0 = 1
+Got 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 0 = 2
+Got 10
+Wait for 10 on 0 = 1
+Got 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+2: currently @ 11 -> 10
+Wait for 10 on 0 = 1
+Got 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 3328451335138149956 1551685823408124340} &{Put b 6941261091797652072 1926164088857933033}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 3328451335138149956 1551685823408124340} &{Put b 2775422040480279449 3885376224733148152}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3470304846819852136} &{Put b 6941261091797652072 1926164088857933033}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2742915632471288888} &{Put b 6941261091797652072 1926164088857933033}
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  2742915632471288888} &{Put b 261049867304784443 28148766896088458}
+Wait for 11 on 1 = 1
+Wait for 11 on 0 = 1
+Got 11
+Got 11
+0: currently @ 11 -> 11
+1: currently @ 11 -> 11
+(3) Starting PAXOS... 12 0 11
+(3) Starting PAXOS... 12 0 11
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 12 on 0 = 2
+Wait for 12 on 1 = 2
+Wait for 11 on 1 = 1
+Got 11
+1: currently @ 12 -> 11
+(3) Starting PAXOS... 12 0 11
+Wait for 12 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Get b  4384981850554221195}
+Wait for 12 on 1 = 2
+Wait for 12 on 0 = 2
+Wait for 11 on 0 = 1
+Wait for 11 on 2 = 1
+Got 11
+2: currently @ 11 -> 11
+(3) Starting PAXOS... 12 0 11
+Wait for 12 on 2 = 2
+Got 11
+0: currently @ 12 -> 12
+Wait for 11 on 0 = 1
+(3) Starting PAXOS... 13 0 12
+Got 11
+	Paxos: Status - Key does not exist.
+Wait for 13 on 0 = 2
+0: currently @ 13 -> 12
+(3) Starting PAXOS... 13 0 12
+Wait for 11 on 1 = 1
+	Paxos: Status - Key does not exist.
+Got 11
+Wait for 13 on 0 = 2
+1: currently @ 12 -> 12
+(3) Starting PAXOS... 13 0 12
+	Paxos: Status - Key does not exist.
+Wait for 13 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4384981850554221195} &{Put b 2775422040480279449 3885376224733148152}
+Wait for 12 on 1 = 2
+Wait for 13 on 0 = 1
+Wait for 11 on 2 = 1
+Got 13
+Got 11
+0: currently @ 13 -> 13
+2: currently @ 12 -> 13
+(3) Starting PAXOS... 14 0 13
+	Paxos: Status - Key does not exist.
+Wait for 14 on 0 = 2
+(3) Starting PAXOS... 14 0 13
+	Paxos: Status - Key does not exist.
+Wait for 14 on 2 = 2
+Wait for 13 on 1 = 1
+Got 13
+Wait for 12 on 2 = 1
+Got 12
+Wait for 11 on 2 = 1
+2: currently @ 14 -> 13
+Got 11
+Wait for 11 on 0 = 1
+(3) Starting PAXOS... 14 0 13
+Got 11
+Wait for 11 on 1 = 1
+	Paxos: Status - Key does not exist.
+Got 11
+0: currently @ 14 -> 13
+Wait for 14 on 2 = 2
+1: currently @ 13 -> 13
+(3) Starting PAXOS... 14 0 13
+2: currently @ 14 -> 13
+(3) Starting PAXOS... 14 0 13
+Wait for 14 on 0 = 2
+(3) Starting PAXOS... 14 0 13
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 14 on 1 = 2
+Wait for 14 on 2 = 2
+1: currently @ 14 -> 13
+(3) Starting PAXOS... 14 0 13
+Wait for 13 on 0 = 1
+Got 13
+Wait for 11 on 2 = 1
+0: currently @ 14 -> 13
+Got 11
+(3) Starting PAXOS... 14 0 13
+2: currently @ 14 -> 13
+Wait for 14 on 0 = 2
+(3) Starting PAXOS... 14 0 13
+	Paxos: Status - Key does not exist.
+Wait for 14 on 2 = 2
+	Paxos: Status - Key does not exist.
+Wait for 14 on 1 = 2
+Wait for 11 on 0 = 1
+Got 11
+0: currently @ 14 -> 13
+(3) Starting PAXOS... 14 0 13
+Wait for 14 on 0 = 2
+Wait for 11 on 2 = 1
+Got 11
+2: currently @ 14 -> 13
+(3) Starting PAXOS... 14 0 13
+	Paxos: Status - Key does not exist.
+Wait for 14 on 2 = 2
+Wait for 11 on 0 = 1
+Got 11
+0: currently @ 14 -> 13
+(3) Starting PAXOS... 14 0 13
+Wait for 14 on 0 = 2
+Wait for 12 on 0 = 1
+Got 12
+0: currently @ 14 -> 13
+(3) Starting PAXOS... 14 0 13
+Wait for 14 on 0 = 2
+Wait for 12 on 1 = 1
+Got 12
+1: currently @ 14 -> 13
+(3) Starting PAXOS... 14 0 13
+Wait for 14 on 1 = 2
+Wait for 12 on 1 = 1
+Got 12
+1: currently @ 14 -> 13
+(3) Starting PAXOS... 14 0 13
+Wait for 14 on 1 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 1 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 2 = 2
+Wait for 14 on 0 = 2
+Wait for 14 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1996994287929105294} &{Get b  2554933002429648571}
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  3470304846819852136} &{Get b  2597893025841447404}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2742915632471288888} &{Get b  4384981850554221195}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 1976235410884491574 1524704998885021430} &{Put b 2775422040480279449 3885376224733148152}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Put b 2775422040480279449 3885376224733148152}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Put b 2775422040480279449 3885376224733148152}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 1976235410884491574 1524704998885021430} &{Put b 2775422040480279449 3885376224733148152}
+Wait for 14 on 0 = 1
+Wait for 14 on 1 = 1
+Wait for 14 on 0 = 1
+Got 14
+Got 14
+0: currently @ 14 -> 14
+1: currently @ 14 -> 14
+(3) Starting PAXOS... 15 0 14
+(3) Starting PAXOS... 15 0 14
+	Paxos: Status - Key does not exist.
+Wait for 15 on 0 = 2
+	Paxos: Status - Key does not exist.
+Wait for 15 on 1 = 2
+Wait for 14 on 2 = 1
+Got 14
+Wait for 14 on 1 = 1
+2: currently @ 14 -> 14
+Wait for 14 on 1 = 1
+(3) Starting PAXOS... 15 0 14
+	Paxos: Status - Key does not exist.
+Wait for 15 on 2 = 2
+Wait for 14 on 0 = 1
+Got 14
+Wait for 14 on 2 = 1
+0: currently @ 15 -> 14
+Got 14
+(3) Starting PAXOS... 15 0 14
+2: currently @ 15 -> 14
+	Paxos: Status - Key does not exist.
+(3) Starting PAXOS... 15 0 14
+Wait for 15 on 0 = 2
+	Paxos: Status - Key does not exist.
+Got 14
+Wait for 15 on 2 = 2
+0: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+	Paxos: Status - Key does not exist.
+Wait for 15 on 0 = 2
+Wait for 14 on 0 = 1
+Got 14
+0: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+Wait for 15 on 0 = 2
+Got 14
+Wait for 14 on 0 = 1
+Got 14
+0: currently @ 15 -> 14
+Got 14
+(3) Starting PAXOS... 15 0 14
+Wait for 15 on 0 = 2
+Wait for 14 on 2 = 1
+Wait for 14 on 2 = 1
+Got 14
+Got 14
+2: currently @ 15 -> 14
+Wait for 14 on 2 = 1
+(3) Starting PAXOS... 15 0 14
+Got 14
+	Paxos: Status - Key does not exist.
+Wait for 15 on 2 = 2
+2: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+	Paxos: Status - Key does not exist.
+Wait for 15 on 2 = 2
+2: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+	Paxos: Status - Key does not exist.
+Wait for 15 on 2 = 2
+Wait for 14 on 0 = 1
+Got 14
+0: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+Wait for 15 on 0 = 2
+Wait for 14 on 1 = 1
+Got 14
+1: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+	Paxos: Status - Key does not exist.
+Wait for 15 on 1 = 2
+1: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+	Paxos: Status - Key does not exist.
+Wait for 15 on 1 = 2
+1: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+	Paxos: Status - Key does not exist.
+Wait for 15 on 1 = 2
+Wait for 15 on 2 = 2
+Wait for 15 on 0 = 2
+Wait for 15 on 1 = 2
+Wait for 15 on 1 = 2
+Wait for 15 on 2 = 2
+Wait for 15 on 2 = 2
+Wait for 15 on 1 = 2
+Wait for 15 on 1 = 2
+Wait for 15 on 0 = 1
+Got 15
+0: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+Wait for 15 on 0 = 1
+Got 15
+Wait for 15 on 0 = 1
+Got 15
+Wait for 15 on 2 = 2
+Wait for 15 on 0 = 2
+0: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+Wait for 15 on 0 = 2
+0: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+Wait for 15 on 0 = 2
+Wait for 15 on 0 = 1
+Got 15
+0: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+Wait for 15 on 0 = 2
+Wait for 15 on 0 = 1
+Got 15
+0: currently @ 15 -> 14
+(3) Starting PAXOS... 15 0 14
+Wait for 15 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 8995016276575641803 840344676824600215} &{Get b  4384981850554221195}
+Wait for 15 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1996994287929105294} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 15 on 0 = 2
+Wait for 15 on 0 = 2
+Wait for 15 on 0 = 2
+Wait for 15 on 0 = 2
+Wait for 15 on 0 = 2
+Wait for 15 on 1 = 2
+Wait for 15 on 2 = 2
+Wait for 15 on 0 = 2
+Wait for 15 on 2 = 2
+Wait for 15 on 2 = 2
+Wait for 15 on 2 = 2
+Wait for 15 on 1 = 2
+Wait for 15 on 1 = 2
+Wait for 15 on 1 = 2
+Wait for 15 on 2 = 2
+Wait for 15 on 0 = 1
+Got 15
+0: currently @ 15 -> 15
+(3) Starting PAXOS... 16 0 15
+	Paxos: Status - Key does not exist.
+Wait for 16 on 0 = 2
+Wait for 15 on 0 = 1
+Got 15
+0: currently @ 16 -> 15
+(3) Starting PAXOS... 16 0 15
+Wait for 16 on 0 = 2
+Wait for 15 on 0 = 1
+Got 15
+0: currently @ 16 -> 15
+(3) Starting PAXOS... 16 0 15
+Wait for 15 on 0 = 1
+Wait for 16 on 0 = 2
+Got 15
+0: currently @ 16 -> 15
+Wait for 15 on 0 = 1
+Got 15
+(3) Starting PAXOS... 16 0 15
+Wait for 16 on 0 = 2
+0: currently @ 16 -> 15
+(3) Starting PAXOS... 16 0 15
+Wait for 16 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Put b 8995016276575641803 840344676824600215} &{Put b 1976235410884491574 1524704998885021430}
+Wait for 16 on 0 = 1
+Got 16
+0: currently @ 16 -> 16
+(3) Starting PAXOS... 17 0 16
+	Paxos: Status - Key does not exist.
+Wait for 17 on 0 = 2
+Wait for 16 on 0 = 1
+Got 16
+0: currently @ 17 -> 16
+(3) Starting PAXOS... 17 0 16
+Wait for 17 on 0 = 2
+Wait for 16 on 0 = 1
+Got 16
+0: currently @ 17 -> 16
+(3) Starting PAXOS... 17 0 16
+Wait for 17 on 0 = 2
+Wait for 16 on 0 = 1
+Got 16
+0: currently @ 17 -> 17
+(3) Starting PAXOS... 18 0 17
+	Paxos: Status - Key does not exist.
+Wait for 18 on 0 = 2
+Wait for 16 on 0 = 1
+Got 16
+0: currently @ 18 -> 17
+(3) Starting PAXOS... 18 0 17
+Wait for 18 on 0 = 2
+Wait for 17 on 0 = 1
+Got 17
+0: currently @ 18 -> 17
+(3) Starting PAXOS... 18 0 17
+Wait for 18 on 0 = 2
+Wait for 15 on 2 = 1
+Got 15
+2: currently @ 15 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 15 on 1 = 1
+Got 15
+1: currently @ 15 -> 18
+(3) Starting PAXOS... 19 0 18
+	Paxos: Status - Key does not exist.
+Wait for 19 on 2 = 2
+	Paxos: Status - Key does not exist.
+Wait for 19 on 1 = 2
+Wait for 17 on 0 = 1
+Wait for 15 on 0 = 1
+Got 17
+Got 15
+0: currently @ 18 -> 18
+Wait for 17 on 0 = 1
+Got 17
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 0 = 2
+0: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 0 = 2
+0: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 0 = 2
+Wait for 18 on 0 = 1
+Got 18
+0: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 18 on 0 = 1
+Got 18
+0: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 18 on 0 = 1
+Got 18
+0: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 0 = 2
+Wait for 15 on 2 = 1
+Got 15
+2: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 2 = 2
+Wait for 15 on 2 = 1
+Got 15
+2: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 2 = 2
+Wait for 15 on 2 = 1
+Got 15
+2: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 2 = 2
+Wait for 15 on 1 = 1
+Got 15
+1: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 1 = 2
+Wait for 15 on 1 = 1
+Got 15
+1: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 1 = 2
+Wait for 15 on 1 = 1
+Got 15
+1: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 1 = 2
+Wait for 15 on 2 = 1
+Got 15
+2: currently @ 19 -> 18
+(3) Starting PAXOS... 19 0 18
+Wait for 19 on 2 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 3916589616287113937 3613763436292901481} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 19 on 2 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 6941261091797652072 1926164088857933033} &{Get b  2554933002429648571}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4472679488085110080} &{Get b  4384981850554221195}
+
+
+DIFFEERENT VALUE
+
+
+&{Put b 261049867304784443 28148766896088458} &{Get b  2742915632471288888}
+Wait for 19 on 1 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 0 = 2
+Wait for 19 on 2 = 2
+Wait for 19 on 1 = 2
+Wait for 19 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  3470304846819852136} &{Get b  2742915632471288888}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 3328451335138149956 1551685823408124340} &{Get b  2554933002429648571}
+Wait for 19 on 0 = 1
+Wait for 19 on 0 = 1
+Got 19
+Got 19
+0: currently @ 19 -> 19
+(3) Starting PAXOS... 20 0 19
+	Paxos: Status - Key does not exist.
+Wait for 20 on 0 = 2
+0: currently @ 20 -> 19
+(3) Starting PAXOS... 20 0 19
+	Paxos: Status - Key does not exist.
+Wait for 20 on 0 = 2
+Wait for 19 on 1 = 1
+Got 19
+1: currently @ 19 -> 19
+(3) Starting PAXOS... 20 0 19
+	Paxos: Status - Key does not exist.
+Wait for 19 on 0 = 1
+Wait for 20 on 1 = 2
+Got 19
+0: currently @ 20 -> 19
+(3) Starting PAXOS... 20 0 19
+Wait for 20 on 0 = 2
+Wait for 20 on 0 = 1
+Got 20
+Wait for 20 on 0 = 1
+0: currently @ 20 -> 20
+Got 20
+(3) Starting PAXOS... 21 0 20
+	Paxos: Status - Key does not exist.
+Wait for 21 on 0 = 2
+0: currently @ 21 -> 20
+(3) Starting PAXOS... 21 0 20
+Wait for 21 on 0 = 2
+Wait for 20 on 0 = 1
+Got 20
+0: currently @ 21 -> 20
+(3) Starting PAXOS... 21 0 20
+Wait for 21 on 0 = 2
+Wait for 20 on 1 = 1
+Got 20
+1: currently @ 20 -> 20
+Wait for 19 on 2 = 1
+Got 19
+(3) Starting PAXOS... 21 0 20
+2: currently @ 19 -> 20
+Wait for 21 on 1 = 2
+(3) Starting PAXOS... 21 0 20
+	Paxos: Status - Key does not exist.
+Wait for 21 on 2 = 2
+Wait for 19 on 2 = 1
+Got 19
+2: currently @ 21 -> 20
+(3) Starting PAXOS... 21 0 20
+	Paxos: Status - Key does not exist.
+Wait for 21 on 2 = 2
+Wait for 19 on 2 = 1
+Got 19
+2: currently @ 21 -> 20
+(3) Starting PAXOS... 21 0 20
+	Paxos: Status - Key does not exist.
+Wait for 21 on 2 = 2
+Wait for 19 on 2 = 1
+Got 19
+2: currently @ 21 -> 20
+(3) Starting PAXOS... 21 0 20
+	Paxos: Status - Key does not exist.
+Wait for 21 on 2 = 2
+Wait for 19 on 0 = 1
+Got 19
+0: currently @ 21 -> 20
+(3) Starting PAXOS... 21 0 20
+Wait for 21 on 0 = 2
+Wait for 19 on 1 = 1
+Got 19
+1: currently @ 21 -> 20
+(3) Starting PAXOS... 21 0 20
+Wait for 21 on 1 = 2
+Wait for 19 on 1 = 1
+Got 19
+1: currently @ 21 -> 20
+(3) Starting PAXOS... 21 0 20
+Wait for 21 on 1 = 2
+Wait for 19 on 0 = 1
+Got 19
+0: currently @ 21 -> 20
+(3) Starting PAXOS... 21 0 20
+Wait for 21 on 0 = 2
+Wait for 19 on 0 = 1
+Got 19
+0: currently @ 21 -> 20
+(3) Starting PAXOS... 21 0 20
+Wait for 21 on 0 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 0 = 2
+Wait for 19 on 2 = 1
+Got 19
+2: currently @ 21 -> 20
+(3) Starting PAXOS... 21 0 20
+Wait for 21 on 2 = 2
+Wait for 21 on 2 = 2
+Wait for 19 on 1 = 1
+Got 19
+1: currently @ 21 -> 20
+Wait for 21 on 2 = 2
+(3) Starting PAXOS... 21 0 20
+Wait for 21 on 0 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 2 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3470304846819852136} &{Get b  4384981850554221195}
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  3470304846819852136} &{Put b 2775422040480279449 3885376224733148152}
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  3470304846819852136} &{Get b  2742915632471288888}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2597893025841447404} &{Get b  2736691192924630259}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Put b 261049867304784443 28148766896088458}
+Wait for 21 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2736691192924630259} &{Get b  4384981850554221195}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 8995016276575641803 840344676824600215} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 21 on 0 = 2
+Wait for 21 on 1 = 2
+Wait for 21 on 0 = 2
+Wait for 21 on 2 = 1
+Wait for 21 on 1 = 1
+Got 21
+Got 21
+2: currently @ 21 -> 21
+1: currently @ 21 -> 21
+(3) Starting PAXOS... 22 0 21
+(3) Starting PAXOS... 22 0 21
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 22 on 2 = 2
+Wait for 22 on 1 = 2
+Wait for 21 on 2 = 1
+Wait for 21 on 1 = 1
+Got 21
+Got 21
+2: currently @ 22 -> 22
+1: currently @ 22 -> 22
+(3) Starting PAXOS... 23 0 22
+(3) Starting PAXOS... 23 0 22
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 23 on 2 = 2
+Wait for 23 on 1 = 2
+Wait for 21 on 2 = 1
+Got 21
+2: currently @ 23 -> 22
+(3) Starting PAXOS... 23 0 22
+	Paxos: Status - Key does not exist.
+Wait for 23 on 2 = 2
+Wait for 21 on 0 = 1
+Got 21
+0: currently @ 21 -> 22
+(3) Starting PAXOS... 23 0 22
+Wait for 23 on 0 = 2
+Wait for 23 on 1 = 2
+Wait for 21 on 1 = 1
+Got 21
+1: currently @ 23 -> 22
+Wait for 23 on 2 = 2
+(3) Starting PAXOS... 23 0 22
+Wait for 23 on 1 = 1
+Got 23
+1: currently @ 23 -> 23
+(3) Starting PAXOS... 24 0 23
+Wait for 21 on 0 = 1
+Got 21
+0: currently @ 23 -> 23
+(3) Starting PAXOS... 24 0 23
+	Paxos: Status - Key does not exist.
+Wait for 24 on 0 = 2
+	Paxos: Status - Key does not exist.
+Wait for 24 on 1 = 2
+Wait for 22 on 2 = 1
+Got 22
+2: currently @ 23 -> 23
+(3) Starting PAXOS... 24 0 23
+	Paxos: Status - Key does not exist.
+Wait for 24 on 2 = 2
+Wait for 22 on 1 = 1
+Got 22
+1: currently @ 24 -> 23
+(3) Starting PAXOS... 24 0 23
+	Paxos: Status - Key does not exist.
+Wait for 24 on 1 = 2
+Wait for 21 on 2 = 1
+Got 21
+Wait for 21 on 2 = 1
+Got 21
+2: currently @ 24 -> 23
+(3) Starting PAXOS... 24 0 23
+	Paxos: Status - Key does not exist.
+Wait for 24 on 2 = 2
+2: currently @ 24 -> 23
+(3) Starting PAXOS... 24 0 23
+	Paxos: Status - Key does not exist.
+Wait for 24 on 2 = 2
+Wait for 21 on 0 = 1
+Got 21
+0: currently @ 24 -> 23
+(3) Starting PAXOS... 24 0 23
+Wait for 24 on 0 = 2
+Wait for 23 on 2 = 1
+Got 23
+2: currently @ 24 -> 23
+Wait for 23 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+Wait for 24 on 1 = 2
+Wait for 24 on 0 = 2
+Wait for 24 on 2 = 2
+{Get b  3470304846819852136} &{Get b  4384981850554221195}
+Wait for 24 on 2 = 2
+Wait for 24 on 1 = 2
+Wait for 24 on 2 = 2
+Wait for 24 on 0 = 2
+Wait for 23 on 2 = 1
+Got 23
+2: currently @ 24 -> 23
+(3) Starting PAXOS... 24 0 23
+Wait for 24 on 2 = 2
+Wait for 23 on 1 = 1
+Got 23
+1: currently @ 24 -> 23
+(3) Starting PAXOS... 24 0 23
+Wait for 24 on 1 = 2
+Wait for 23 on 0 = 1
+Got 23
+0: currently @ 24 -> 23
+(3) Starting PAXOS... 24 0 23
+Wait for 24 on 0 = 2
+Wait for 24 on 2 = 2
+Wait for 24 on 1 = 2
+Wait for 24 on 2 = 2
+Wait for 24 on 1 = 2
+Wait for 24 on 2 = 2
+Wait for 24 on 1 = 2
+Wait for 24 on 0 = 2
+Wait for 24 on 2 = 2
+Wait for 24 on 0 = 2
+Wait for 24 on 0 = 2
+Wait for 24 on 0 = 2
+Wait for 24 on 2 = 2
+Wait for 24 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 6941261091797652072 1926164088857933033} &{Put b 2775422040480279449 3885376224733148152}
+Wait for 24 on 0 = 2
+Wait for 24 on 2 = 2
+Wait for 24 on 1 = 2
+Wait for 24 on 2 = 2
+Wait for 24 on 1 = 2
+Wait for 24 on 0 = 2
+Wait for 24 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Put b 261049867304784443 28148766896088458} &{Get b  3470304846819852136}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 261049867304784443 28148766896088458} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 24 on 1 = 1
+Got 24
+Wait for 24 on 0 = 1
+Wait for 24 on 2 = 1
+1: currently @ 24 -> 24
+Got 24
+Got 24
+0: currently @ 24 -> 24
+(3) Starting PAXOS... 25 0 24
+2: currently @ 24 -> 24
+	Paxos: Status - Key does not exist.
+(3) Starting PAXOS... 25 0 24
+Wait for 25 on 1 = 2
+(3) Starting PAXOS... 25 0 24
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 25 on 0 = 2
+Wait for 25 on 2 = 2
+Wait for 25 on 1 = 1
+Got 25
+1: currently @ 25 -> 25
+(3) Starting PAXOS... 26 0 25
+	Paxos: Status - Key does not exist.
+Wait for 26 on 1 = 2
+Wait for 25 on 2 = 2
+Wait for 25 on 0 = 1
+Got 25
+0: currently @ 25 -> 25
+(3) Starting PAXOS... 26 0 25
+	Paxos: Status - Key does not exist.
+Wait for 26 on 0 = 2
+Wait for 21 on 0 = 1
+Got 21
+0: currently @ 26 -> 25
+(3) Starting PAXOS... 26 0 25
+Wait for 26 on 0 = 2
+Wait for 26 on 1 = 1
+Got 26
+1: currently @ 26 -> 26
+(3) Starting PAXOS... 27 0 26
+	Paxos: Status - Key does not exist.
+Wait for 27 on 1 = 2
+Wait for 26 on 0 = 1
+Got 26
+0: currently @ 26 -> 26
+(3) Starting PAXOS... 27 0 26
+Wait for 27 on 0 = 2
+Wait for 26 on 0 = 1
+Got 26
+0: currently @ 27 -> 26
+(3) Starting PAXOS... 27 0 26
+Wait for 27 on 0 = 2
+Wait for 21 on 1 = 1
+Got 21
+1: currently @ 27 -> 26
+(3) Starting PAXOS... 27 0 26
+Wait for 27 on 1 = 2
+Wait for 21 on 0 = 1
+Got 21
+0: currently @ 27 -> 26
+(3) Starting PAXOS... 27 0 26
+Wait for 27 on 0 = 2
+Wait for 21 on 0 = 1
+Got 21
+0: currently @ 27 -> 26
+(3) Starting PAXOS... 27 0 26
+Wait for 27 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 3916589616287113937 3613763436292901481} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 27 on 0 = 1
+Got 27
+0: currently @ 27 -> 27
+(3) Starting PAXOS... 28 0 27
+	Paxos: Status - Key does not exist.
+Wait for 28 on 0 = 2
+Wait for 25 on 2 = 1
+Got 25
+2: currently @ 25 -> 27
+(3) Starting PAXOS... 28 0 27
+	Paxos: Status - Key does not exist.
+Wait for 28 on 2 = 2
+Wait for 27 on 1 = 1
+Got 27
+1: currently @ 27 -> 27
+(3) Starting PAXOS... 28 0 27
+	Paxos: Status - Key does not exist.
+Wait for 28 on 1 = 2
+Wait for 27 on 0 = 1
+Got 27
+0: currently @ 28 -> 27
+(3) Starting PAXOS... 28 0 27
+Wait for 28 on 0 = 2
+Wait for 27 on 0 = 1
+Got 27
+0: currently @ 28 -> 27
+(3) Starting PAXOS... 28 0 27
+Wait for 28 on 0 = 2
+Wait for 27 on 1 = 1
+Got 27
+1: currently @ 28 -> 27
+(3) Starting PAXOS... 28 0 27
+Wait for 28 on 1 = 2
+Wait for 27 on 0 = 1
+Got 27
+0: currently @ 28 -> 27
+(3) Starting PAXOS... 28 0 27
+Wait for 28 on 0 = 2
+Wait for 28 on 2 = 2
+Wait for 28 on 0 = 2
+Wait for 28 on 1 = 2
+Wait for 28 on 0 = 2
+Wait for 28 on 0 = 1
+Wait for 24 on 1 = 1
+Got 28
+Got 24
+0: currently @ 28 -> 28
+1: currently @ 28 -> 28
+(3) Starting PAXOS... 29 0 28
+(3) Starting PAXOS... 29 0 28
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 29 on 0 = 2
+Wait for 29 on 1 = 2
+Wait for 24 on 2 = 1
+Got 24
+2: currently @ 28 -> 28
+Wait for 28 on 0 = 1
+(3) Starting PAXOS... 29 0 28
+Got 28
+	Paxos: Status - Key does not exist.
+0: currently @ 29 -> 28
+Wait for 29 on 2 = 2
+(3) Starting PAXOS... 29 0 28
+Wait for 29 on 0 = 2
+Wait for 24 on 1 = 1
+Got 24
+1: currently @ 29 -> 28
+(3) Starting PAXOS... 29 0 28
+	Paxos: Status - Key does not exist.
+Wait for 29 on 1 = 2
+Wait for 28 on 1 = 1
+Got 28
+1: currently @ 29 -> 28
+(3) Starting PAXOS... 29 0 28
+	Paxos: Status - Key does not exist.
+Wait for 29 on 1 = 2
+Wait for 24 on 0 = 1
+Got 24
+0: currently @ 29 -> 28
+(3) Starting PAXOS... 29 0 28
+Wait for 29 on 0 = 2
+Wait for 24 on 0 = 1
+Got 24
+0: currently @ 29 -> 28
+(3) Starting PAXOS... 29 0 28
+Wait for 29 on 0 = 2
+Wait for 24 on 2 = 1
+Got 24
+2: currently @ 29 -> 28
+(3) Starting PAXOS... 29 0 28
+	Paxos: Status - Key does not exist.
+Wait for 29 on 2 = 2
+Wait for 24 on 2 = 1
+Got 24
+2: currently @ 29 -> 28
+(3) Starting PAXOS... 29 0 28
+	Paxos: Status - Key does not exist.
+Wait for 29 on 2 = 2
+Wait for 29 on 2 = 2
+Wait for 29 on 0 = 2
+Wait for 29 on 1 = 2
+Wait for 29 on 1 = 2
+Wait for 29 on 0 = 2
+Wait for 29 on 2 = 2
+Wait for 29 on 1 = 2
+Wait for 28 on 2 = 1
+Got 28
+2: currently @ 29 -> 28
+(3) Starting PAXOS... 29 0 28
+Wait for 29 on 2 = 2
+Wait for 28 on 0 = 1
+Got 28
+0: currently @ 29 -> 28
+(3) Starting PAXOS... 29 0 28
+Wait for 29 on 0 = 2
+Wait for 29 on 0 = 2
+Wait for 28 on 1 = 1
+Got 28
+1: currently @ 29 -> 28
+(3) Starting PAXOS... 29 0 28
+Wait for 29 on 1 = 2
+Wait for 29 on 2 = 2
+Wait for 29 on 0 = 2
+Wait for 28 on 0 = 1
+Got 28
+0: currently @ 29 -> 28
+(3) Starting PAXOS... 29 0 28
+Wait for 29 on 0 = 2
+Wait for 29 on 2 = 2
+Wait for 29 on 1 = 2
+Wait for 29 on 0 = 2
+Wait for 29 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 3916589616287113937 3613763436292901481} &{Put b 2775422040480279449 3885376224733148152}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 3916589616287113937 3613763436292901481} &{Get b  2597893025841447404}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 3916589616287113937 3613763436292901481} &{Put b 261049867304784443 28148766896088458}
+Wait for 29 on 1 = 2
+Wait for 29 on 2 = 2
+Wait for 29 on 0 = 2
+Wait for 29 on 1 = 2
+Wait for 29 on 1 = 2
+Wait for 29 on 0 = 2
+Wait for 29 on 2 = 2
+Wait for 29 on 0 = 2
+Wait for 29 on 2 = 2
+Wait for 29 on 0 = 2
+Wait for 29 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 6941261091797652072 1926164088857933033} &{Get b  4384981850554221195}
+Wait for 29 on 0 = 2
+Wait for 29 on 0 = 2
+Wait for 29 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4384981850554221195} &{Put b 261049867304784443 28148766896088458}
+Wait for 29 on 2 = 1
+Got 29
+2: currently @ 29 -> 29
+(3) Starting PAXOS... 30 0 29
+	Paxos: Status - Key does not exist.
+Wait for 30 on 2 = 2
+Wait for 29 on 0 = 1
+Got 29
+0: currently @ 29 -> 29
+(3) Starting PAXOS... 30 0 29
+	Paxos: Status - Key does not exist.
+Wait for 30 on 0 = 2
+Wait for 29 on 1 = 1
+Got 29
+1: currently @ 29 -> 29
+(3) Starting PAXOS... 30 0 29
+	Paxos: Status - Key does not exist.
+Wait for 30 on 1 = 2
+Wait for 29 on 1 = 1
+Got 29
+Wait for 29 on 2 = 1
+1: currently @ 30 -> 29
+Got 29
+(3) Starting PAXOS... 30 0 29
+2: currently @ 30 -> 29
+	Paxos: Status - Key does not exist.
+Wait for 30 on 1 = 2
+(3) Starting PAXOS... 30 0 29
+	Paxos: Status - Key does not exist.
+Wait for 30 on 2 = 2
+Wait for 29 on 0 = 1
+Got 29
+0: currently @ 30 -> 29
+(3) Starting PAXOS... 30 0 29
+Wait for 30 on 0 = 2
+Wait for 29 on 0 = 1
+Got 29
+0: currently @ 30 -> 29
+(3) Starting PAXOS... 30 0 29
+Wait for 30 on 0 = 2
+Wait for 29 on 2 = 1
+Got 29
+2: currently @ 30 -> 29
+(3) Starting PAXOS... 30 0 29
+	Paxos: Status - Key does not exist.
+Wait for 30 on 2 = 2
+Wait for 29 on 1 = 1
+Wait for 29 on 0 = 1
+Got 29
+Got 29
+1: currently @ 30 -> 29
+0: currently @ 30 -> 29
+(3) Starting PAXOS... 30 0 29
+(3) Starting PAXOS... 30 0 29
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 1 = 2
+Wait for 29 on 2 = 1
+Got 29
+2: currently @ 30 -> 29
+(3) Starting PAXOS... 30 0 29
+Wait for 30 on 2 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 1 = 2
+Wait for 29 on 1 = 1
+Got 29
+1: currently @ 30 -> 29
+(3) Starting PAXOS... 30 0 29
+Wait for 30 on 1 = 2
+Wait for 29 on 0 = 1
+Got 29
+0: currently @ 30 -> 29
+(3) Starting PAXOS... 30 0 29
+Wait for 30 on 0 = 2
+Wait for 29 on 0 = 1
+Got 29
+0: currently @ 30 -> 29
+(3) Starting PAXOS... 30 0 29
+Wait for 30 on 0 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  2597893025841447404} &{Put b 261049867304784443 28148766896088458}
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 2 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 1 = 2
+Wait for 30 on 0 = 2
+Wait for 30 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Get b  2736691192924630259}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Put b 261049867304784443 28148766896088458}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4384981850554221195} &{Put b 6941261091797652072 1926164088857933033}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 261049867304784443 28148766896088458} &{Get b  2736691192924630259}
+Wait for 30 on 1 = 1
+Got 30
+1: currently @ 30 -> 30
+(3) Starting PAXOS... 31 0 30
+	Paxos: Status - Key does not exist.
+Wait for 31 on 1 = 2
+Wait for 30 on 0 = 1
+Got 30
+0: currently @ 30 -> 30
+(3) Starting PAXOS... 31 0 30
+	Paxos: Status - Key does not exist.
+Wait for 31 on 0 = 2
+Wait for 30 on 2 = 1
+Wait for 30 on 2 = 1
+Got 30
+2: currently @ 30 -> 30
+(3) Starting PAXOS... 31 0 30
+	Paxos: Status - Key does not exist.
+Wait for 31 on 2 = 2
+Got 30
+2: currently @ 31 -> 30
+(3) Starting PAXOS... 31 0 30
+	Paxos: Status - Key does not exist.
+Wait for 31 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 261049867304784443 28148766896088458} &{Get b  2554933002429648571}
+Wait for 30 on 1 = 1
+Got 30
+1: currently @ 31 -> 30
+(3) Starting PAXOS... 31 0 30
+Wait for 31 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1996994287929105294} &{Get b  2554933002429648571}
+Wait for 30 on 0 = 1
+Got 30
+0: currently @ 31 -> 31
+Wait for 30 on 0 = 1
+(3) Starting PAXOS... 32 0 31
+Got 30
+	Paxos: Status - Key does not exist.
+Wait for 32 on 0 = 2
+0: currently @ 32 -> 31
+(3) Starting PAXOS... 32 0 31
+Wait for 32 on 0 = 2
+Wait for 30 on 2 = 1
+Got 30
+2: currently @ 31 -> 30
+(3) Starting PAXOS... 31 0 30
+Wait for 31 on 2 = 2
+Wait for 31 on 1 = 2
+Wait for 30 on 1 = 1
+Got 30
+1: currently @ 31 -> 30
+(3) Starting PAXOS... 31 0 30
+Wait for 31 on 1 = 2
+Wait for 30 on 0 = 1
+Got 30
+0: currently @ 32 -> 30
+(3) Starting PAXOS... 31 0 30
+Wait for 31 on 0 = 2
+Wait for 31 on 2 = 2
+Wait for 31 on 0 = 2
+Wait for 31 on 2 = 2
+Wait for 31 on 1 = 1
+Got 31
+1: currently @ 31 -> 32
+(3) Starting PAXOS... 33 0 32
+	Paxos: Status - Key does not exist.
+Wait for 33 on 1 = 2
+Wait for 30 on 1 = 1
+Got 30
+1: currently @ 33 -> 32
+(3) Starting PAXOS... 33 0 32
+	Paxos: Status - Key does not exist.
+Wait for 33 on 1 = 2
+Wait for 30 on 2 = 1
+Got 30
+2: currently @ 31 -> 30
+(3) Starting PAXOS... 31 0 30
+Wait for 30 on 0 = 1
+Got 30
+Wait for 31 on 2 = 2
+0: currently @ 32 -> 32
+(3) Starting PAXOS... 33 0 32
+	Paxos: Status - Key does not exist.
+Wait for 33 on 0 = 2
+Wait for 30 on 0 = 1
+Got 30
+0: currently @ 33 -> 32
+(3) Starting PAXOS... 33 0 32
+Wait for 33 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 8995016276575641803 840344676824600215} &{Get b  4384981850554221195}
+Wait for 32 on 0 = 1
+Got 32
+0: currently @ 33 -> 33
+(3) Starting PAXOS... 34 0 33
+	Paxos: Status - Key does not exist.
+Wait for 34 on 0 = 2
+Wait for 31 on 2 = 1
+Wait for 33 on 0 = 1
+Wait for 31 on 2 = 1
+Got 33
+Got 31
+0: currently @ 34 -> 33
+2: currently @ 31 -> 33
+(3) Starting PAXOS... 34 0 33
+Wait for 34 on 0 = 2
+(3) Starting PAXOS... 34 0 33
+	Paxos: Status - Key does not exist.
+Wait for 34 on 2 = 2
+Wait for 32 on 0 = 1
+Got 32
+0: currently @ 34 -> 33
+(3) Starting PAXOS... 34 0 33
+Wait for 34 on 0 = 2
+Wait for 33 on 1 = 1
+Got 33
+1: currently @ 33 -> 33
+(3) Starting PAXOS... 34 0 33
+	Paxos: Status - Key does not exist.
+Wait for 34 on 1 = 2
+Wait for 31 on 1 = 1
+Got 31
+1: currently @ 34 -> 33
+(3) Starting PAXOS... 34 0 33
+	Paxos: Status - Key does not exist.
+Wait for 34 on 1 = 2
+Wait for 33 on 0 = 1
+Got 33
+0: currently @ 34 -> 33
+(3) Starting PAXOS... 34 0 33
+Wait for 34 on 0 = 2
+Got 31
+2: currently @ 34 -> 33
+(3) Starting PAXOS... 34 0 33
+	Paxos: Status - Key does not exist.
+Wait for 34 on 2 = 2
+Wait for 31 on 2 = 1
+Got 31
+2: currently @ 34 -> 33
+(3) Starting PAXOS... 34 0 33
+	Paxos: Status - Key does not exist.
+Wait for 34 on 2 = 2
+Wait for 31 on 2 = 1
+Got 31
+2: currently @ 34 -> 33
+(3) Starting PAXOS... 34 0 33
+	Paxos: Status - Key does not exist.
+Wait for 34 on 2 = 2
+Wait for 31 on 0 = 1
+Got 31
+0: currently @ 34 -> 33
+(3) Starting PAXOS... 34 0 33
+Wait for 34 on 0 = 2
+Wait for 31 on 1 = 1
+Got 31
+1: currently @ 34 -> 33
+(3) Starting PAXOS... 34 0 33
+Wait for 34 on 1 = 2
+Wait for 31 on 0 = 1
+Got 31
+0: currently @ 34 -> 33
+(3) Starting PAXOS... 34 0 33
+Wait for 34 on 0 = 2
+Wait for 33 on 1 = 1
+Got 33
+1: currently @ 34 -> 33
+(3) Starting PAXOS... 34 0 33
+Wait for 34 on 1 = 2
+Wait for 34 on 0 = 2
+Wait for 34 on 1 = 2
+Wait for 34 on 0 = 2
+Wait for 34 on 1 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 0 = 2
+Wait for 34 on 0 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 0 = 2
+Wait for 34 on 1 = 2
+Wait for 34 on 1 = 2
+Wait for 34 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Get b  4384981850554221195}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Get b  2736691192924630259}
+Wait for 34 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 34 on 0 = 2
+Wait for 34 on 1 = 2
+Wait for 34 on 0 = 2
+Wait for 34 on 1 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 0 = 2
+Wait for 34 on 0 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 0 = 2
+Wait for 34 on 1 = 2
+Wait for 34 on 1 = 2
+Wait for 34 on 0 = 2
+Wait for 34 on 1 = 2
+Wait for 34 on 0 = 1
+Got 34
+0: currently @ 34 -> 34
+(3) Starting PAXOS... 35 0 34
+	Paxos: Status - Key does not exist.
+Wait for 35 on 0 = 2
+Wait for 34 on 1 = 2
+Wait for 34 on 0 = 1
+Got 34
+0: currently @ 35 -> 34
+(3) Starting PAXOS... 35 0 34
+Wait for 35 on 0 = 2
+Wait for 34 on 1 = 1
+Got 34
+1: currently @ 34 -> 34
+(3) Starting PAXOS... 35 0 34
+	Paxos: Status - Key does not exist.
+Wait for 35 on 1 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 0 = 1
+Got 34
+0: currently @ 35 -> 34
+(3) Starting PAXOS... 35 0 34
+Wait for 35 on 0 = 2
+Wait for 34 on 0 = 1
+Got 34
+0: currently @ 35 -> 34
+(3) Starting PAXOS... 35 0 34
+Wait for 35 on 0 = 2
+Wait for 34 on 2 = 2
+Wait for 34 on 0 = 1
+Got 34
+0: currently @ 35 -> 34
+(3) Starting PAXOS... 35 0 34
+Wait for 35 on 0 = 2
+Wait for 34 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3470304846819852136} &{Get b  2736691192924630259}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 6941261091797652072 1926164088857933033} &{Get b  4384981850554221195}
+Wait for 35 on 0 = 2
+Wait for 35 on 0 = 2
+Wait for 35 on 0 = 2
+Wait for 35 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1996994287929105294} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 35 on 0 = 2
+Wait for 35 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1996994287929105294} &{Get b  2597893025841447404}
+Wait for 35 on 1 = 1
+Got 35
+1: currently @ 35 -> 35
+(3) Starting PAXOS... 36 0 35
+	Paxos: Status - Key does not exist.
+Wait for 36 on 1 = 2
+Wait for 35 on 0 = 1
+Wait for 35 on 0 = 1
+Got 35
+Got 35
+0: currently @ 35 -> 35
+(3) Starting PAXOS... 36 0 35
+	Paxos: Status - Key does not exist.
+Wait for 36 on 0 = 2
+0: currently @ 36 -> 35
+(3) Starting PAXOS... 36 0 35
+	Paxos: Status - Key does not exist.
+Wait for 36 on 0 = 2
+Wait for 35 on 0 = 1
+Got 35
+0: currently @ 36 -> 35
+(3) Starting PAXOS... 36 0 35
+Wait for 36 on 0 = 2
+Wait for 35 on 0 = 1
+Got 35
+0: currently @ 36 -> 36
+(3) Starting PAXOS... 37 0 36
+	Paxos: Status - Key does not exist.
+Wait for 37 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4472679488085110080} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 35 on 0 = 1
+Got 35
+0: currently @ 37 -> 36
+(3) Starting PAXOS... 37 0 36
+Wait for 37 on 0 = 2
+Wait for 36 on 0 = 1
+Got 36
+0: currently @ 37 -> 37
+(3) Starting PAXOS... 38 0 37
+	Paxos: Status - Key does not exist.
+Wait for 38 on 0 = 2
+Wait for 36 on 1 = 1
+Got 36
+1: currently @ 36 -> 37
+(3) Starting PAXOS... 38 0 37
+	Paxos: Status - Key does not exist.
+Wait for 38 on 1 = 2
+Wait for 36 on 0 = 1
+Got 36
+0: currently @ 38 -> 37
+(3) Starting PAXOS... 38 0 37
+Wait for 38 on 0 = 2
+Wait for 36 on 0 = 1
+Got 36
+0: currently @ 38 -> 37
+(3) Starting PAXOS... 38 0 37
+Wait for 38 on 0 = 2
+Wait for 37 on 0 = 1
+Got 37
+0: currently @ 38 -> 37
+(3) Starting PAXOS... 38 0 37
+Wait for 38 on 0 = 2
+Wait for 37 on 0 = 1
+Got 37
+0: currently @ 38 -> 37
+(3) Starting PAXOS... 38 0 37
+Wait for 38 on 0 = 2
+Wait for 38 on 0 = 2
+Wait for 38 on 1 = 2
+Wait for 38 on 0 = 2
+Wait for 38 on 0 = 2
+Wait for 38 on 0 = 2
+Wait for 38 on 0 = 2
+Wait for 34 on 0 = 1
+Got 34
+0: currently @ 38 -> 38
+(3) Starting PAXOS... 39 0 38
+	Paxos: Status - Key does not exist.
+Wait for 39 on 0 = 2
+Wait for 38 on 1 = 1
+Wait for 38 on 0 = 1
+Got 38
+Got 38
+1: currently @ 38 -> 39
+0: currently @ 39 -> 39
+(3) Starting PAXOS... 40 0 39
+(3) Starting PAXOS... 40 0 39
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 40 on 0 = 2
+Wait for 40 on 1 = 2
+Wait for 38 on 0 = 1
+Wait for 38 on 0 = 1
+Got 38
+Got 38
+0: currently @ 40 -> 39
+(3) Starting PAXOS... 40 0 39
+Wait for 40 on 0 = 2
+0: currently @ 40 -> 39
+(3) Starting PAXOS... 40 0 39
+Wait for 40 on 0 = 2
+Wait for 34 on 1 = 1
+Got 34
+1: currently @ 40 -> 39
+(3) Starting PAXOS... 40 0 39
+Wait for 40 on 1 = 2
+Wait for 34 on 1 = 1
+Got 34
+1: currently @ 40 -> 39
+(3) Starting PAXOS... 40 0 39
+Wait for 40 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4472679488085110080} &{Get b  2554933002429648571}
+Wait for 34 on 2 = 1
+Got 34
+2: currently @ 34 -> 39
+Wait for 38 on 0 = 1
+Got 38
+0: currently @ 40 -> 39
+(3) Starting PAXOS... 40 0 39
+Wait for 40 on 0 = 2
+(3) Starting PAXOS... 40 0 39
+Wait for 40 on 2 = 2
+Wait for 34 on 2 = 1
+Got 34
+Wait for 34 on 2 = 1
+Got 34
+Wait for 34 on 1 = 1
+Got 34
+1: currently @ 40 -> 39
+(3) Starting PAXOS... 40 0 39
+Wait for 40 on 1 = 2
+Wait for 39 on 0 = 1
+Wait for 34 on 2 = 1
+Got 39
+Got 34
+0: currently @ 40 -> 39
+Wait for 38 on 0 = 1
+Got 38
+0: currently @ 40 -> 40
+(3) Starting PAXOS... 41 0 40
+	Paxos: Status - Key does not exist.
+Wait for 41 on 0 = 2
+2: currently @ 40 -> 39
+(3) Starting PAXOS... 40 0 39
+Wait for 40 on 2 = 2
+2: currently @ 40 -> 39
+(3) Starting PAXOS... 40 0 39
+Wait for 40 on 2 = 2
+2: currently @ 40 -> 39
+(3) Starting PAXOS... 40 0 39
+Wait for 40 on 2 = 2
+
+
+
+PutAppend Call failed!
+Wait for 40 on 1 = 2
+Wait for 40 on 0 = 2
+Wait for 40 on 0 = 2
+Wait for 40 on 1 = 2
+Wait for 40 on 1 = 2
+Wait for 40 on 0 = 2
+Wait for 40 on 2 = 2
+Wait for 40 on 0 = 2
+Wait for 40 on 2 = 2
+Wait for 40 on 1 = 2
+Wait for 41 on 0 = 1
+Got 41
+0: currently @ 41 -> 41
+Wait for 40 on 2 = 2
+Wait for 40 on 2 = 2
+Wait for 40 on 0 = 2
+Wait for 40 on 1 = 2
+Wait for 40 on 0 = 2
+Wait for 40 on 1 = 2
+Wait for 40 on 1 = 2
+Wait for 40 on 0 = 1
+Got 40
+0: currently @ 42 -> 41
+(3) Starting PAXOS... 42 0 41
+	Paxos: Status - Key does not exist.
+Wait for 42 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 8995016276575641803 840344676824600215} &{Get b  2554933002429648571}
+Wait for 40 on 0 = 1
+Got 40
+0: currently @ 42 -> 41
+(3) Starting PAXOS... 42 0 41
+Wait for 42 on 0 = 2
+Wait for 40 on 2 = 2
+Wait for 40 on 2 = 2
+Wait for 40 on 2 = 2
+Wait for 40 on 1 = 2
+Wait for 40 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Put b 2775422040480279449 3885376224733148152} &{Put b 261049867304784443 28148766896088458}
+Wait for 42 on 0 = 1
+Got 42
+0: currently @ 42 -> 42
+(3) Starting PAXOS... 43 0 42
+	Paxos: Status - Key does not exist.
+Wait for 43 on 0 = 2
+Wait for 42 on 0 = 1
+Got 42
+0: currently @ 43 -> 42
+
+
+
+PutAppend Call failed!
+Wait for 43 on 0 = 1
+Got 43
+0: currently @ 43 -> 43
+
+
+
+PutAppend Call failed!
+Wait for 40 on 1 = 1
+Wait for 40 on 0 = 1
+Got 40
+Got 40
+0: currently @ 44 -> 43
+1: currently @ 40 -> 43
+(3) Starting PAXOS... 44 0 43
+(3) Starting PAXOS... 44 0 43
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 44 on 0 = 2
+Wait for 44 on 1 = 2
+Wait for 40 on 1 = 1
+Wait for 40 on 0 = 1
+Got 40
+Got 40
+1: currently @ 44 -> 44
+Wait for 40 on 1 = 1
+Got 40
+(3) Starting PAXOS... 45 0 44
+0: currently @ 44 -> 44
+	Paxos: Status - Key does not exist.
+Wait for 45 on 1 = 2
+1: currently @ 45 -> 44
+(3) Starting PAXOS... 45 0 44
+	Paxos: Status - Key does not exist.
+Wait for 45 on 1 = 2
+(3) Starting PAXOS... 45 0 44
+Wait for 45 on 0 = 2
+Wait for 40 on 2 = 1
+Got 40
+2: currently @ 40 -> 44
+(3) Starting PAXOS... 45 0 44
+Wait for 45 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Get b  3470304846819852136}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2736691192924630259} &{Get b  3470304846819852136}
+Wait for 44 on 1 = 1
+Got 44
+1: currently @ 45 -> 44
+(3) Starting PAXOS... 45 0 44
+Wait for 45 on 1 = 2
+Wait for 44 on 0 = 1
+Got 44
+0: currently @ 45 -> 44
+(3) Starting PAXOS... 45 0 44
+Wait for 45 on 0 = 2
+Wait for 40 on 1 = 1
+Got 40
+1: currently @ 45 -> 44
+(3) Starting PAXOS... 45 0 44
+Wait for 40 on 2 = 1
+Got 40
+2: currently @ 45 -> 44
+(3) Starting PAXOS... 45 0 44
+Wait for 45 on 2 = 2
+Wait for 45 on 1 = 2
+Wait for 40 on 2 = 1
+Got 40
+2: currently @ 45 -> 44
+(3) Starting PAXOS... 45 0 44
+Wait for 45 on 2 = 2
+Wait for 40 on 2 = 1
+Got 40
+2: currently @ 45 -> 44
+(3) Starting PAXOS... 45 0 44
+Wait for 45 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4472679488085110080} &{Get b  2597893025841447404}
+Wait for 45 on 2 = 2
+Wait for 45 on 1 = 2
+Wait for 45 on 1 = 2
+Wait for 45 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 6941261091797652072 1926164088857933033} &{Get b  2597893025841447404}
+Wait for 45 on 2 = 1
+Got 45
+2: currently @ 45 -> 44
+(3) Starting PAXOS... 45 0 44
+Wait for 45 on 2 = 2
+Wait for 45 on 1 = 1
+Wait for 45 on 2 = 2
+Got 45
+Wait for 45 on 1 = 1
+Got 45
+1: currently @ 45 -> 45
+(3) Starting PAXOS... 46 0 45
+	Paxos: Status - Key does not exist.
+Wait for 46 on 1 = 2
+1: currently @ 46 -> 45
+(3) Starting PAXOS... 46 0 45
+	Paxos: Status - Key does not exist.
+Wait for 46 on 1 = 2
+Wait for 45 on 0 = 2
+Wait for 45 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4384981850554221195} &{Get b  2597893025841447404}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 6941261091797652072 1926164088857933033} &{Get b  4384981850554221195}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 6941261091797652072 1926164088857933033} &{Get b  4384981850554221195}
+Wait for 46 on 1 = 1
+Wait for 45 on 2 = 1
+Wait for 46 on 1 = 1
+Got 46
+Got 45
+Got 46
+1: currently @ 46 -> 46
+2: currently @ 45 -> 46
+(3) Starting PAXOS... 47 0 46
+(3) Starting PAXOS... 47 0 46
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 47 on 1 = 2
+Wait for 47 on 2 = 2
+1: currently @ 47 -> 46
+(3) Starting PAXOS... 47 0 46
+	Paxos: Status - Key does not exist.
+Wait for 47 on 1 = 2
+Wait for 45 on 1 = 1
+Wait for 45 on 0 = 1
+Got 45
+0: currently @ 45 -> 46
+(3) Starting PAXOS... 47 0 46
+Wait for 47 on 0 = 2
+Got 45
+1: currently @ 47 -> 46
+Wait for 45 on 1 = 1
+Got 45
+(3) Starting PAXOS... 47 0 46
+Wait for 47 on 1 = 2
+1: currently @ 47 -> 46
+(3) Starting PAXOS... 47 0 46
+Wait for 47 on 1 = 2
+Wait for 45 on 2 = 1
+Got 45
+2: currently @ 47 -> 46
+(3) Starting PAXOS... 47 0 46
+Wait for 47 on 2 = 2
+Wait for 47 on 1 = 2
+Wait for 45 on 2 = 1
+Got 45
+2: currently @ 47 -> 46
+(3) Starting PAXOS... 47 0 46
+Wait for 47 on 2 = 2
+Wait for 45 on 0 = 1
+Got 45
+0: currently @ 47 -> 46
+(3) Starting PAXOS... 47 0 46
+Wait for 47 on 0 = 2
+Wait for 45 on 2 = 1
+Got 45
+2: currently @ 47 -> 46
+(3) Starting PAXOS... 47 0 46
+Wait for 47 on 2 = 2
+Wait for 47 on 1 = 2
+Wait for 47 on 2 = 2
+Wait for 47 on 0 = 2
+Wait for 47 on 1 = 2
+Wait for 47 on 1 = 2
+Wait for 47 on 2 = 2
+Wait for 47 on 2 = 2
+Wait for 47 on 2 = 2
+Wait for 47 on 0 = 2
+Wait for 47 on 1 = 1
+Got 47
+1: currently @ 47 -> 47
+(3) Starting PAXOS... 48 0 47
+	Paxos: Status - Key does not exist.
+Wait for 48 on 1 = 2
+Wait for 47 on 0 = 2
+Wait for 47 on 1 = 1
+Got 47
+1: currently @ 48 -> 47
+(3) Starting PAXOS... 48 0 47
+	Paxos: Status - Key does not exist.
+Wait for 48 on 1 = 2
+Wait for 47 on 2 = 2
+Wait for 47 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Put b 2775422040480279449 3885376224733148152}
+Wait for 48 on 1 = 2
+Wait for 47 on 1 = 2
+Wait for 47 on 2 = 2
+Wait for 48 on 1 = 2
+Wait for 47 on 2 = 2
+Wait for 47 on 2 = 2
+Wait for 47 on 0 = 1
+Got 47
+0: currently @ 47 -> 47
+(3) Starting PAXOS... 48 0 47
+Wait for 48 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Get b  2554933002429648571}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Put b 261049867304784443 28148766896088458}
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  2597893025841447404} &{Get b  3470304846819852136}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2597893025841447404} &{Get b  2554933002429648571}
+Wait for 48 on 0 = 2
+Wait for 48 on 1 = 1
+Got 48
+1: currently @ 48 -> 48
+(3) Starting PAXOS... 49 0 48
+	Paxos: Status - Key does not exist.
+Wait for 49 on 1 = 2
+Wait for 48 on 1 = 1
+Got 48
+1: currently @ 49 -> 48
+(3) Starting PAXOS... 49 0 48
+	Paxos: Status - Key does not exist.
+Wait for 49 on 1 = 2
+Wait for 47 on 0 = 1
+Got 47
+0: currently @ 48 -> 49
+(3) Starting PAXOS... 50 0 49
+	Paxos: Status - Key does not exist.
+Wait for 50 on 0 = 2
+Wait for 47 on 2 = 1
+Got 47
+2: currently @ 47 -> 49
+(3) Starting PAXOS... 50 0 49
+Wait for 50 on 2 = 2
+Wait for 47 on 1 = 1
+Got 47
+1: currently @ 49 -> 49
+(3) Starting PAXOS... 50 0 49
+Wait for 50 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 8995016276575641803 840344676824600215} &{Get b  2597893025841447404}
+Wait for 48 on 0 = 1
+Got 48
+0: currently @ 50 -> 50
+(3) Starting PAXOS... 51 0 50
+	Paxos: Status - Key does not exist.
+Wait for 51 on 0 = 2
+Wait for 49 on 1 = 1
+Got 49
+1: currently @ 50 -> 49
+(3) Starting PAXOS... 50 0 49
+Wait for 50 on 1 = 2
+Wait for 49 on 1 = 1
+Got 49
+1: currently @ 50 -> 49
+(3) Starting PAXOS... 50 0 49
+Wait for 50 on 1 = 2
+Wait for 50 on 0 = 1
+Got 50
+0: currently @ 51 -> 51
+(3) Starting PAXOS... 52 0 51
+	Paxos: Status - Key does not exist.
+Wait for 52 on 0 = 2
+Wait for 50 on 2 = 1
+Got 50
+2: currently @ 50 -> 51
+(3) Starting PAXOS... 52 0 51
+Wait for 52 on 2 = 2
+Wait for 50 on 1 = 1
+Got 50
+1: currently @ 50 -> 51
+(3) Starting PAXOS... 52 0 51
+Wait for 52 on 1 = 2
+Wait for 47 on 2 = 1
+Got 47
+2: currently @ 52 -> 51
+
+
+DIFFEERENT VALUE
+
+
+(3) Starting PAXOS... 52 0 51
+Wait for 52 on 2 = 2
+Wait for 47 on 1 = 1
+{Put b 8995016276575641803 840344676824600215} &{Get b  2554933002429648571}
+Wait for 47 on 2 = 1
+Got 47
+2: currently @ 52 -> 51
+(3) Starting PAXOS... 52 0 51
+Wait for 52 on 2 = 2
+Wait for 47 on 2 = 1
+Got 47
+2: currently @ 52 -> 51
+(3) Starting PAXOS... 52 0 51
+Wait for 52 on 2 = 2
+Got 47
+1: currently @ 52 -> 51
+(3) Starting PAXOS... 52 0 51
+Wait for 52 on 1 = 2
+Wait for 50 on 1 = 1
+Got 50
+1: currently @ 52 -> 51
+(3) Starting PAXOS... 52 0 51
+Wait for 52 on 1 = 2
+Wait for 51 on 0 = 1
+Got 51
+0: currently @ 52 -> 51
+Wait for 50 on 1 = 1
+Got 50
+1: currently @ 52 -> 51
+(3) Starting PAXOS... 52 0 51
+Wait for 52 on 1 = 2
+Wait for 52 on 0 = 2
+Wait for 52 on 1 = 1
+Got 52
+1: currently @ 52 -> 52
+(3) Starting PAXOS... 53 0 52
+	Paxos: Status - Key does not exist.
+Wait for 53 on 1 = 2
+Wait for 52 on 2 = 1
+Got 52
+2: currently @ 52 -> 52
+(3) Starting PAXOS... 53 0 52
+	Paxos: Status - Key does not exist.
+Wait for 53 on 2 = 2
+Wait for 52 on 1 = 2
+Wait for 52 on 2 = 2
+Wait for 52 on 2 = 2
+Wait for 52 on 2 = 2
+Wait for 52 on 1 = 2
+Wait for 52 on 1 = 2
+Wait for 53 on 1 = 2
+Wait for 53 on 2 = 2
+Wait for 52 on 2 = 2
+Wait for 52 on 0 = 2
+Wait for 52 on 1 = 1
+Wait for 52 on 2 = 2
+Wait for 52 on 1 = 1
+Got 52
+1: currently @ 53 -> 53
+(3) Starting PAXOS... 54 0 53
+Wait for 52 on 1 = 1
+	Paxos: Status - Key does not exist.
+Got 52
+Wait for 54 on 1 = 2
+1: currently @ 54 -> 53
+(3) Starting PAXOS... 54 0 53
+	Paxos: Status - Key does not exist.
+Wait for 54 on 1 = 2
+Got 52
+1: currently @ 54 -> 53
+Wait for 52 on 2 = 2
+(3) Starting PAXOS... 54 0 53
+	Paxos: Status - Key does not exist.
+Wait for 54 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2736691192924630259} &{Get b  2554933002429648571}
+Wait for 53 on 1 = 1
+Got 53
+1: currently @ 54 -> 53
+(3) Starting PAXOS... 54 0 53
+Wait for 54 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 261049867304784443 28148766896088458} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 53 on 2 = 1
+Got 53
+2: currently @ 53 -> 53
+(3) Starting PAXOS... 54 0 53
+Wait for 54 on 2 = 2
+Wait for 54 on 1 = 1
+Got 54
+1: currently @ 54 -> 54
+(3) Starting PAXOS... 55 0 54
+	Paxos: Status - Key does not exist.
+Wait for 55 on 1 = 2
+Wait for 54 on 1 = 1
+Got 54
+1: currently @ 55 -> 54
+(3) Starting PAXOS... 55 0 54
+	Paxos: Status - Key does not exist.
+Wait for 55 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Get b  2597893025841447404}
+Wait for 54 on 1 = 1
+Got 54
+1: currently @ 55 -> 54
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2554933002429648571} &{Get b  4384981850554221195}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 261049867304784443 28148766896088458} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 54 on 1 = 2
+Wait for 54 on 2 = 1
+Got 54
+2: currently @ 54 -> 55
+(3) Starting PAXOS... 56 0 55
+	Paxos: Status - Key does not exist.
+Wait for 56 on 2 = 2
+Wait for 55 on 1 = 1
+Got 55
+1: currently @ 55 -> 55
+(3) Starting PAXOS... 56 0 55
+Wait for 56 on 1 = 2
+Wait for 55 on 1 = 1
+Got 55
+1: currently @ 56 -> 55
+(3) Starting PAXOS... 56 0 55
+Wait for 56 on 1 = 2
+Wait for 56 on 2 = 1
+Got 56
+2: currently @ 56 -> 56
+(3) Starting PAXOS... 57 0 56
+	Paxos: Status - Key does not exist.
+Wait for 57 on 2 = 2
+Wait for 56 on 1 = 1
+Got 56
+1: currently @ 56 -> 56
+(3) Starting PAXOS... 57 0 56
+Wait for 57 on 1 = 2
+Wait for 56 on 1 = 1
+Got 56
+1: currently @ 57 -> 57
+(3) Starting PAXOS... 58 0 57
+	Paxos: Status - Key does not exist.
+Wait for 58 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2597893025841447404} &{Put b 6941261091797652072 1926164088857933033}
+Wait for 54 on 1 = 1
+Got 54
+1: currently @ 58 -> 58
+(3) Starting PAXOS... 59 0 58
+	Paxos: Status - Key does not exist.
+Wait for 59 on 1 = 2
+Wait for 52 on 2 = 1
+Got 52
+2: currently @ 57 -> 59
+(3) Starting PAXOS... 60 0 59
+	Paxos: Status - Key does not exist.
+Wait for 60 on 2 = 2
+Wait for 52 on 2 = 1
+Got 52
+2: currently @ 60 -> 59
+(3) Starting PAXOS... 60 0 59
+	Paxos: Status - Key does not exist.
+Wait for 60 on 2 = 2
+Wait for 52 on 0 = 1
+Got 52
+0: currently @ 52 -> 59
+(3) Starting PAXOS... 60 0 59
+	Paxos: Status - Key does not exist.
+Wait for 60 on 0 = 2
+Wait for 52 on 2 = 1
+Got 52
+2: currently @ 60 -> 59
+(3) Starting PAXOS... 60 0 59
+	Paxos: Status - Key does not exist.
+Wait for 60 on 2 = 2
+Wait for 57 on 1 = 1
+Got 57
+1: currently @ 59 -> 60
+(3) Starting PAXOS... 61 0 60
+	Paxos: Status - Key does not exist.
+Wait for 61 on 1 = 2
+Wait for 57 on 2 = 1
+Got 57
+2: currently @ 60 -> 60
+(3) Starting PAXOS... 61 0 60
+	Paxos: Status - Key does not exist.
+Wait for 61 on 2 = 2
+Wait for 58 on 1 = 1
+Got 58
+1: currently @ 61 -> 58
+
+
+DIFFEERENT VALUE
+
+
+&{Put b 261049867304784443 28148766896088458} &{Get b  3470304846819852136}
+Wait for 59 on 1 = 1
+Got 59
+1: currently @ 61 -> 59
+Wait for 60 on 2 = 1
+Got 60
+2: currently @ 61 -> 61
+(3) Starting PAXOS... 62 0 61
+	Paxos: Status - Key does not exist.
+Wait for 62 on 2 = 2
+Wait for 60 on 0 = 1
+Got 60
+0: currently @ 60 -> 61
+(3) Starting PAXOS... 62 0 61
+	Paxos: Status - Key does not exist.
+Wait for 62 on 0 = 2
+Wait for 60 on 2 = 1
+Got 60
+2: currently @ 62 -> 60
+
+
+
+PutAppend Call failed!
+Wait for 60 on 2 = 1
+Got 60
+2: currently @ 62 -> 61
+(3) Starting PAXOS... 62 0 61
+	Paxos: Status - Key does not exist.
+Wait for 62 on 2 = 2
+Wait for 61 on 1 = 1
+Got 61
+1: currently @ 61 -> 61
+(3) Starting PAXOS... 62 0 61
+Wait for 62 on 1 = 2
+Wait for 61 on 2 = 1
+Got 61
+2: currently @ 62 -> 61
+(3) Starting PAXOS... 62 0 61
+Wait for 62 on 2 = 2
+Wait for 62 on 2 = 1
+Got 62
+2: currently @ 62 -> 62
+Wait for 62 on 0 = 1
+Got 62
+0: currently @ 62 -> 62
+(3) Starting PAXOS... 63 0 62
+	Paxos: Status - Key does not exist.
+Wait for 63 on 0 = 2
+
+
+
+PutAppend Call failed!
+Wait for 62 on 2 = 1
+Got 62
+2: currently @ 63 -> 62
+(3) Starting PAXOS... 63 0 62
+	Paxos: Status - Key does not exist.
+Wait for 63 on 2 = 2
+Wait for 62 on 1 = 1
+Got 62
+1: currently @ 62 -> 63
+(3) Starting PAXOS... 64 0 63
+	Paxos: Status - Key does not exist.
+Wait for 64 on 1 = 2
+Wait for 62 on 2 = 1
+Got 62
+2: currently @ 63 -> 63
+(3) Starting PAXOS... 64 0 63
+	Paxos: Status - Key does not exist.
+Wait for 64 on 2 = 2
+Wait for 63 on 0 = 1
+Got 63
+Wait for 63 on 2 = 1
+Got 63
+0: currently @ 63 -> 64
+2: currently @ 64 -> 64
+(3) Starting PAXOS... 65 0 64
+(3) Starting PAXOS... 65 0 64
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 65 on 0 = 2
+Wait for 65 on 2 = 2
+Wait for 64 on 1 = 1
+Got 64
+1: currently @ 64 -> 65
+(3) Starting PAXOS... 66 0 65
+	Paxos: Status - Key does not exist.
+Wait for 66 on 1 = 2
+Wait for 64 on 2 = 1
+Got 64
+2: currently @ 65 -> 65
+(3) Starting PAXOS... 66 0 65
+	Paxos: Status - Key does not exist.
+Wait for 66 on 2 = 2
+Wait for 65 on 0 = 1
+Got 65
+0: currently @ 65 -> 66
+Wait for 65 on 2 = 1
+(3) Starting PAXOS... 67 0 66
+Got 65
+	Paxos: Status - Key does not exist.
+2: currently @ 66 -> 66
+Wait for 67 on 0 = 2
+(3) Starting PAXOS... 67 0 66
+	Paxos: Status - Key does not exist.
+Wait for 67 on 2 = 2
+Wait for 66 on 1 = 1
+Got 66
+1: currently @ 66 -> 66
+(3) Starting PAXOS... 67 0 66
+Wait for 67 on 1 = 2
+Wait for 66 on 2 = 1
+Got 66
+2: currently @ 67 -> 66
+(3) Starting PAXOS... 67 0 66
+Wait for 67 on 2 = 2
+Wait for 67 on 2 = 1
+Wait for 67 on 0 = 1
+Got 67
+Got 67
+0: currently @ 67 -> 67
+2: currently @ 67 -> 67
+(3) Starting PAXOS... 68 0 67
+(3) Starting PAXOS... 68 0 67
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 68 on 2 = 2
+Wait for 68 on 0 = 2
+Wait for 67 on 1 = 1
+Got 67
+1: currently @ 67 -> 67
+(3) Starting PAXOS... 68 0 67
+Wait for 68 on 1 = 2
+Wait for 67 on 2 = 1
+Got 67
+2: currently @ 68 -> 67
+(3) Starting PAXOS... 68 0 67
+Wait for 68 on 2 = 2
+Wait for 68 on 0 = 2
+Wait for 68 on 2 = 1
+Got 68
+2: currently @ 68 -> 67
+(3) Starting PAXOS... 68 0 67
+Wait for 68 on 2 = 2
+Wait for 68 on 1 = 1
+Got 68
+1: currently @ 68 -> 68
+(3) Starting PAXOS... 69 0 68
+	Paxos: Status - Key does not exist.
+Wait for 69 on 1 = 2
+Wait for 68 on 2 = 1
+Got 68
+2: currently @ 68 -> 68
+(3) Starting PAXOS... 69 0 68
+	Paxos: Status - Key does not exist.
+Wait for 69 on 2 = 2
+Wait for 68 on 2 = 1
+Got 68
+2: currently @ 69 -> 69
+(3) Starting PAXOS... 70 0 69
+	Paxos: Status - Key does not exist.
+Wait for 70 on 2 = 2
+Wait for 69 on 1 = 1
+Got 69
+1: currently @ 69 -> 69
+(3) Starting PAXOS... 70 0 69
+	Paxos: Status - Key does not exist.
+Wait for 70 on 1 = 2
+Wait for 69 on 2 = 1
+Got 69
+2: currently @ 70 -> 69
+(3) Starting PAXOS... 70 0 69
+Wait for 70 on 2 = 2
+Wait for 68 on 0 = 1
+Got 68
+0: currently @ 68 -> 70
+(3) Starting PAXOS... 71 0 70
+	Paxos: Status - Key does not exist.
+Wait for 71 on 0 = 2
+Wait for 70 on 2 = 1
+Got 70
+2: currently @ 70 -> 70
+(3) Starting PAXOS... 71 0 70
+	Paxos: Status - Key does not exist.
+Wait for 71 on 2 = 2
+Wait for 70 on 1 = 1
+Got 70
+1: currently @ 70 -> 70
+(3) Starting PAXOS... 71 0 70
+Wait for 71 on 1 = 2
+Wait for 70 on 2 = 1
+Got 70
+2: currently @ 71 -> 71
+(3) Starting PAXOS... 72 0 71
+	Paxos: Status - Key does not exist.
+Wait for 72 on 2 = 2
+Wait for 71 on 0 = 1
+Got 71
+0: currently @ 71 -> 72
+(3) Starting PAXOS... 73 0 72
+	Paxos: Status - Key does not exist.
+Wait for 73 on 0 = 2
+Wait for 71 on 2 = 1
+Got 71
+2: currently @ 72 -> 72
+(3) Starting PAXOS... 73 0 72
+	Paxos: Status - Key does not exist.
+Wait for 73 on 2 = 2
+Wait for 71 on 1 = 1
+Got 71
+1: currently @ 71 -> 72
+(3) Starting PAXOS... 73 0 72
+Wait for 73 on 1 = 2
+Wait for 72 on 2 = 1
+Got 72
+2: currently @ 73 -> 72
+Wait for 73 on 0 = 1
+Wait for 73 on 2 = 1
+Got 73
+Got 73
+0: currently @ 73 -> 73
+2: currently @ 73 -> 73
+(3) Starting PAXOS... 74 0 73
+	Paxos: Status - Key does not exist.
+Wait for 74 on 0 = 2
+(3) Starting PAXOS... 74 0 73
+	Paxos: Status - Key does not exist.
+Wait for 74 on 2 = 2
+Wait for 73 on 1 = 1
+Got 73
+1: currently @ 73 -> 73
+(3) Starting PAXOS... 74 0 73
+Wait for 74 on 1 = 2
+Wait for 74 on 2 = 1
+Got 74
+Wait for 74 on 0 = 1
+Got 74
+0: currently @ 74 -> 74
+(3) Starting PAXOS... 75 0 74
+2: currently @ 74 -> 74
+	Paxos: Status - Key does not exist.
+Wait for 75 on 0 = 2
+(3) Starting PAXOS... 75 0 74
+	Paxos: Status - Key does not exist.
+Wait for 75 on 2 = 2
+Wait for 74 on 1 = 1
+Got 74
+1: currently @ 74 -> 74
+(3) Starting PAXOS... 75 0 74
+Wait for 75 on 1 = 2
+Wait for 75 on 2 = 1
+Got 75
+2: currently @ 75 -> 75
+(3) Starting PAXOS... 76 0 75
+Wait for 75 on 0 = 1
+	Paxos: Status - Key does not exist.
+Got 75
+Wait for 76 on 2 = 2
+0: currently @ 75 -> 75
+(3) Starting PAXOS... 76 0 75
+	Paxos: Status - Key does not exist.
+Wait for 76 on 0 = 2
+Wait for 75 on 1 = 1
+Got 75
+1: currently @ 75 -> 75
+(3) Starting PAXOS... 76 0 75
+Wait for 76 on 1 = 2
+Wait for 76 on 0 = 1
+Got 76
+0: currently @ 76 -> 76
+Wait for 76 on 2 = 1
+Got 76
+(3) Starting PAXOS... 77 0 76
+2: currently @ 76 -> 76
+	Paxos: Status - Key does not exist.
+Wait for 77 on 0 = 2
+(3) Starting PAXOS... 77 0 76
+	Paxos: Status - Key does not exist.
+Wait for 77 on 2 = 2
+Wait for 76 on 1 = 1
+Got 76
+1: currently @ 76 -> 76
+(3) Starting PAXOS... 77 0 76
+Wait for 77 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 6941261091797652072 1926164088857933033} &{Get b  3470304846819852136}
+Wait for 77 on 0 = 1
+Got 77
+0: currently @ 77 -> 77
+(3) Starting PAXOS... 78 0 77
+	Paxos: Status - Key does not exist.
+Wait for 78 on 0 = 2
+Wait for 77 on 2 = 1
+Got 77
+2: currently @ 77 -> 77
+(3) Starting PAXOS... 78 0 77
+	Paxos: Status - Key does not exist.
+Wait for 78 on 2 = 2
+Wait for 77 on 1 = 1
+Got 77
+1: currently @ 77 -> 77
+(3) Starting PAXOS... 78 0 77
+	Paxos: Status - Key does not exist.
+Wait for 78 on 1 = 2
+Wait for 78 on 0 = 1
+Wait for 78 on 2 = 1
+Got 78
+Got 78
+0: currently @ 78 -> 78
+2: currently @ 78 -> 78
+(3) Starting PAXOS... 79 0 78
+(3) Starting PAXOS... 79 0 78
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 79 on 0 = 2
+Wait for 79 on 2 = 2
+Wait for 78 on 1 = 1
+Got 78
+1: currently @ 78 -> 78
+(3) Starting PAXOS... 79 0 78
+	Paxos: Status - Key does not exist.
+Wait for 79 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 6941261091797652072 1926164088857933033} &{Get b  3470304846819852136}
+Wait for 79 on 1 = 2
+Wait for 79 on 0 = 2
+Wait for 79 on 2 = 1
+Got 79
+2: currently @ 79 -> 79
+(3) Starting PAXOS... 80 0 79
+	Paxos: Status - Key does not exist.
+Wait for 80 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 6941261091797652072 1926164088857933033} &{Get b  3470304846819852136}
+Wait for 80 on 2 = 2
+Wait for 79 on 1 = 2
+Wait for 79 on 0 = 1
+Got 79
+0: currently @ 79 -> 80
+(3) Starting PAXOS... 81 0 80
+	Paxos: Status - Key does not exist.
+Wait for 81 on 0 = 2
+Wait for 81 on 0 = 1
+Got 81
+0: currently @ 81 -> 81
+Wait for 80 on 2 = 1
+Got 80
+2: currently @ 80 -> 80
+
+
+
+PutAppend Call failed!
+Wait for 79 on 1 = 1
+Got 79
+1: currently @ 79 -> 81
+(3) Starting PAXOS... 82 0 81
+	Paxos: Status - Key does not exist.
+Wait for 82 on 1 = 2
+Wait for 82 on 1 = 1
+Got 82
+1: currently @ 82 -> 82
+
+
+
+PutAppend Call failed!
+
+
+(1) Clerk Get
+KV Server Get key b on 0!
+0: currently @ 82 -> 82
+(3) Starting PAXOS... 83 0 82
+	Paxos: Status - Key does not exist.
+Wait for 83 on 0 = 2
+Wait for 83 on 0 = 1
+Got 83
+0: currently @ 83 -> 83
+
+
+(1) Clerk Get
+KV Server Get key b on 1!
+1: currently @ 83 -> 83
+(3) Starting PAXOS... 84 0 83
+	Paxos: Status - Key does not exist.
+Wait for 84 on 1 = 2
+Wait for 84 on 1 = 1
+Got 84
+1: currently @ 84 -> 84
+
+
+(1) Clerk Get
+KV Server Get key b on 2!
+2: currently @ 81 -> 84
+(3) Starting PAXOS... 85 0 84
+	Paxos: Status - Key does not exist.
+Wait for 85 on 2 = 2
+Wait for 85 on 2 = 1
+Got 85
+2: currently @ 85 -> 85
+num eye:  14 get
+
+
+(1) Clerk Get
+num eye:  6 put  4990765271833742716
+
+
+(1) Clerk PutAppend
+num eye:  2 put  3902890183311134652
+num eye:  7 get
+num eye:  0 put  3337066551442961397
+
+
+(1) Clerk PutAppend
+num eye:  4 get
+
+
+(1) Clerk Get
+num eye:  1 get
+
+
+(1) Clerk Get
+num eye:  5 get
+
+
+(1) Clerk Get
+
+
+(1) Clerk Get
+num eye:  8 get
+
+
+(1) Clerk Get
+KV Server Get key b on 2!
+num eye:  9 get
+KV Server Get key b on 2!
+
+
+(1) Clerk Get
+2: currently @ 86 -> 85
+(3) Starting PAXOS... 86 0 85
+	Paxos: Status - Key does not exist.
+Wait for 86 on 2 = 2
+num eye:  10 get
+
+
+(1) Clerk Get
+2: currently @ 86 -> 85
+(3) Starting PAXOS... 86 0 85
+	Paxos: Status - Key does not exist.
+Wait for 86 on 2 = 2
+num eye:  11 get
+
+
+(1) Clerk Get
+KV Server Get key b on 1!
+1: currently @ 85 -> 85
+(3) Starting PAXOS... 86 0 85
+	Paxos: Status - Key does not exist.
+Wait for 86 on 1 = 2
+num eye:  12 put  9029029644282286269
+
+
+(1) Clerk PutAppend
+num eye:  13 get
+
+
+(1) Clerk Get
+0: currently @ 84 -> 85
+(3) Starting PAXOS... 86 0 85
+	Paxos: Status - Key does not exist.
+Wait for 86 on 0 = 2
+1: currently @ 86 -> 85
+(3) Starting PAXOS... 86 0 85
+	Paxos: Status - Key does not exist.
+Wait for 86 on 1 = 2
+KV Server Get key b on 0!
+0: currently @ 86 -> 85
+(3) Starting PAXOS... 86 0 85
+Wait for 86 on 0 = 2
+KV Server Get key b on 0!
+0: currently @ 86 -> 85
+(3) Starting PAXOS... 86 0 85
+Wait for 86 on 0 = 2
+KV Server Get key b on 1!
+1: currently @ 86 -> 85
+
+
+(1) Clerk PutAppend
+num eye:  3 get
+(3) Starting PAXOS... 86 0 85
+Wait for 86 on 1 = 2
+
+
+(1) Clerk Get
+KV Server Get key b on 0!
+0: currently @ 86 -> 85
+(3) Starting PAXOS... 86 0 85
+Wait for 86 on 0 = 2
+KV Server Get key b on 1!
+1: currently @ 86 -> 85
+(3) Starting PAXOS... 86 0 85
+Wait for 86 on 1 = 2
+1: currently @ 86 -> 85
+0: currently @ 86 -> 85
+(3) Starting PAXOS... 86 0 85
+Wait for 86 on 0 = 2
+KV Server Get key b on 1!
+(3) Starting PAXOS... 86 0 85
+Wait for 86 on 1 = 2
+1: currently @ 86 -> 85
+(3) Starting PAXOS... 86 0 85
+KV Server Get key b on 0!
+0: currently @ 86 -> 85
+(3) Starting PAXOS... 86 0 85
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 2 = 2
+Wait for 86 on 2 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 0 = 2
+KV Server Get key b on 1!
+1: currently @ 86 -> 85
+(3) Starting PAXOS... 86 0 85
+Wait for 86 on 1 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 2 = 2
+Wait for 86 on 2 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 2 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 2 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 2 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 2 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 0 = 2
+Wait for 86 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4589030556204506159} &{Get b  1749839029400093233}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4589030556204506159} &{Get b  3995568635457022882}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4589030556204506159} &{Put b 9029029644282286269 905988112856867156}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4589030556204506159} &{Get b  596858128745666835}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1749839029400093233} &{Get b  3995568635457022882}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1749839029400093233} &{Get b  584665077237216989}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1749839029400093233} &{Get b  3995568635457022882}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1749839029400093233} &{Put b 9029029644282286269 905988112856867156}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3995568635457022882} &{Get b  4589030556204506159}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  584665077237216989} &{Get b  485755491024115750}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 9029029644282286269 905988112856867156} &{Get b  3995568635457022882}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 9029029644282286269 905988112856867156} &{Get b  4589030556204506159}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4589030556204506159} &{Put b 9029029644282286269 905988112856867156}
+Wait for 86 on 0 = 1
+Got 86
+0: currently @ 86 -> 86
+(3) Starting PAXOS... 87 0 86
+	Paxos: Status - Key does not exist.
+Wait for 87 on 0 = 2
+Wait for 86 on 1 = 1
+Got 86
+Wait for 86 on 2 = 1
+1: currently @ 86 -> 87
+Got 86
+2: currently @ 86 -> 87
+(3) Starting PAXOS... 88 0 87
+(3) Starting PAXOS... 88 0 87
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 88 on 2 = 2
+Wait for 88 on 1 = 2
+Wait for 86 on 0 = 1
+Got 86
+0: currently @ 87 -> 87
+Wait for 86 on 2 = 1
+(3) Starting PAXOS... 88 0 87
+Got 86
+Wait for 86 on 0 = 1
+Got 86
+	Paxos: Status - Key does not exist.
+2: currently @ 88 -> 87
+Wait for 88 on 0 = 2
+0: currently @ 88 -> 87
+(3) Starting PAXOS... 88 0 87
+(3) Starting PAXOS... 88 0 87
+	Paxos: Status - Key does not exist.
+Wait for 88 on 0 = 2
+Wait for 88 on 2 = 2
+Wait for 86 on 1 = 1
+Got 86
+1: currently @ 88 -> 87
+(3) Starting PAXOS... 88 0 87
+	Paxos: Status - Key does not exist.
+Wait for 88 on 1 = 2
+Wait for 87 on 0 = 1
+Got 87
+0: currently @ 88 -> 87
+Wait for 86 on 0 = 1
+Got 86
+0: currently @ 88 -> 87
+(3) Starting PAXOS... 88 0 87
+Wait for 88 on 0 = 2
+Wait for 86 on 1 = 1
+Got 86
+1: currently @ 88 -> 87
+(3) Starting PAXOS... 88 0 87
+Wait for 88 on 1 = 2
+Wait for 86 on 0 = 1
+Got 86
+0: currently @ 88 -> 87
+(3) Starting PAXOS... 88 0 87
+Wait for 88 on 0 = 2
+Wait for 86 on 1 = 1
+Got 86
+1: currently @ 88 -> 87
+(3) Starting PAXOS... 88 0 87
+Wait for 88 on 1 = 2
+Wait for 86 on 1 = 1
+Got 86
+1: currently @ 88 -> 87
+(3) Starting PAXOS... 88 0 87
+Wait for 88 on 1 = 2
+Wait for 86 on 0 = 1
+Got 86
+0: currently @ 88 -> 87
+(3) Starting PAXOS... 88 0 87
+Wait for 88 on 0 = 2
+Wait for 86 on 1 = 1
+Got 86
+1: currently @ 88 -> 87
+(3) Starting PAXOS... 88 0 87
+Wait for 88 on 1 = 2
+Wait for 88 on 1 = 1
+Got 88
+1: currently @ 88 -> 88
+(3) Starting PAXOS... 89 0 88
+	Paxos: Status - Key does not exist.
+Wait for 89 on 1 = 2
+Wait for 88 on 2 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 2 = 2
+Wait for 88 on 1 = 2
+Wait for 86 on 1 = 1
+Got 86
+1: currently @ 89 -> 87
+(3) Starting PAXOS... 88 0 87
+Wait for 88 on 1 = 2
+Wait for 89 on 1 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 2 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 2 = 2
+Wait for 88 on 1 = 2
+Wait for 89 on 1 = 1
+Got 89
+1: currently @ 89 -> 89
+Wait for 88 on 0 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 0 = 2
+
+
+
+PutAppend Call failed!
+Wait for 88 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 3337066551442961397 2455135259208584116} &{Get b  1749839029400093233}
+Wait for 88 on 1 = 2
+Wait for 88 on 2 = 2
+Wait for 88 on 2 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 2 = 2
+Wait for 88 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 3337066551442961397 2455135259208584116} &{Get b  485755491024115750}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  584665077237216989} &{Get b  596858128745666835}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3226427348732763748} &{Get b  1749839029400093233}
+Wait for 88 on 2 = 2
+Wait for 88 on 0 = 1
+Wait for 88 on 0 = 1
+Got 88
+0: currently @ 88 -> 89
+Got 88
+(3) Starting PAXOS... 90 0 89
+	Paxos: Status - Key does not exist.
+Wait for 90 on 0 = 2
+0: currently @ 90 -> 89
+(3) Starting PAXOS... 90 0 89
+	Paxos: Status - Key does not exist.
+Wait for 90 on 0 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 1 = 2
+Wait for 88 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3226427348732763748} &{Get b  1749839029400093233}
+Wait for 88 on 1 = 2
+Wait for 88 on 0 = 2
+Wait for 88 on 1 = 1
+Got 88
+1: currently @ 90 -> 90
+(3) Starting PAXOS... 91 0 90
+	Paxos: Status - Key does not exist.
+Wait for 91 on 1 = 2
+Wait for 88 on 1 = 1
+Got 88
+1: currently @ 91 -> 90
+(3) Starting PAXOS... 91 0 90
+	Paxos: Status - Key does not exist.
+Wait for 91 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 9029029644282286269 905988112856867156} &{Get b  1749839029400093233}
+Wait for 90 on 0 = 1
+Got 90
+0: currently @ 90 -> 90
+Wait for 90 on 0 = 1
+Got 90
+0: currently @ 91 -> 90
+(3) Starting PAXOS... 91 0 90
+Wait for 91 on 0 = 2
+Wait for 91 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1749839029400093233} &{Get b  485755491024115750}
+Wait for 91 on 0 = 1
+Got 91
+0: currently @ 91 -> 91
+(3) Starting PAXOS... 92 0 91
+	Paxos: Status - Key does not exist.
+Wait for 92 on 0 = 2
+Wait for 91 on 1 = 1
+Got 91
+1: currently @ 91 -> 91
+(3) Starting PAXOS... 92 0 91
+	Paxos: Status - Key does not exist.
+Wait for 92 on 1 = 2
+Wait for 92 on 0 = 1
+Got 92
+0: currently @ 92 -> 92
+(3) Starting PAXOS... 93 0 92
+	Paxos: Status - Key does not exist.
+Wait for 93 on 0 = 2
+Wait for 92 on 1 = 1
+Got 92
+1: currently @ 92 -> 92
+(3) Starting PAXOS... 93 0 92
+Wait for 93 on 1 = 2
+Wait for 91 on 1 = 1
+Got 91
+1: currently @ 93 -> 92
+(3) Starting PAXOS... 93 0 92
+Wait for 93 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1749839029400093233} &{Put b 9029029644282286269 905988112856867156}
+Wait for 93 on 0 = 1
+Got 93
+0: currently @ 93 -> 93
+(3) Starting PAXOS... 94 0 93
+	Paxos: Status - Key does not exist.
+Wait for 94 on 0 = 2
+Wait for 93 on 1 = 1
+Got 93
+1: currently @ 93 -> 93
+(3) Starting PAXOS... 94 0 93
+	Paxos: Status - Key does not exist.
+Wait for 94 on 1 = 2
+Wait for 93 on 1 = 1
+Got 93
+1: currently @ 94 -> 93
+(3) Starting PAXOS... 94 0 93
+Wait for 94 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1749839029400093233} &{Put b 9029029644282286269 905988112856867156}
+Wait for 94 on 0 = 1
+Wait for 94 on 1 = 1
+Got 94
+Got 94
+1: currently @ 94 -> 94
+0: currently @ 94 -> 94
+(3) Starting PAXOS... 95 0 94
+	Paxos: Status - Key does not exist.
+Wait for 95 on 0 = 2
+Wait for 94 on 1 = 1
+Got 94
+1: currently @ 95 -> 95
+(3) Starting PAXOS... 96 0 95
+	Paxos: Status - Key does not exist.
+Wait for 96 on 1 = 2
+Wait for 95 on 0 = 1
+Got 95
+0: currently @ 95 -> 95
+
+
+
+PutAppend Call failed!
+Wait for 96 on 1 = 1
+Got 96
+1: currently @ 96 -> 96
+
+
+
+PutAppend Call failed!
+Wait for 88 on 1 = 1
+Wait for 88 on 2 = 1
+Got 88
+Got 88
+1: currently @ 97 -> 96
+2: currently @ 88 -> 96
+(3) Starting PAXOS... 97 0 96
+	Paxos: Status - Key does not exist.
+Wait for 97 on 1 = 2
+(3) Starting PAXOS... 97 0 96
+	Paxos: Status - Key does not exist.
+Wait for 97 on 2 = 2
+Wait for 88 on 2 = 1
+Got 88
+2: currently @ 97 -> 96
+(3) Starting PAXOS... 97 0 96
+Wait for 97 on 2 = 2
+Wait for 88 on 0 = 1
+Got 88
+0: currently @ 96 -> 96
+(3) Starting PAXOS... 97 0 96
+Wait for 97 on 0 = 2
+Wait for 88 on 1 = 1
+Got 88
+1: currently @ 97 -> 96
+(3) Starting PAXOS... 97 0 96
+Wait for 97 on 1 = 2
+Wait for 88 on 0 = 1
+Got 88
+0: currently @ 97 -> 96
+(3) Starting PAXOS... 97 0 96
+Wait for 97 on 0 = 2
+Wait for 88 on 1 = 1
+Got 88
+1: currently @ 97 -> 96
+(3) Starting PAXOS... 97 0 96
+Wait for 97 on 1 = 2
+Wait for 97 on 2 = 2
+Wait for 97 on 1 = 2
+Wait for 88 on 0 = 1
+Got 88
+0: currently @ 97 -> 96
+(3) Starting PAXOS... 97 0 96
+Wait for 97 on 0 = 2
+Wait for 88 on 1 = 1
+Got 88
+1: currently @ 97 -> 96
+(3) Starting PAXOS... 97 0 96
+Wait for 97 on 1 = 2
+Wait for 97 on 0 = 2
+Wait for 97 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  485755491024115750} &{Get b  4589030556204506159}
+Wait for 97 on 1 = 2
+Wait for 97 on 1 = 2
+Wait for 97 on 0 = 2
+Wait for 97 on 1 = 2
+Wait for 97 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  584665077237216989} &{Get b  485755491024115750}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  412893385470780731} &{Get b  596858128745666835}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  584665077237216989} &{Get b  220731822494880443}
+Wait for 97 on 1 = 2
+Wait for 97 on 2 = 2
+Wait for 97 on 2 = 2
+Wait for 97 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  485755491024115750} &{Get b  220731822494880443}
+Wait for 97 on 0 = 2
+Wait for 97 on 1 = 1
+Wait for 97 on 0 = 2
+Got 97
+Wait for 97 on 1 = 1
+Got 97
+Wait for 97 on 1 = 1
+Got 97
+1: currently @ 97 -> 97
+(3) Starting PAXOS... 98 0 97
+	Paxos: Status - Key does not exist.
+Wait for 98 on 1 = 2
+1: currently @ 98 -> 97
+(3) Starting PAXOS... 98 0 97
+	Paxos: Status - Key does not exist.
+Wait for 98 on 1 = 2
+1: currently @ 98 -> 97
+(3) Starting PAXOS... 98 0 96
+	Paxos: Status - Key does not exist.
+Wait for 98 on 1 = 2
+Wait for 98 on 1 = 1
+Got 98
+Wait for 98 on 1 = 1
+1: currently @ 98 -> 98
+Got 98
+Wait for 98 on 1 = 1
+Got 98
+1: currently @ 99 -> 98
+(3) Starting PAXOS... 99 0 98
+	Paxos: Status - Key does not exist.
+Wait for 99 on 1 = 2
+1: currently @ 99 -> 98
+(3) Starting PAXOS... 99 0 98
+	Paxos: Status - Key does not exist.
+Wait for 99 on 1 = 2
+Wait for 99 on 1 = 2
+Wait for 99 on 1 = 2
+Wait for 97 on 1 = 1
+Got 97
+1: currently @ 99 -> 98
+(3) Starting PAXOS... 99 0 98
+Wait for 99 on 1 = 2
+Wait for 97 on 2 = 1
+Got 97
+2: currently @ 97 -> 98
+(3) Starting PAXOS... 99 0 98
+Wait for 99 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4589030556204506159} &{Get b  485755491024115750}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  4589030556204506159} &{Get b  4589030556204506159}
+Wait for 99 on 1 = 2
+Wait for 97 on 2 = 1
+Got 97
+2: currently @ 99 -> 98
+(3) Starting PAXOS... 99 0 98
+Wait for 99 on 2 = 2
+Wait for 97 on 0 = 1
+Got 97
+0: currently @ 97 -> 98
+(3) Starting PAXOS... 99 0 98
+Wait for 99 on 0 = 2
+Wait for 99 on 2 = 2
+Wait for 97 on 0 = 1
+Got 97
+0: currently @ 99 -> 98
+(3) Starting PAXOS... 99 0 98
+Wait for 99 on 0 = 2
+Wait for 99 on 1 = 2
+Wait for 97 on 0 = 1
+Got 97
+0: currently @ 99 -> 98
+(3) Starting PAXOS... 99 0 98
+Wait for 99 on 0 = 2
+Wait for 99 on 1 = 2
+Wait for 99 on 0 = 2
+Wait for 99 on 2 = 2
+Wait for 99 on 1 = 2
+Wait for 99 on 0 = 2
+Wait for 99 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  220731822494880443} &{Get b  584665077237216989}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3995568635457022882} &{Get b  485755491024115750}
+Wait for 99 on 2 = 2
+Wait for 99 on 2 = 2
+Wait for 99 on 0 = 2
+Wait for 99 on 0 = 1
+Got 99
+0: currently @ 99 -> 99
+(3) Starting PAXOS... 100 0 99
+Wait for 99 on 0 = 1
+	Paxos: Status - Key does not exist.
+Got 99
+Wait for 100 on 0 = 2
+0: currently @ 100 -> 99
+(3) Starting PAXOS... 100 0 99
+Wait for 100 on 0 = 2
+Wait for 99 on 1 = 1
+Got 99
+1: currently @ 99 -> 99
+Wait for 99 on 1 = 1
+Got 99
+1: currently @ 100 -> 99
+(3) Starting PAXOS... 100 0 99
+Wait for 100 on 1 = 2
+Wait for 100 on 0 = 1
+Got 100
+0: currently @ 100 -> 100
+(3) Starting PAXOS... 101 0 100
+	Paxos: Status - Key does not exist.
+Wait for 101 on 0 = 2
+Wait for 100 on 0 = 1
+Got 100
+0: currently @ 101 -> 100
+(3) Starting PAXOS... 101 0 100
+Wait for 101 on 0 = 2
+Wait for 100 on 1 = 1
+Got 100
+1: currently @ 100 -> 101
+(3) Starting PAXOS... 102 0 101
+	Paxos: Status - Key does not exist.
+Wait for 102 on 1 = 2
+Wait for 99 on 1 = 1
+Got 99
+1: currently @ 102 -> 102
+(3) Starting PAXOS... 103 0 102
+Wait for 101 on 0 = 1
+	Paxos: Status - Key does not exist.
+Got 101
+Wait for 103 on 1 = 2
+0: currently @ 101 -> 102
+(3) Starting PAXOS... 103 0 102
+Wait for 101 on 0 = 1
+Got 101
+0: currently @ 103 -> 102
+(3) Starting PAXOS... 103 0 102
+	Paxos: Status - Key does not exist.
+Wait for 103 on 0 = 2
+Wait for 103 on 0 = 2
+Wait for 102 on 1 = 1
+Got 102
+1: currently @ 103 -> 102
+Wait for 103 on 1 = 1
+Got 103
+1: currently @ 103 -> 103
+(3) Starting PAXOS... 104 0 103
+	Paxos: Status - Key does not exist.
+Wait for 104 on 1 = 2
+Wait for 103 on 0 = 1
+Got 103
+0: currently @ 103 -> 103
+(3) Starting PAXOS... 104 0 103
+	Paxos: Status - Key does not exist.
+Wait for 104 on 0 = 2
+Wait for 103 on 0 = 1
+Got 103
+0: currently @ 104 -> 103
+Wait for 99 on 2 = 1
+Got 99
+2: currently @ 99 -> 103
+(3) Starting PAXOS... 104 0 103
+	Paxos: Status - Key does not exist.
+Wait for 104 on 2 = 2
+
+
+
+PutAppend Call failed!
+Wait for 99 on 0 = 1
+Got 99
+0: currently @ 104 -> 103
+(3) Starting PAXOS... 104 0 103
+Wait for 104 on 0 = 2
+Wait for 99 on 2 = 1
+Got 99
+2: currently @ 104 -> 103
+(3) Starting PAXOS... 104 0 103
+Wait for 104 on 2 = 2
+Wait for 104 on 1 = 1
+Got 104
+1: currently @ 104 -> 104
+(3) Starting PAXOS... 105 0 104
+	Paxos: Status - Key does not exist.
+Wait for 105 on 1 = 2
+Wait for 104 on 0 = 1
+Got 104
+0: currently @ 104 -> 104
+(3) Starting PAXOS... 105 0 104
+	Paxos: Status - Key does not exist.
+Wait for 105 on 0 = 2
+Wait for 104 on 2 = 1
+Got 104
+2: currently @ 104 -> 104
+(3) Starting PAXOS... 105 0 104
+	Paxos: Status - Key does not exist.
+Wait for 105 on 2 = 2
+Wait for 104 on 2 = 1
+Got 104
+2: currently @ 105 -> 104
+(3) Starting PAXOS... 105 0 104
+Wait for 105 on 2 = 2
+Wait for 104 on 0 = 1
+Got 104
+0: currently @ 105 -> 104
+(3) Starting PAXOS... 105 0 104
+Wait for 105 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3226427348732763748} &{Get b  485755491024115750}
+Wait for 105 on 0 = 2
+Wait for 105 on 1 = 2
+Wait for 105 on 2 = 1
+Got 105
+2: currently @ 105 -> 105
+Wait for 105 on 0 = 2
+(3) Starting PAXOS... 106 0 105
+	Paxos: Status - Key does not exist.
+Wait for 106 on 2 = 2
+Wait for 105 on 2 = 2
+Wait for 106 on 2 = 1
+Got 106
+2: currently @ 106 -> 106
+Wait for 105 on 0 = 1
+Got 105
+0: currently @ 105 -> 106
+Wait for 105 on 1 = 1
+Got 105
+1: currently @ 105 -> 106
+(3) Starting PAXOS... 107 0 106
+(3) Starting PAXOS... 107 0 106
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 107 on 1 = 2
+Wait for 107 on 0 = 2
+Wait for 105 on 0 = 1
+Got 105
+0: currently @ 107 -> 107
+(3) Starting PAXOS... 108 0 107
+	Paxos: Status - Key does not exist.
+Wait for 108 on 0 = 2
+Wait for 105 on 2 = 1
+Got 105
+2: currently @ 107 -> 107
+(3) Starting PAXOS... 108 0 107
+	Paxos: Status - Key does not exist.
+Wait for 108 on 2 = 2
+Wait for 107 on 0 = 1
+Got 107
+0: currently @ 108 -> 108
+Wait for 107 on 1 = 1
+(3) Starting PAXOS... 109 0 108
+Got 107
+	Paxos: Status - Key does not exist.
+1: currently @ 107 -> 108
+Wait for 109 on 0 = 2
+(3) Starting PAXOS... 109 0 108
+	Paxos: Status - Key does not exist.
+Wait for 109 on 1 = 2
+Wait for 108 on 0 = 1
+Got 108
+0: currently @ 109 -> 108
+(3) Starting PAXOS... 109 0 108
+Wait for 109 on 0 = 2
+Wait for 108 on 2 = 1
+Got 108
+2: currently @ 108 -> 108
+Wait for 109 on 1 = 1
+Got 109
+1: currently @ 109 -> 109
+(3) Starting PAXOS... 110 0 109
+	Paxos: Status - Key does not exist.
+Wait for 110 on 1 = 2
+Wait for 109 on 0 = 1
+Got 109
+0: currently @ 109 -> 109
+(3) Starting PAXOS... 110 0 109
+	Paxos: Status - Key does not exist.
+Wait for 110 on 0 = 2
+Wait for 109 on 0 = 1
+Got 109
+0: currently @ 110 -> 109
+(3) Starting PAXOS... 110 0 109
+Wait for 110 on 0 = 2
+Wait for 110 on 0 = 1
+Got 110
+0: currently @ 110 -> 110
+(3) Starting PAXOS... 111 0 110
+Wait for 110 on 1 = 1
+Got 110
+	Paxos: Status - Key does not exist.
+1: currently @ 110 -> 110
+Wait for 111 on 0 = 2
+(3) Starting PAXOS... 111 0 110
+	Paxos: Status - Key does not exist.
+Wait for 111 on 1 = 2
+Wait for 110 on 0 = 1
+Got 110
+0: currently @ 111 -> 110
+(3) Starting PAXOS... 111 0 110
+Wait for 111 on 0 = 2
+Wait for 111 on 0 = 1
+Got 111
+0: currently @ 111 -> 111
+Wait for 111 on 1 = 1
+Got 111
+(3) Starting PAXOS... 112 0 111
+1: currently @ 111 -> 111
+	Paxos: Status - Key does not exist.
+Wait for 112 on 0 = 2
+(3) Starting PAXOS... 112 0 111
+	Paxos: Status - Key does not exist.
+Wait for 112 on 1 = 2
+Wait for 111 on 0 = 1
+Got 111
+0: currently @ 112 -> 112
+(3) Starting PAXOS... 113 0 112
+	Paxos: Status - Key does not exist.
+Wait for 113 on 0 = 2
+Wait for 112 on 1 = 1
+Wait for 112 on 0 = 1
+Got 112
+Got 112
+1: currently @ 112 -> 113
+0: currently @ 113 -> 113
+(3) Starting PAXOS... 114 0 113
+(3) Starting PAXOS... 114 0 113
+	Paxos: Status - Key does not exist.
+Wait for 114 on 1 = 2
+	Paxos: Status - Key does not exist.
+Wait for 114 on 0 = 2
+Wait for 113 on 0 = 1
+Got 113
+0: currently @ 114 -> 113
+Wait for 114 on 0 = 1
+Wait for 114 on 1 = 1
+Got 114
+Got 114
+0: currently @ 114 -> 114
+1: currently @ 114 -> 114
+(3) Starting PAXOS... 115 0 114
+(3) Starting PAXOS... 115 0 114
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 115 on 1 = 2
+Wait for 115 on 0 = 2
+Wait for 115 on 0 = 1
+Got 115
+0: currently @ 115 -> 115
+(3) Starting PAXOS... 116 0 115
+	Paxos: Status - Key does not exist.
+Wait for 116 on 0 = 2
+Wait for 115 on 1 = 1
+Got 115
+1: currently @ 115 -> 115
+(3) Starting PAXOS... 116 0 115
+	Paxos: Status - Key does not exist.
+Wait for 116 on 1 = 2
+Wait for 116 on 1 = 1
+Got 116
+1: currently @ 116 -> 116
+Wait for 116 on 0 = 1
+(3) Starting PAXOS... 117 0 116
+Got 116
+	Paxos: Status - Key does not exist.
+Wait for 117 on 1 = 2
+0: currently @ 116 -> 116
+(3) Starting PAXOS... 117 0 116
+	Paxos: Status - Key does not exist.
+Wait for 117 on 0 = 2
+Wait for 117 on 1 = 1
+Got 117
+1: currently @ 117 -> 117
+(3) Starting PAXOS... 118 0 117
+Wait for 117 on 0 = 1
+Got 117
+	Paxos: Status - Key does not exist.
+Wait for 118 on 1 = 2
+0: currently @ 117 -> 117
+(3) Starting PAXOS... 118 0 117
+	Paxos: Status - Key does not exist.
+Wait for 118 on 0 = 2
+Wait for 118 on 0 = 1
+Got 118
+Wait for 118 on 1 = 2
+0: currently @ 118 -> 118
+(3) Starting PAXOS... 119 0 118
+	Paxos: Status - Key does not exist.
+Wait for 119 on 0 = 2
+Wait for 119 on 0 = 1
+Got 119
+0: currently @ 119 -> 119
+Wait for 118 on 1 = 1
+Got 118
+1: currently @ 118 -> 119
+(3) Starting PAXOS... 120 0 119
+	Paxos: Status - Key does not exist.
+Wait for 120 on 1 = 2
+Wait for 120 on 1 = 1
+Got 120
+1: currently @ 120 -> 120
+
+
+(1) Clerk Get
+KV Server Get key b on 0!
+0: currently @ 120 -> 120
+(3) Starting PAXOS... 121 0 120
+	Paxos: Status - Key does not exist.
+Wait for 121 on 0 = 2
+Wait for 121 on 0 = 1
+Got 121
+0: currently @ 121 -> 121
+
+
+(1) Clerk Get
+KV Server Get key b on 1!
+1: currently @ 121 -> 121
+(3) Starting PAXOS... 122 0 121
+	Paxos: Status - Key does not exist.
+Wait for 122 on 1 = 2
+Wait for 122 on 1 = 1
+Got 122
+1: currently @ 122 -> 122
+
+
+(1) Clerk Get
+KV Server Get key b on 2!
+2: currently @ 109 -> 122
+(3) Starting PAXOS... 123 0 122
+	Paxos: Status - Key does not exist.
+Wait for 123 on 2 = 2
+Wait for 123 on 2 = 1
+Got 123
+2: currently @ 123 -> 123
+num eye:  14 get
+
+
+(1) Clerk Get
+num eye:  6 get
+num eye:  10 get
+
+
+(1) Clerk Get
+
+
+(1) Clerk Get
+num eye:  11 put  5089134323978233018
+
+
+(1) Clerk PutAppend
+num eye:  7 put  1205043859388862788
+num eye:  0 get
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk Get
+num eye:  12 put  5944830206637008055
+
+
+(1) Clerk PutAppend
+num eye:  1 get
+num eye:  8 put  2184302455902443631
+
+
+(1) Clerk Get
+
+
+(1) Clerk PutAppend
+num eye:  13 get
+
+
+(1) Clerk Get
+num eye:  2 get
+num eye:  9 get
+
+
+(1) Clerk Get
+
+
+(1) Clerk Get
+num eye:  3 put  5765484004404056823
+
+
+(1) Clerk PutAppend
+KV Server Get key b on 0!
+num eye:  4 get
+
+
+(1) Clerk Get
+0: currently @ 122 -> 123
+(3) Starting PAXOS... 124 0 123
+	Paxos: Status - Key does not exist.
+Wait for 124 on 0 = 2
+2: currently @ 124 -> 123
+(3) Starting PAXOS... 124 0 123
+	Paxos: Status - Key does not exist.
+Wait for 124 on 2 = 2
+0: currently @ 124 -> 123
+(3) Starting PAXOS... 124 0 123
+	Paxos: Status - Key does not exist.
+Wait for 124 on 0 = 2
+KV Server Get key b on 1!
+1: currently @ 123 -> 123
+(3) Starting PAXOS... 124 0 123
+	Paxos: Status - Key does not exist.
+Wait for 124 on 1 = 2
+KV Server Get key b on 2!
+2: currently @ 124 -> 123
+num eye:  5 get
+
+
+(1) Clerk Get
+(3) Starting PAXOS... 124 0 123
+	Paxos: Status - Key does not exist.
+Wait for 124 on 2 = 2
+KV Server Get key b on 1!
+1: currently @ 124 -> 123
+KV Server Get key b on 2!
+2: currently @ 124 -> 123
+(3) Starting PAXOS... 124 0 123
+Wait for 124 on 1 = 2
+(3) Starting PAXOS... 124 0 123
+	Paxos: Status - Key does not exist.
+Wait for 124 on 2 = 2
+KV Server Get key b on 0!
+0: currently @ 124 -> 123
+(3) Starting PAXOS... 124 0 123
+Wait for 124 on 0 = 2
+KV Server Get key b on 1!
+2: currently @ 124 -> 123
+1: currently @ 124 -> 123
+(3) Starting PAXOS... 124 0 123
+(3) Starting PAXOS... 124 0 123
+	Paxos: Status - Key does not exist.
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+KV Server Get key b on 1!
+2: currently @ 124 -> 123
+1: currently @ 124 -> 123
+(3) Starting PAXOS... 124 0 123
+(3) Starting PAXOS... 124 0 123
+	Paxos: Status - Key does not exist.
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 2
+KV Server Get key b on 0!
+0: currently @ 124 -> 123
+(3) Starting PAXOS... 124 0 123
+Wait for 124 on 0 = 2
+KV Server Get key b on 2!
+2: currently @ 124 -> 123
+(3) Starting PAXOS... 124 0 123
+	Paxos: Status - Key does not exist.
+Wait for 124 on 2 = 2
+2: currently @ 124 -> 123
+(3) Starting PAXOS... 124 0 123
+	Paxos: Status - Key does not exist.
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1236644211127874502} &{Get b  1953513638605282513}
+Wait for 124 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3553682633717231409} &{Put b 5944830206637008055 898548572794292343}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3553682633717231409} &{Get b  4599836045952015135}
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 1
+Got 124
+1: currently @ 124 -> 124
+(3) Starting PAXOS... 125 0 124
+	Paxos: Status - Key does not exist.
+Wait for 125 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 1
+Got 124
+1: currently @ 125 -> 124
+(3) Starting PAXOS... 125 0 124
+	Paxos: Status - Key does not exist.
+Wait for 125 on 1 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 1 = 1
+Got 124
+1: currently @ 125 -> 124
+(3) Starting PAXOS... 125 0 124
+	Paxos: Status - Key does not exist.
+Wait for 125 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2825932157357531556} &{Put b 5944830206637008055 898548572794292343}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  605216209213407207} &{Get b  2825932157357531556}
+Wait for 124 on 0 = 2
+Wait for 124 on 0 = 2
+Wait for 124 on 2 = 2
+Wait for 124 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1236644211127874502} &{Get b  605216209213407207}
+Wait for 125 on 1 = 1
+Got 125
+1: currently @ 125 -> 125
+(3) Starting PAXOS... 126 0 125
+	Paxos: Status - Key does not exist.
+Wait for 126 on 1 = 2
+Wait for 125 on 1 = 1
+Got 125
+1: currently @ 126 -> 125
+(3) Starting PAXOS... 126 0 125
+	Paxos: Status - Key does not exist.
+Wait for 126 on 1 = 2
+Wait for 125 on 1 = 1
+Got 125
+1: currently @ 126 -> 125
+(3) Starting PAXOS... 126 0 125
+	Paxos: Status - Key does not exist.
+Wait for 126 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Put b 2184302455902443631 2744534957149999654} &{Put b 5765484004404056823 2856009501756340586}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3553682633717231409} &{Put b 1205043859388862788 3692955091621616881}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 5944830206637008055 898548572794292343} &{Get b  2825932157357531556}
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  3836516692902001529} &{Put b 1205043859388862788 3692955091621616881}
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3553682633717231409} &{Put b 5765484004404056823 2856009501756340586}
+Wait for 126 on 1 = 1
+Got 126
+1: currently @ 126 -> 126
+(3) Starting PAXOS... 127 0 126
+	Paxos: Status - Key does not exist.
+Wait for 127 on 1 = 2
+Wait for 126 on 1 = 1
+Got 126
+1: currently @ 127 -> 126
+(3) Starting PAXOS... 127 0 126
+	Paxos: Status - Key does not exist.
+Wait for 127 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  2825932157357531556} &{Get b  605216209213407207}
+Wait for 126 on 1 = 1
+Got 126
+1: currently @ 127 -> 126
+(3) Starting PAXOS... 127 0 126
+Wait for 127 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2825932157357531556} &{Get b  1953513638605282513}
+Wait for 127 on 1 = 1
+Got 127
+1: currently @ 127 -> 127
+Wait for 127 on 1 = 1
+Got 127
+(3) Starting PAXOS... 128 0 127
+	Paxos: Status - Key does not exist.
+Wait for 128 on 1 = 2
+1: currently @ 128 -> 127
+(3) Starting PAXOS... 128 0 127
+	Paxos: Status - Key does not exist.
+Wait for 128 on 1 = 2
+Wait for 127 on 1 = 1
+Got 127
+1: currently @ 128 -> 127
+(3) Starting PAXOS... 128 0 127
+Wait for 128 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  1953513638605282513} &{Get b  2825932157357531556}
+Wait for 128 on 1 = 2
+Wait for 128 on 1 = 2
+Wait for 128 on 1 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  605216209213407207} &{Get b  2825932157357531556}
+Wait for 128 on 1 = 1
+Got 128
+1: currently @ 128 -> 128
+(3) Starting PAXOS... 129 0 128
+	Paxos: Status - Key does not exist.
+Wait for 129 on 1 = 2
+Wait for 128 on 1 = 1
+Got 128
+1: currently @ 129 -> 128
+(3) Starting PAXOS... 129 0 128
+	Paxos: Status - Key does not exist.
+Wait for 129 on 1 = 2
+Wait for 128 on 1 = 1
+Got 128
+1: currently @ 129 -> 129
+(3) Starting PAXOS... 130 0 129
+	Paxos: Status - Key does not exist.
+Wait for 130 on 1 = 2
+Wait for 129 on 1 = 1
+Got 129
+1: currently @ 130 -> 129
+Wait for 129 on 1 = 1
+Got 129
+1: currently @ 130 -> 130
+(3) Starting PAXOS... 131 0 130
+	Paxos: Status - Key does not exist.
+Wait for 131 on 1 = 2
+Wait for 130 on 1 = 1
+Got 130
+1: currently @ 131 -> 130
+Wait for 131 on 1 = 1
+Got 131
+1: currently @ 131 -> 131
+Wait for 124 on 1 = 1
+Got 124
+1: currently @ 132 -> 131
+(3) Starting PAXOS... 132 0 131
+	Paxos: Status - Key does not exist.
+Wait for 132 on 1 = 2
+Wait for 132 on 1 = 1
+Got 132
+1: currently @ 132 -> 132
+Wait for 124 on 2 = 1
+Got 124
+Wait for 124 on 2 = 1
+Got 124
+2: currently @ 124 -> 132
+Wait for 124 on 0 = 1
+Wait for 124 on 2 = 1
+Got 124
+Got 124
+0: currently @ 124 -> 132
+(3) Starting PAXOS... 133 0 132
+Wait for 124 on 2 = 1
+Got 124
+(3) Starting PAXOS... 133 0 132
+Wait for 124 on 0 = 1
+Got 124
+0: currently @ 133 -> 132
+(3) Starting PAXOS... 133 0 132
+Wait for 133 on 0 = 2
+Wait for 124 on 2 = 1
+Got 124
+	Paxos: Status - Key does not exist.
+Wait for 133 on 2 = 2
+Wait for 133 on 0 = 2
+2: currently @ 133 -> 132
+(3) Starting PAXOS... 133 0 132
+	Paxos: Status - Key does not exist.
+Wait for 133 on 2 = 2
+2: currently @ 133 -> 132
+(3) Starting PAXOS... 133 0 132
+	Paxos: Status - Key does not exist.
+Wait for 133 on 2 = 2
+2: currently @ 133 -> 132
+(3) Starting PAXOS... 133 0 132
+	Paxos: Status - Key does not exist.
+Wait for 133 on 2 = 2
+2: currently @ 133 -> 132
+(3) Starting PAXOS... 133 0 132
+	Paxos: Status - Key does not exist.
+Wait for 133 on 2 = 2
+Wait for 124 on 2 = 1
+Got 124
+2: currently @ 133 -> 132
+(3) Starting PAXOS... 133 0 132
+Wait for 133 on 2 = 2
+Wait for 124 on 0 = 1
+Got 124
+0: currently @ 133 -> 132
+(3) Starting PAXOS... 133 0 132
+Wait for 133 on 0 = 2
+Wait for 124 on 0 = 1
+Got 124
+0: currently @ 133 -> 132
+(3) Starting PAXOS... 133 0 132
+Wait for 133 on 0 = 2
+Wait for 124 on 2 = 1
+Got 124
+2: currently @ 133 -> 132
+(3) Starting PAXOS... 133 0 132
+Wait for 133 on 2 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 2 = 1
+Got 133
+2: currently @ 133 -> 133
+(3) Starting PAXOS... 134 0 133
+	Paxos: Status - Key does not exist.
+Wait for 134 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  3553682633717231409} &{Put b 5765484004404056823 2856009501756340586}
+Wait for 133 on 2 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 2 = 2
+Wait for 134 on 2 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 2 = 2
+Wait for 134 on 2 = 1
+Got 134
+2: currently @ 134 -> 134
+Wait for 133 on 2 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 0 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 2 = 2
+Wait for 133 on 2 = 2
+
+
+
+PutAppend Call failed!
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  3109053504525269740} &{Put b 1205043859388862788 3692955091621616881}
+
+
+DIFFEERENT VALUE
+
+
+{Put b 2184302455902443631 2744534957149999654} &{Get b  3836516692902001529}
+
+
+DIFFEERENT VALUE
+
+
+&{Get b  3109053504525269740} &{Put b 5944830206637008055 898548572794292343}
+Wait for 133 on 0 = 1
+Got 133
+0: currently @ 133 -> 134
+(3) Starting PAXOS... 135 0 134
+	Paxos: Status - Key does not exist.
+Wait for 135 on 0 = 2
+Wait for 135 on 0 = 1
+Got 135
+0: currently @ 135 -> 135
+Wait for 133 on 2 = 1
+Got 133
+2: currently @ 135 -> 135
+(3) Starting PAXOS... 136 0 135
+	Paxos: Status - Key does not exist.
+Wait for 136 on 2 = 2
+Wait for 133 on 2 = 1
+Wait for 133 on 0 = 1
+Got 133
+Got 133
+2: currently @ 136 -> 135
+0: currently @ 136 -> 135
+(3) Starting PAXOS... 136 0 135
+(3) Starting PAXOS... 136 0 135
+	Paxos: Status - Key does not exist.
+Wait for 136 on 2 = 2
+	Paxos: Status - Key does not exist.
+Wait for 136 on 0 = 2
+Wait for 133 on 2 = 1
+Wait for 133 on 0 = 1
+Got 133
+0: currently @ 136 -> 135
+(3) Starting PAXOS... 136 0 135
+Wait for 136 on 0 = 2
+Wait for 133 on 0 = 1
+Got 133
+0: currently @ 136 -> 135
+(3) Starting PAXOS... 136 0 135
+Wait for 136 on 0 = 2
+Got 133
+2: currently @ 136 -> 135
+(3) Starting PAXOS... 136 0 135
+	Paxos: Status - Key does not exist.
+Wait for 136 on 2 = 2
+Wait for 133 on 2 = 1
+Got 133
+2: currently @ 136 -> 135
+(3) Starting PAXOS... 136 0 135
+	Paxos: Status - Key does not exist.
+Wait for 136 on 2 = 2
+Wait for 133 on 2 = 1
+Wait for 133 on 2 = 1
+Got 133
+Got 133
+2: currently @ 136 -> 135
+(3) Starting PAXOS... 136 0 135
+	Paxos: Status - Key does not exist.
+Wait for 136 on 2 = 2
+2: currently @ 136 -> 135
+(3) Starting PAXOS... 136 0 135
+	Paxos: Status - Key does not exist.
+Wait for 136 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Put b 5089134323978233018 3235673853979579232} &{Get b  3109053504525269740}
+
+
+DIFFEERENT VALUE
+
+
+&{Put b 5089134323978233018 3235673853979579232} &{Put b 5765484004404056823 2856009501756340586}
+Wait for 136 on 0 = 2
+Wait for 136 on 2 = 2
+Wait for 136 on 2 = 2
+Wait for 136 on 0 = 2
+Wait for 136 on 2 = 2
+Wait for 136 on 0 = 2
+Wait for 136 on 2 = 2
+Wait for 136 on 2 = 2
+Wait for 136 on 2 = 2
+Wait for 136 on 2 = 1
+Got 136
+Wait for 136 on 0 = 1
+2: currently @ 136 -> 136
+Got 136
+0: currently @ 136 -> 136
+(3) Starting PAXOS... 137 0 136
+(3) Starting PAXOS... 137 0 136
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 137 on 0 = 2
+Wait for 137 on 2 = 2
+Wait for 136 on 0 = 1
+Got 136
+0: currently @ 137 -> 136
+(3) Starting PAXOS... 137 0 136
+Wait for 136 on 2 = 1
+Wait for 137 on 0 = 2
+Got 136
+2: currently @ 137 -> 136
+(3) Starting PAXOS... 137 0 136
+	Paxos: Status - Key does not exist.
+Wait for 137 on 2 = 2
+Wait for 136 on 0 = 1
+Got 136
+Wait for 136 on 2 = 1
+Got 136
+0: currently @ 137 -> 136
+2: currently @ 137 -> 136
+(3) Starting PAXOS... 137 0 136
+(3) Starting PAXOS... 137 0 136
+	Paxos: Status - Key does not exist.
+Wait for 137 on 0 = 2
+Wait for 137 on 2 = 2
+Wait for 136 on 2 = 1
+Got 136
+2: currently @ 137 -> 136
+(3) Starting PAXOS... 137 0 136
+	Paxos: Status - Key does not exist.
+Wait for 137 on 2 = 2
+Wait for 136 on 2 = 1
+Got 136
+2: currently @ 137 -> 136
+(3) Starting PAXOS... 137 0 136
+	Paxos: Status - Key does not exist.
+Wait for 137 on 2 = 2
+Wait for 136 on 2 = 1
+Got 136
+2: currently @ 137 -> 136
+
+
+DIFFEERENT VALUE
+
+
+&{Put b 5089134323978233018 3235673853979579232} &{Put b 5765484004404056823 2856009501756340586}
+Wait for 137 on 2 = 2
+Wait for 137 on 0 = 2
+Wait for 137 on 2 = 2
+Wait for 137 on 0 = 2
+Wait for 137 on 2 = 2
+Wait for 137 on 0 = 2
+Wait for 137 on 2 = 2
+Wait for 137 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Put b 5089134323978233018 3235673853979579232} &{Put b 5944830206637008055 898548572794292343}
+Wait for 137 on 0 = 1
+Wait for 137 on 0 = 1
+Got 137
+Wait for 137 on 2 = 1
+Got 137
+Got 137
+0: currently @ 137 -> 137
+2: currently @ 137 -> 137
+Wait for 137 on 2 = 1
+Got 137
+(3) Starting PAXOS... 138 0 137
+	Paxos: Status - Key does not exist.
+Wait for 138 on 0 = 2
+(3) Starting PAXOS... 138 0 137
+	Paxos: Status - Key does not exist.
+0: currently @ 138 -> 137
+Wait for 138 on 2 = 2
+(3) Starting PAXOS... 138 0 137
+2: currently @ 138 -> 137
+Wait for 138 on 0 = 2
+(3) Starting PAXOS... 138 0 137
+	Paxos: Status - Key does not exist.
+Wait for 138 on 2 = 2
+Wait for 137 on 2 = 1
+Wait for 137 on 2 = 1
+Wait for 137 on 0 = 1
+Wait for 137 on 2 = 1
+Got 137
+Got 137
+2: currently @ 138 -> 137
+0: currently @ 138 -> 137
+(3) Starting PAXOS... 138 0 137
+Wait for 138 on 0 = 2
+Got 137
+(3) Starting PAXOS... 138 0 137
+	Paxos: Status - Key does not exist.
+Wait for 138 on 2 = 2
+2: currently @ 138 -> 137
+(3) Starting PAXOS... 138 0 137
+	Paxos: Status - Key does not exist.
+Wait for 138 on 2 = 2
+Got 137
+2: currently @ 138 -> 137
+(3) Starting PAXOS... 138 0 137
+	Paxos: Status - Key does not exist.
+Wait for 138 on 2 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 0 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 0 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 0 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 0 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 0 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 0 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 0 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 0 = 2
+Wait for 138 on 2 = 2
+Wait for 138 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Put b 5089134323978233018 3235673853979579232} &{Get b  3836516692902001529}
+Wait for 138 on 0 = 1
+Wait for 138 on 2 = 1
+Wait for 138 on 0 = 1
+Got 138
+Got 138
+Got 138
+0: currently @ 138 -> 138
+2: currently @ 138 -> 138
+Wait for 138 on 2 = 1
+Got 138
+(3) Starting PAXOS... 139 0 138
+(3) Starting PAXOS... 139 0 138
+Wait for 138 on 2 = 1
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Got 138
+Wait for 139 on 2 = 2
+Wait for 139 on 0 = 2
+Wait for 138 on 0 = 1
+2: currently @ 139 -> 138
+0: currently @ 139 -> 138
+Wait for 138 on 2 = 1
+Got 138
+Got 138
+(3) Starting PAXOS... 139 0 138
+Wait for 139 on 0 = 2
+0: currently @ 139 -> 138
+(3) Starting PAXOS... 139 0 138
+Wait for 139 on 0 = 2
+Wait for 138 on 2 = 1
+Got 138
+(3) Starting PAXOS... 139 0 138
+	Paxos: Status - Key does not exist.
+Wait for 139 on 2 = 2
+2: currently @ 139 -> 138
+(3) Starting PAXOS... 139 0 138
+	Paxos: Status - Key does not exist.
+Wait for 139 on 2 = 2
+2: currently @ 139 -> 138
+(3) Starting PAXOS... 139 0 138
+	Paxos: Status - Key does not exist.
+Wait for 139 on 2 = 2
+2: currently @ 139 -> 138
+(3) Starting PAXOS... 139 0 138
+Wait for 139 on 2 = 2
+Wait for 139 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+{Get b  2976827461114149293} &{Get b  3836516692902001529}
+Wait for 139 on 2 = 2
+Wait for 139 on 0 = 2
+Wait for 139 on 0 = 2
+Wait for 139 on 0 = 2
+Wait for 139 on 2 = 2
+Wait for 139 on 2 = 2
+Wait for 139 on 2 = 2
+
+
+DIFFEERENT VALUE
+
+
+&{Put b 5765484004404056823 2856009501756340586} &{Put b 5089134323978233018 3235673853979579232}
+Wait for 139 on 2 = 2
+Wait for 139 on 2 = 1
+Got 139
+2: currently @ 139 -> 139
+(3) Starting PAXOS... 140 0 139
+	Paxos: Status - Key does not exist.
+Wait for 140 on 2 = 2
+Wait for 139 on 2 = 2
+Wait for 139 on 0 = 2
+Wait for 139 on 0 = 2
+Wait for 139 on 0 = 2
+Wait for 139 on 2 = 2
+Wait for 139 on 2 = 2
+Wait for 140 on 2 = 1
+Got 140
+2: currently @ 140 -> 140
+
+
+
+PutAppend Call failed!
+Wait for 139 on 2 = 1
+Got 139
+2: currently @ 141 -> 140
+(3) Starting PAXOS... 141 0 140
+	Paxos: Status - Key does not exist.
+Wait for 141 on 2 = 2
+Wait for 141 on 2 = 1
+Got 141
+2: currently @ 141 -> 141
+
+
+
+PutAppend Call failed!
+Wait for 139 on 0 = 1
+Got 139
+Wait for 139 on 2 = 1
+Wait for 139 on 0 = 1
+Got 139
+0: currently @ 139 -> 141
+Wait for 139 on 2 = 1
+Wait for 139 on 0 = 1
+Got 139
+Got 139
+Got 139
+2: currently @ 142 -> 141
+Wait for 139 on 2 = 1
+Got 139
+(3) Starting PAXOS... 142 0 141
+	Paxos: Status - Key does not exist.
+(3) Starting PAXOS... 142 0 141
+Wait for 142 on 2 = 2
+	Paxos: Status - Key does not exist.
+2: currently @ 142 -> 141
+Wait for 142 on 0 = 2
+0: currently @ 142 -> 141
+(3) Starting PAXOS... 142 0 141
+(3) Starting PAXOS... 142 0 141
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 142 on 2 = 2
+Wait for 142 on 0 = 2
+2: currently @ 142 -> 141
+0: currently @ 142 -> 141
+(3) Starting PAXOS... 142 0 141
+(3) Starting PAXOS... 142 0 141
+	Paxos: Status - Key does not exist.
+Wait for 142 on 2 = 2
+	Paxos: Status - Key does not exist.
+Wait for 142 on 0 = 2
+Wait for 142 on 0 = 2
+Wait for 142 on 2 = 2
+Wait for 142 on 0 = 2
+Wait for 142 on 2 = 2
+Wait for 142 on 0 = 2
+Wait for 142 on 2 = 2
+Wait for 142 on 2 = 2
+Wait for 142 on 0 = 2
+Wait for 142 on 2 = 2
+Wait for 142 on 2 = 2
+Wait for 142 on 0 = 2
+Wait for 142 on 0 = 2
+
+
+DIFFEERENT VALUE
+
+
+Wait for 142 on 0 = 1
+&{Get b  3836516692902001529} &{Get b  4599836045952015135}
+Got 142
+0: currently @ 142 -> 142
+(3) Starting PAXOS... 143 0 142
+	Paxos: Status - Key does not exist.
+Wait for 143 on 0 = 2
+Wait for 142 on 2 = 2
+Wait for 143 on 0 = 1
+Got 143
+0: currently @ 143 -> 143
+Wait for 142 on 2 = 1
+Wait for 142 on 0 = 1
+Got 142
+Got 142
+2: currently @ 142 -> 143
+0: currently @ 144 -> 143
+(3) Starting PAXOS... 144 0 143
+(3) Starting PAXOS... 144 0 143
+	Paxos: Status - Key does not exist.
+Wait for 144 on 2 = 2
+Wait for 142 on 2 = 1
+Got 142
+Wait for 142 on 0 = 1
+Got 142
+0: currently @ 144 -> 143
+
+
+
+PutAppend Call failed!
+(3) Starting PAXOS... 144 0 143
+Wait for 144 on 0 = 2
+2: currently @ 144 -> 143
+(3) Starting PAXOS... 144 0 143
+	Paxos: Status - Key does not exist.
+Wait for 144 on 2 = 2
+Wait for 144 on 0 = 2
+Wait for 144 on 2 = 1
+Got 144
+2: currently @ 144 -> 144
+
+
+
+PutAppend Call failed!
+Wait for 144 on 0 = 1
+Wait for 144 on 2 = 1
+Got 144
+Got 144
+0: currently @ 144 -> 144
+2: currently @ 145 -> 144
+(3) Starting PAXOS... 145 0 144
+(3) Starting PAXOS... 145 0 144
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 145 on 2 = 2
+Wait for 145 on 0 = 2
+Wait for 144 on 0 = 1
+Got 144
+0: currently @ 145 -> 144
+(3) Starting PAXOS... 145 0 144
+Wait for 145 on 0 = 2
+Wait for 145 on 0 = 2
+Wait for 145 on 2 = 1
+Got 145
+2: currently @ 145 -> 145
+Wait for 145 on 0 = 1
+Got 145
+0: currently @ 145 -> 145
+(3) Starting PAXOS... 146 0 145
+	Paxos: Status - Key does not exist.
+Wait for 146 on 0 = 2
+Wait for 146 on 0 = 1
+Got 146
+0: currently @ 146 -> 146
+Wait for 145 on 0 = 1
+Got 145
+0: currently @ 147 -> 146
+(3) Starting PAXOS... 147 0 146
+	Paxos: Status - Key does not exist.
+Wait for 147 on 0 = 2
+Wait for 147 on 0 = 1
+Got 147
+0: currently @ 147 -> 147
+Wait for 142 on 2 = 1
+Got 142
+2: currently @ 146 -> 147
+(3) Starting PAXOS... 148 0 147
+	Paxos: Status - Key does not exist.
+Wait for 148 on 2 = 2
+Wait for 148 on 2 = 1
+Got 148
+2: currently @ 148 -> 148
+
+
+(1) Clerk Get
+KV Server Get key b on 0!
+0: currently @ 148 -> 148
+(3) Starting PAXOS... 149 0 148
+	Paxos: Status - Key does not exist.
+Wait for 149 on 0 = 2
+Wait for 149 on 0 = 1
+Got 149
+0: currently @ 149 -> 149
+
+
+(1) Clerk Get
+KV Server Get key b on 1!
+1: currently @ 133 -> 149
+(3) Starting PAXOS... 150 0 149
+	Paxos: Status - Key does not exist.
+Wait for 150 on 1 = 2
+Wait for 150 on 1 = 1
+Got 150
+1: currently @ 150 -> 150
+B ==  5765484004404056823 5089134323978233018
+exit status 1
+FAIL	kvpaxos	5.265s

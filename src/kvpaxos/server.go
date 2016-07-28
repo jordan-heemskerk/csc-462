@@ -23,9 +23,6 @@ func DPrintf(format string, a ...interface{}) (n int, err error) {
 }
 
 type Op struct {
-	// Your definitions here.
-	// Field names must start with capital letters,
-	// otherwise RPC will break.
 	Cmd   string
 	Key   string
 	Value string
@@ -78,7 +75,6 @@ func (kv *KVPaxos) wait(seq int) interface{} {
 }
 
 func val2op(val interface{}) Op {
-
 	_, ok := val.(Op)
 
 	if !ok {
@@ -92,7 +88,6 @@ func val2op(val interface{}) Op {
 }
 
 func (kv *KVPaxos) doPaxos(op interface{}) {
-
 	for {
 
 		kv.mu.Lock()
@@ -103,6 +98,7 @@ func (kv *KVPaxos) doPaxos(op interface{}) {
 
 		kv.mu.Unlock()
 
+		// No waiting on the paxos! (no sequential!)
 		pxop := kv.wait(seq)
 
 		if pxop == op {
@@ -148,10 +144,13 @@ func (kv *KVPaxos) Sync(max_seq int) {
 
 					if operation.Cmd == "Put" {
 
+						// fmt.Println("Putting ", operation.Value, " on ", operation.Key)
 						// do put
 						kv.KeyVals[operation.Key] = operation.Value
 
 					} else if operation.Cmd == "Append" {
+
+						// fmt.Println("Putting ", operation.Value, " on ", operation.Key, "(", kv.KeyVals[operation.Key], ")")
 
 						// do append
 						if _, exists := kv.KeyVals[operation.Key]; exists {
@@ -209,9 +208,8 @@ func (kv *KVPaxos) Get(args *GetArgs, reply *GetReply) error {
 	operation.Key = args.Key
 	operation.Hash = args.Hash
 
+	// update
 	kv.doPaxos(operation)
-
-	// we should have been updated now
 
 	// get and return the value
 	if value, ok := kv.KeyVals[operation.Key]; ok {
