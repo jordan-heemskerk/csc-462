@@ -148,10 +148,8 @@ func (px *Paxos) Decide(args *Proposal, reply *DecideReply) error {
 	px.mu.Lock()
 	defer px.mu.Unlock()
 
-	px.recProposals[args.Seq].Value = args.Value
 	px.recProposals[args.Seq].Fate = Decided
-
-	// fmt.Println("\n\tDecided on..... ", args.Value) //, px.recProposals[args.Seq].Value)
+	px.recProposals[args.Seq].Value = args.Value
 
 	return nil
 }
@@ -166,26 +164,21 @@ func (px *Paxos) HandleDecide(proposal *Proposal) {
 	for me, peer := range px.peers {
 		var decide_reply DecideReply
 
+		// handle myself
 		if me == px.me {
-			
+			px.Decide(prop, &decide_reply)
 
-			px.recProposals[proposal.Seq].Fate = Decided
-			px.recProposals[proposal.Seq].Value = prop.Value
-			// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Decide --myself --: success! ", peer)
-
+		// handle my peers
 		} else {
+
+			// retry loop
 			for i := 0; i < 5; i++ {
-
-				// TIEBREAKER TIMING
-				// time.Sleep(time.Duration(rand.Int31n(100)) * time.Millisecond)
-
 				if ok := call(peer, "Paxos.Decide", prop, &decide_reply); !ok {
-					//fmt.Println("\t", prop.Seq, prop.PropNum, "\t Decide: call failed! ", peer)
+					// RPC call literally failed
 					time.Sleep(100 * time.Millisecond)
 
 				} else {
 					// success; we should be all done
-					// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Decide: success! ", peer)
 					break
 				}
 			}
@@ -202,9 +195,8 @@ func (px *Paxos) HandleDecide(proposal *Proposal) {
 func (px *Paxos) Accept(args *Proposal, reply *AcceptanceReply) error {
 	fate, _ := px.Status(args.Seq)
 	if fate == Decided {
-		// log.Fatal("THIS SEQUENCE IS DECIDED")
-		fmt.Println("Sequence ", args.Seq, " is decided!")
-		reply.Error = "Accept: Sequence value has already been decided!"
+		fmt.Println("Accept Err: Sequence ", args.Seq, " is decided!")
+		reply.Error = "Sequence value has already been decided!"
 		return nil
 	}
 
@@ -216,10 +208,11 @@ func (px *Paxos) Accept(args *Proposal, reply *AcceptanceReply) error {
 	propnum := args.PropNum
 
 	if _, ok := px.recProposals[args.Seq]; !ok {
-		reply.Error = "Accept: Sequence value has already been decided!"		
+		reply.Error = "There is no proposal stored for this sequence number. Cannot accept what we have never seen."		
 		return nil
 	}
 
+	// if the stored timestamp is less than or equal to our argument, update
 	if propnum >= px.recProposals[seq].PropNum {
 		px.recProposals[seq] = args
 
@@ -236,57 +229,56 @@ func (px *Paxos) Accept(args *Proposal, reply *AcceptanceReply) error {
 //
 func (px *Paxos) HandleAccept(proposal *Proposal, N int, V interface{}) bool {
 	prop := proposal
-
 	Majority := calculateMajority(len(px.peers))
 
-	// fmt.Println("Accept on: ", seq)
-
+	// initialize majority count
 	ok_count := 0
 
 	for me, peer := range px.peers {
 
 		var accept_reply AcceptanceReply
 
+		// call myself
 		if me == px.me {
-			response := px.Accept(prop, &accept_reply)
 
-			if response == nil {
+			ok := px.Accept(prop, &accept_reply); 
+
+			if ok != nil {
+				// should never occur (call cannot literally fail)
+			} else if accept_reply.Error != "" {
+				fmt.Println("HandleAccept Err: ", accept_reply.Error)
+			} else {
 				// all is good
 				ok_count++
-
-				// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Accepted: OK -- myself", peer)
 			} 
 
+		// call my peers
 		} else {
+			// start retry
 			for i := 0; i < 5; i++ {
 
 				if ok := call(peer, "Paxos.Accept", prop, &accept_reply); !ok {
-					//fmt.Println("\t", prop.Seq, prop.PropNum, "\t Accept: Call failed! ", peer)
-
+					// RPC call literally failed
 					time.Sleep(10 * time.Millisecond)
 
 				} else if accept_reply.Error != "" {
-					// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Accept: rejected ", peer)
-					break
+					fmt.Println("HandleAccept Err: ", accept_reply.Error)
+
+					// break retry loop
+					break 
 
 				} else {
-					// accept_ok success
+					// accept_ok success \ all is good
 					ok_count++
 
-					// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Accepted: OK", peer)
+					// break retry loop
 					break
 				}
 			}
 		}
 	}
 
-	ok := ok_count >= Majority
-
-	if ok {
-		// fmt.Println("\tAccept: majority!")
-	}
-
-	return ok
+	return ok_count >= Majority
 }
 
 //
@@ -307,40 +299,22 @@ func (px *Paxos) Propose(args *Proposal, reply *InterrogationReply) error {
 		return nil
 	}
 
-	// atomically access
-	//.mu.Lock()
-	//defer px.mu.Unlock()
-
 	_, key_exists := px.recProposals[seq]
 
 	if !key_exists {
 		px.recProposals[seq] = args
 
 	} else {
-		// fmt.Println("Propose: THIS SEQUENCE NUM EXISTS!")
-
-
-			// fmt.Println("This sequence value is not accepted yet")
-
-			// return interrogation as my proposed value
+			// this sequence number exists \ I have seen this value before
 			
-
-			
+			// if I have a stored proposal on this sequence with an old timestamp, update
 			if px.recProposals[seq].PropNum < propnum {
 				px.recProposals[seq] = args
-				reply.Seq = args.Seq
-				reply.Value = args.Value
-				reply.Num = propnum
 
 			} else {
+				// my argument timestamp is smaller than my stored value
 				reply.Error = "Propose: Sequence value is too small / out of date. Rejected!"
-				reply.Seq = args.Seq
-				reply.Value = px.recProposals[seq].Value
-				reply.Num = px.recProposals[seq].PropNum
 			}
-
-		
-		
 	}
 
 	return nil
@@ -373,33 +347,12 @@ func (px *Paxos) HandlePropose(proposal *Proposal) (bool, int, interface{}) {
 
 			if response == nil {
 				if peer_reply.Error != "" {
-					// something is out of date -- REJECT & BREAK
 					fmt.Println(peer_reply.Error)
-					
-					// continue attempting majority
+					// keep trying other peers to get majority
 					continue
 				}
 
 				ok_count++
-
-				// if peer_reply.Value != proposal.Value {
-				// 	// fmt.Println(peer_reply.Value, " self vs ", proposal.Value)
-
-				// 	if peer_reply.Value != nil {
-				// 		fmt.Println("\n\nDIFFERENT VALUE\n\n")
-				// 		fmt.Println(peer_reply.Value, proposal.Value)
-				// 		// log.Fatal("DIFFERENT VALUE")
-				// 		replySeq = peer_reply.Seq
-				// 		replyValue = peer_reply.Value
-				// 	}
-
-				// } else {
-				// 	replySeq = peer_reply.Seq
-				// 	replyValue = peer_reply.Value
-				// }
-
-				// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: (self) All is good! ", peer)
-
 			} else {
 				fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: (self) Something went wrong! ", peer)
 			}
@@ -422,17 +375,6 @@ func (px *Paxos) HandlePropose(proposal *Proposal) (bool, int, interface{}) {
 						break
 					} else {
 						ok_count++
-
-						// // propogate value forward
-						// if peer_reply.Value != proposal.Value {
-						// 	if peer_reply.Value != nil {
-						// 		replySeq = peer_reply.Seq
-						// 		replyValue = peer_reply.Value
-						// 	} else {
-						// 		replySeq = proposal.Seq
-						// 		replyValue = proposal.Value
-						// 	}
-						// }
 					}
 
 					break;
@@ -442,11 +384,6 @@ func (px *Paxos) HandlePropose(proposal *Proposal) (bool, int, interface{}) {
 	}
 
 	ok := ok_count >= Majority
-
-	if ok {
-		// fmt.Println("\t", prop.Seq, prop.PropNum, "\t Propose: Majority")
-		// fmt.Println("\tPropose: Majority on:", replyValue)
-	}
 
 	return ok, replySeq, replyValue
 }
@@ -479,11 +416,11 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 	fmt.Printf("Trying to decide instance %d\n", seq,)
 
 	for {
-
 		// check state of the seq
 		fate, _ := px.Status(seq)
 		if fate == Decided {
-			break;
+			// fmt.Println("Log: Seq ", seq, " has already been decided. Break")
+			break
 		}
 
 		propose_ok := false
@@ -493,26 +430,31 @@ func (px *Paxos) StartProtocol(seq int, v interface{}) {
 		proposal := new(Proposal)
 		proposal.PropNum = px.GenerateID(seq)
 		proposal.Seq = seq
+
+		fmt.Println("Log: New proposal on:", seq, proposal.PropNum)
+
 		proposal.Value = v
 		proposal.Fate = Pending
 
 		propose_ok, _, _ = px.HandlePropose(proposal)
 
 		if propose_ok {
+			fmt.Println("propose_ok!")
+
 			// continue with my proposal; start accept
 			accept_ok = px.HandleAccept(proposal, proposal.Seq, proposal.Value)
 
 			if accept_ok {
+				fmt.Println("accept_ok!")
+				
 				// finish accept via DECISION
-				px.mu.Lock()
 				px.HandleDecide(proposal)
-				px.mu.Unlock()
 			} else {
 				fmt.Println("I need to do something to accept: Have majority, no agreement")
 			}
 
 		} else {
-			// restart the porposal (will have a new propnum)
+			// fmt.Println("Log: Restarting proposal on ", seq)
 			continue
 		}
 	}

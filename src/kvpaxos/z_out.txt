@@ -8,9 +8,12 @@ Test: Basic put/append/get ...
 Wait for 1 on 0 = 2
 Trying to decide instance 1
 	Paxos: Status - Key does not exist.
+Log: New proposal on: 1 376257337519616
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
 Wait for 1 on 0 = 1
 Got 1
 0: currently @ 1 -> 1
@@ -27,9 +30,12 @@ PutAppend Call failed!
 Wait for 2 on 0 = 2
 Trying to decide instance 2
 	Paxos: Status - Key does not exist.
+Log: New proposal on: 2 376257337522176
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
 Wait for 2 on 0 = 1
 Got 2
 0: currently @ 2 -> 2
@@ -47,9 +53,12 @@ KV Server Get key app on 0!
 Wait for 3 on 0 = 2
 Trying to decide instance 3
 	Paxos: Status - Key does not exist.
+Log: New proposal on: 3 376257337524992
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
 Wait for 3 on 0 = 1
 Got 3
 0: currently @ 3 -> 3
@@ -62,9 +71,12 @@ Got 3
 Wait for 4 on 0 = 2
 Trying to decide instance 4
 	Paxos: Status - Key does not exist.
+Log: New proposal on: 4 376257337527808
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
 Wait for 4 on 0 = 1
 Got 4
 0: currently @ 4 -> 4
@@ -82,9 +94,12 @@ KV Server Get key a on 0!
 Wait for 5 on 0 = 2
 Trying to decide instance 5
 	Paxos: Status - Key does not exist.
+Log: New proposal on: 5 376257337530624
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
 Wait for 5 on 0 = 1
 Got 5
 0: currently @ 5 -> 5
@@ -97,9 +112,12 @@ Got 5
 Wait for 6 on 1 = 2
 Trying to decide instance 6
 	Paxos: Status - Key does not exist.
+Log: New proposal on: 6 376257337533697
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
 Wait for 6 on 1 = 1
 Got 6
 1: currently @ 6 -> 6
@@ -117,9 +135,12 @@ KV Server Get key a on 2!
 Wait for 7 on 2 = 2
 Trying to decide instance 7
 	Paxos: Status - Key does not exist.
+Log: New proposal on: 7 376257337536514
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
 Wait for 7 on 2 = 1
 Got 7
 2: currently @ 7 -> 7
@@ -133,9 +154,12 @@ KV Server Get key a on 1!
 Wait for 8 on 1 = 2
 Trying to decide instance 8
 	Paxos: Status - Key does not exist.
+Log: New proposal on: 8 376257337539329
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
 Wait for 8 on 1 = 1
 Got 8
 1: currently @ 8 -> 8
@@ -149,9 +173,12 @@ KV Server Get key a on 0!
 Wait for 9 on 0 = 2
 Trying to decide instance 9
 	Paxos: Status - Key does not exist.
+Log: New proposal on: 9 376257337542400
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
 Wait for 9 on 0 = 1
 Got 9
 0: currently @ 9 -> 9
@@ -166,7 +193,16 @@ num eye:  14 get
 
 
 (1) Clerk Get
-num eye:  6 put  3916589616287113937
+num eye:  8 get
+num eye:  10 put  3916589616287113937
+num eye:  6 put  2775422040480279449
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk PutAppend
+num eye:  11 put  1976235410884491574
 
 
 (1) Clerk PutAppend
@@ -174,3591 +210,1278 @@ num eye:  7 get
 
 
 (1) Clerk Get
-num eye:  0 put  2775422040480279449
-
-
-(1) Clerk PutAppend
-num eye:  8 put  1976235410884491574
-
-
-(1) Clerk PutAppend
-num eye:  1 get
-
-
-(1) Clerk Get
-num eye:  2 get
-
-
-(1) Clerk Get
 num eye:  9 get
 
 
 (1) Clerk Get
-num eye:  3 put  3328451335138149956
-
-
-(1) Clerk PutAppend
-num eye:  10 get
-
-
-(1) Clerk Get
-num eye:  4 put  6941261091797652072
-
-
-(1) Clerk PutAppend
-num eye:  11 get
-num eye:  5 put  261049867304784443
-
-
-(1) Clerk Get
-
-
-(1) Clerk PutAppend
-num eye:  12 put  8995016276575641803
-
-
-(1) Clerk PutAppend
 num eye:  13 get
-KV Server Get key b on 1!
-1: currently @ 9 -> 9
-(3) Starting PAXOS... 10 0 9
-	Paxos: Status - Key does not exist.
 
 
 (1) Clerk Get
-Wait for 10 on 1 = 2
-2: currently @ 8 -> 9
-KV Server Get key b on 1!
-(3) Starting PAXOS... 10 0 9
-1: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 10 on 2 = 2
-Wait for 10 on 1 = 2
-Trying to decide instance 10
-Trying to decide instance 10
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-KV Server Get key b on 1!
-1: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-	Paxos: Status - Key does not exist.
-Wait for 10 on 1 = 2
-Trying to decide instance 10
-	Paxos: Status - Key does not exist.
-0: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-	Paxos: Status - Key does not exist.
-Wait for 10 on 0 = 2
-KV Server Get key b on 2!
-2: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-	Paxos: Status - Key does not exist.
-Wait for 10 on 2 = 2
-Trying to decide instance 10
-	Paxos: Status - Key does not exist.
-Trying to decide instance 10
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Trying to decide instance 10
-1: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-	Paxos: Status - Key does not exist.
-Trying to decide instance 10
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 10 on 1 = 2
-KV Server Get key b on 2!
-2: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-	Paxos: Status - Key does not exist.
-Wait for 10 on 2 = 2
-Trying to decide instance 10
-	Paxos: Status - Key does not exist.
-KV Server Get key b on 0!
-0: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-Wait for 10 on 0 = 2
-Trying to decide instance 10
-0: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-Wait for 10 on 0 = 2
-Trying to decide instance 10
-	Paxos: Status - Key does not exist.
-2: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-	Paxos: Status - Key does not exist.
-Wait for 10 on 2 = 2
-Trying to decide instance 10
-	Paxos: Status - Key does not exist.
-KV Server Get key b on 2!
-2: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-	Paxos: Status - Key does not exist.
-Wait for 10 on 2 = 2
-Trying to decide instance 10
-	Paxos: Status - Key does not exist.
-Wait for 10 on 1 = 2
-Wait for 10 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 10 on 2 = 2
-Wait for 10 on 1 = 2
-KV Server Get key b on 0!
-0: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-Wait for 10 on 0 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Trying to decide instance 10
-0: currently @ 10 -> 9
-(3) Starting PAXOS... 10 0 9
-Wait for 10 on 0 = 2
-Trying to decide instance 10
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 10 on 0 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-0: currently @ 10 -> 9
-	Paxos: Status - Key does not exist.
-(3) Starting PAXOS... 10 0 9
-Wait for 10 on 0 = 2
-Trying to decide instance 10
-Wait for 10 on 2 = 2
-Wait for 10 on 0 = 2
-Wait for 10 on 1 = 2
-Wait for 10 on 2 = 2
-Wait for 10 on 0 = 2
-Wait for 10 on 0 = 2
-Wait for 10 on 2 = 2
-Wait for 10 on 2 = 2
-Wait for 10 on 0 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 10 on 1 = 2
-Wait for 10 on 1 = 2
-Wait for 10 on 1 = 2
-Wait for 10 on 2 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 10 on 0 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 10 on 0 = 2
-Wait for 10 on 0 = 2
-Wait for 10 on 2 = 2
-Wait for 10 on 0 = 2
-Wait for 10 on 1 = 2
-Wait for 10 on 2 = 2
-Wait for 10 on 0 = 2
-Wait for 10 on 0 = 2
-Wait for 10 on 2 = 2
-Wait for 10 on 2 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  10  is decided!
-Propose: Sequence value has already been decided!
-Sequence  10  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value has already been decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Sequence  10  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  10  is decided!
-Propose: Sequence value has already been decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Propose: Sequence value has already been decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Propose: Sequence value has already been decided!
-Sequence  10  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  10  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  10  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  10  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  10  is decided!
-Propose: Sequence value has already been decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Sequence  10  is decided!
-Wait for 10 on 0 = 1
-Got 10
-I need to do something to accept: Have majority, no agreement
-0: currently @ 10 -> 10
-(3) Starting PAXOS... 11 0 10
-I need to do something to accept: Have majority, no agreement
-	Paxos: Status - Key does not exist.
-Wait for 11 on 0 = 2
-Trying to decide instance 11
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Propose: Sequence value has already been decided!
-	Paxos: Status - Key does not exist.
-Wait for 10 on 2 = 1
-Wait for 10 on 1 = 1
-Wait for 10 on 1 = 1
-Got 10
-1: currently @ 10 -> 11
-Got 10
-(3) Starting PAXOS... 12 0 11
-	Paxos: Status - Key does not exist.
-Wait for 12 on 1 = 2
-1: currently @ 12 -> 11
-Trying to decide instance 12
-(3) Starting PAXOS... 12 0 11
-	Paxos: Status - Key does not exist.
-Trying to decide instance 12
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 12 on 1 = 2
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 10 on 1 = 1
-Got 10
-Wait for 11 on 0 = 1
-Got 11
-0: currently @ 11 -> 11
-Propose: Sequence value is too small / out of date. Rejected!
-2: currently @ 10 -> 11
-(3) Starting PAXOS... 12 0 11
-	Paxos: Status - Key does not exist.
-Wait for 12 on 2 = 2
-Trying to decide instance 12
-	Paxos: Status - Key does not exist.
-
-
-
-PutAppend Call failed!
-Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Got 10
-Sequence  12  is decided!
-1: currently @ 12 -> 12
-(3) Starting PAXOS... 13 0 12
-	Paxos: Status - Key does not exist.
-Sequence  12  is decided!
-Wait for 13 on 1 = 2
-Trying to decide instance 13
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 12 on 1 = 1
-Got 12
-1: currently @ 13 -> 13
-(3) Starting PAXOS... 14 0 13
-	Paxos: Status - Key does not exist.
-Wait for 14 on 1 = 2
-Trying to decide instance 14
-	Paxos: Status - Key does not exist.
-Wait for 12 on 1 = 1
-Got 12
-1: currently @ 14 -> 13
-(3) Starting PAXOS... 14 0 13
-	Paxos: Status - Key does not exist.
-Wait for 14 on 1 = 2
-Trying to decide instance 14
-	Paxos: Status - Key does not exist.
-Wait for 12 on 2 = 1
-	Paxos: Status - Key does not exist.
-Got 12
-2: currently @ 12 -> 13
-(3) Starting PAXOS... 14 0 13
-	Paxos: Status - Key does not exist.
-Wait for 14 on 2 = 2
-Trying to decide instance 14
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 13 on 1 = 1
-Got 13
-1: currently @ 14 -> 13
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Wait for 10 on 0 = 1
-Got 10
-0: currently @ 12 -> 13
-(3) Starting PAXOS... 14 0 13
-Wait for 14 on 0 = 2
-Trying to decide instance 14
-Wait for 10 on 2 = 1
-Wait for 10 on 2 = 1
-Wait for 10 on 1 = 1
-I need to do something to accept: Have majority, no agreement
-Got 10
-1: currently @ 14 -> 10
-Wait for 10 on 2 = 1
-Wait for 10 on 0 = 1
-Got 10
-Got 10
-2: currently @ 14 -> 13
-0: currently @ 14 -> 13
-(3) Starting PAXOS... 14 0 13
-(3) Starting PAXOS... 14 0 13
-Wait for 14 on 2 = 2
-Wait for 14 on 0 = 2
-Trying to decide instance 14
-Trying to decide instance 14
-Wait for 10 on 2 = 1
-Got 10
-2: currently @ 14 -> 13
-(3) Starting PAXOS... 14 0 13
-Wait for 14 on 2 = 2
-Trying to decide instance 14
-Got 10
-2: currently @ 14 -> 13
-(3) Starting PAXOS... 14 0 13
-Wait for 14 on 2 = 2
-Trying to decide instance 14
-Wait for 14 on 1 = 2
-
-
-
-PutAppend Call failed!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  14  is decided!
-Sequence  14  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  14  is decided!
-Propose: Sequence value has already been decided!
-Sequence  14  is decided!
-Sequence  14  is decided!
-Sequence  14  is decided!
-Sequence  14  is decided!
-Sequence  14  is decided!
-Sequence  14  is decided!
-Propose: Sequence value has already been decided!
-Sequence  14  is decided!
-Propose: Sequence value has already been decided!
-Sequence  14  is decided!
-Propose: Sequence value has already been decided!
-Sequence  14  is decided!
-Propose: Sequence value has already been decided!
-Sequence  14  is decided!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value has already been decided!
-Sequence  14  is decided!
-Propose: Sequence value has already been decided!
-Wait for 10 on 0 = 1
-Wait for 10 on 0 = 1
-Wait for 10 on 0 = 1
-Got 10
-Wait for 14 on 2 = 2
-Wait for 14 on 1 = 2
-Got 10
-0: currently @ 14 -> 14
-(3) Starting PAXOS... 15 0 14
-	Paxos: Status - Key does not exist.
-Wait for 15 on 0 = 2
-Trying to decide instance 15
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Sequence  14  is decided!
-	Paxos: Status - Key does not exist.
-Sequence  14  is decided!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Got 10
-0: currently @ 15 -> 14
-(3) Starting PAXOS... 15 0 14
-Wait for 15 on 0 = 2
-Trying to decide instance 15
-Got 10
-0: currently @ 15 -> 14
-(3) Starting PAXOS... 15 0 14
-Wait for 15 on 0 = 2
-Trying to decide instance 15
-Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-2: currently @ 14 -> 14
-(3) Starting PAXOS... 15 0 14
-Wait for 15 on 2 = 2
-Trying to decide instance 15
-Wait for 14 on 0 = 1
-Got 14
-0: currently @ 15 -> 14
-(3) Starting PAXOS... 15 0 14
-Wait for 15 on 0 = 2
-Trying to decide instance 15
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 14 on 2 = 1
-Got 14
-2: currently @ 15 -> 14
-(3) Starting PAXOS... 15 0 14
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 15 on 2 = 2
-Trying to decide instance 15
-Wait for 14 on 2 = 1
-Got 14
-2: currently @ 15 -> 14
-(3) Starting PAXOS... 15 0 14
-Wait for 15 on 2 = 2
-Trying to decide instance 15
-Wait for 14 on 2 = 1
-Got 14
-2: currently @ 15 -> 14
-(3) Starting PAXOS... 15 0 14
-Wait for 15 on 2 = 2
-Trying to decide instance 15
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 14 on 0 = 1
-Got 14
-0: currently @ 15 -> 15
-(3) Starting PAXOS... 16 0 15
-	Paxos: Status - Key does not exist.
-Wait for 16 on 0 = 2
-Trying to decide instance 16
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Sequence  15  is decided!
-Sequence  15  is decided!
-Sequence  15  is decided!
-Sequence  15  is decided!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  15  is decided!
-	Paxos: Status - Key does not exist.
-Sequence  15  is decided!
-Sequence  15  is decided!
-Sequence  15  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  15  is decided!
-Sequence  15  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  15  is decided!
-I need to do something to accept: Have majority, no agreement
-Sequence  15  is decided!
-Propose: Sequence value has already been decided!
-Wait for 15 on 0 = 1
-Got 15
-0: currently @ 16 -> 16
-(3) Starting PAXOS... 17 0 16
-	Paxos: Status - Key does not exist.
-Wait for 17 on 0 = 2
-Trying to decide instance 17
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 15 on 0 = 1
-Got 15
-0: currently @ 17 -> 16
-(3) Starting PAXOS... 17 0 16
-Wait for 17 on 0 = 2
-Trying to decide instance 17
-	Paxos: Status - Key does not exist.
-Wait for 15 on 0 = 1
-Got 15
-0: currently @ 17 -> 15
-I need to do something to accept: Have majority, no agreement
-Wait for 15 on 2 = 1
-Got 15
-2: currently @ 15 -> 16
-(3) Starting PAXOS... 17 0 16
-Wait for 17 on 2 = 2
-Trying to decide instance 17
-Wait for 14 on 1 = 1
-Got 14
-1: currently @ 14 -> 17
-(3) Starting PAXOS... 18 0 17
-	Paxos: Status - Key does not exist.
-Wait for 18 on 1 = 2
-Trying to decide instance 18
-	Paxos: Status - Key does not exist.
-Wait for 15 on 0 = 1
-Got 15
-0: currently @ 17 -> 17
-(3) Starting PAXOS... 18 0 17
-	Paxos: Status - Key does not exist.
-Wait for 18 on 0 = 2
-Trying to decide instance 18
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 15 on 2 = 1
-Wait for 15 on 2 = 1
-Got 15
-Got 15
-Sequence  17  is decided!
-2: currently @ 17 -> 17
-(3) Starting PAXOS... 18 0 17
-	Paxos: Status - Key does not exist.
-Wait for 18 on 2 = 2
-2: currently @ 18 -> 17
-(3) Starting PAXOS... 18 0 17
-	Paxos: Status - Key does not exist.
-Wait for 18 on 2 = 2
-Sequence  17  is decided!
-Trying to decide instance 18
-	Paxos: Status - Key does not exist.
-Trying to decide instance 18
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Sequence  17  is decided!
-Wait for 15 on 2 = 1
-Got 15
-2: currently @ 18 -> 17
-(3) Starting PAXOS... 18 0 17
-	Paxos: Status - Key does not exist.
-Wait for 18 on 2 = 2
-Trying to decide instance 18
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  17  is decided!
-	Paxos: Status - Key does not exist.
-I need to do something to accept: Have majority, no agreement
-Wait for 16 on 0 = 1
-Got 16
-0: currently @ 18 -> 16
-
-
-
-PutAppend Call failed!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Sequence  18  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  18  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  18  is decided!
-Sequence  18  is decided!
-Propose: Sequence value has already been decided!
-Sequence  18  is decided!
-Propose: Sequence value has already been decided!
-Sequence  18  is decided!
-Propose: Sequence value has already been decided!
-Sequence  18  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  17  is decided!
-Sequence  18  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  17  is decided!
-Propose: Sequence value has already been decided!
-Sequence  18  is decided!
-Wait for 14 on 1 = 1
-Got 14
-Wait for 14 on 2 = 1
-1: currently @ 18 -> 14
-Got 14
-2: currently @ 18 -> 18
-(3) Starting PAXOS... 19 0 18
-	Paxos: Status - Key does not exist.
-Wait for 19 on 2 = 2
-Trying to decide instance 19
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Sequence  18  is decided!
-Wait for 17 on 0 = 1
-Got 17
-0: currently @ 18 -> 18
-(3) Starting PAXOS... 19 0 18
-Wait for 19 on 0 = 2
-Trying to decide instance 19
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-	Paxos: Status - Key does not exist.
-Wait for 17 on 0 = 1
-Got 17
-0: currently @ 19 -> 17
-	Paxos: Status - Key does not exist.
-
-
-
-PutAppend Call failed!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  19  is decided!
-Propose: Sequence value has already been decided!
-Sequence  19  is decided!
-Sequence  19  is decided!
-Sequence  19  is decided!
-I need to do something to accept: Have majority, no agreement
-Wait for 17 on 2 = 1
-Got 17
-2: currently @ 19 -> 19
-(3) Starting PAXOS... 20 0 19
-	Paxos: Status - Key does not exist.
-Wait for 20 on 2 = 2
-Trying to decide instance 20
-	Paxos: Status - Key does not exist.
-Wait for 18 on 1 = 1
-	Paxos: Status - Key does not exist.
-Got 18
-1: currently @ 18 -> 19
-(3) Starting PAXOS... 20 0 19
-	Paxos: Status - Key does not exist.
-Wait for 20 on 1 = 2
-Trying to decide instance 20
-	Paxos: Status - Key does not exist.
-Wait for 18 on 0 = 1
-Got 18
-0: currently @ 19 -> 19
-(3) Starting PAXOS... 20 0 19
-Wait for 20 on 0 = 2
-Trying to decide instance 20
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 18 on 2 = 1
-Got 18
-2: currently @ 20 -> 19
-(3) Starting PAXOS... 20 0 19
-	Paxos: Status - Key does not exist.
-Wait for 20 on 2 = 2
-Trying to decide instance 20
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 18 on 2 = 1
-Got 18
-2: currently @ 20 -> 19
-(3) Starting PAXOS... 20 0 19
-	Paxos: Status - Key does not exist.
-Wait for 20 on 2 = 2
-Trying to decide instance 20
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 18 on 2 = 1
-Got 18
-Propose: Sequence value is too small / out of date. Rejected!
-2: currently @ 20 -> 18
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  20  is decided!
-Propose: Sequence value has already been decided!
-Sequence  20  is decided!
-Propose: Sequence value has already been decided!
-Sequence  20  is decided!
-Sequence  20  is decided!
-Propose: Sequence value has already been decided!
-Sequence  20  is decided!
-Propose: Sequence value has already been decided!
-Sequence  20  is decided!
-Sequence  20  is decided!
-Sequence  20  is decided!
-Sequence  20  is decided!
-Sequence  20  is decided!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Wait for 19 on 2 = 1
-Got 19
-2: currently @ 20 -> 19
-
-
-
-PutAppend Call failed!
-Wait for 19 on 0 = 1
-Got 19
-0: currently @ 20 -> 20
-(3) Starting PAXOS... 21 0 20
-	Paxos: Status - Key does not exist.
-Wait for 21 on 0 = 2
-Trying to decide instance 21
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 20 on 2 = 1
-Got 20
-2: currently @ 20 -> 20
-Wait for 20 on 1 = 1
-Got 20
-1: currently @ 20 -> 21
-(3) Starting PAXOS... 22 0 21
-	Paxos: Status - Key does not exist.
-Wait for 22 on 1 = 2
-Trying to decide instance 22
-	Paxos: Status - Key does not exist.
-Wait for 20 on 0 = 1
-Got 20
-0: currently @ 21 -> 21
-(3) Starting PAXOS... 22 0 21
-	Paxos: Status - Key does not exist.
-Wait for 22 on 0 = 2
-Trying to decide instance 22
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 20 on 2 = 1
-Got 20
-	Paxos: Status - Key does not exist.
-2: currently @ 21 -> 21
-(3) Starting PAXOS... 22 0 21
-	Paxos: Status - Key does not exist.
-Wait for 22 on 2 = 2
-Trying to decide instance 22
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Wait for 20 on 2 = 1
-Got 20
-2: currently @ 22 -> 22
-(3) Starting PAXOS... 23 0 22
-	Paxos: Status - Key does not exist.
-Wait for 23 on 2 = 2
-Trying to decide instance 23
-	Paxos: Status - Key does not exist.
-Sequence  22  is decided!
-Sequence  22  is decided!
-Propose: Sequence value has already been decided!
-Sequence  22  is decided!
-Propose: Sequence value has already been decided!
-	Paxos: Status - Key does not exist.
-Sequence  22  is decided!
-Sequence  22  is decided!
-Sequence  22  is decided!
-	Paxos: Status - Key does not exist.
-I need to do something to accept: Have majority, no agreement
-Sequence  22  is decided!
-	Paxos: Status - Key does not exist.
-Sequence  22  is decided!
-I need to do something to accept: Have majority, no agreement
-Wait for 21 on 0 = 1
-Got 21
-0: currently @ 22 -> 21
-Wait for 22 on 1 = 1
-Got 22
-1: currently @ 22 -> 23
-Wait for 22 on 0 = 1
-(3) Starting PAXOS... 24 0 23
-Got 22
-	Paxos: Status - Key does not exist.
-Wait for 24 on 1 = 2
-0: currently @ 22 -> 23
-Trying to decide instance 24
-	Paxos: Status - Key does not exist.
-(3) Starting PAXOS... 24 0 23
-	Paxos: Status - Key does not exist.
-Wait for 24 on 0 = 2
-Trying to decide instance 24
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 22 on 2 = 1
-Got 22
-2: currently @ 23 -> 22
-Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 23 on 2 = 1
-Got 23
-2: currently @ 23 -> 23
-
-
-
-PutAppend Call failed!
-I need to do something to accept: Have majority, no agreement
-Sequence  24  is decided!
-Sequence  24  is decided!
-Sequence  24  is decided!
-I need to do something to accept: Have majority, no agreement
-Wait for 24 on 0 = 1
-Wait for 24 on 1 = 1
-Got 24
-Got 24
-0: currently @ 24 -> 24
-1: currently @ 24 -> 24
-(3) Starting PAXOS... 25 0 24
-	Paxos: Status - Key does not exist.
-Wait for 25 on 1 = 2
-Trying to decide instance 25
-	Paxos: Status - Key does not exist.
-
-
-
-PutAppend Call failed!
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 25 on 1 = 1
-Got 25
-1: currently @ 25 -> 25
-
-
-(1) Clerk Get
-KV Server Get key b on 0!
-0: currently @ 25 -> 25
-(3) Starting PAXOS... 26 0 25
-	Paxos: Status - Key does not exist.
-Wait for 26 on 0 = 2
-Trying to decide instance 26
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 26 on 0 = 1
-Got 26
-0: currently @ 26 -> 26
-
-
-(1) Clerk Get
-KV Server Get key b on 1!
-1: currently @ 26 -> 26
-(3) Starting PAXOS... 27 0 26
-	Paxos: Status - Key does not exist.
-Wait for 27 on 1 = 2
-Trying to decide instance 27
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 27 on 1 = 1
-Got 27
-1: currently @ 27 -> 27
-
-
-(1) Clerk Get
-KV Server Get key b on 2!
-2: currently @ 24 -> 27
-(3) Starting PAXOS... 28 0 27
-	Paxos: Status - Key does not exist.
-Wait for 28 on 2 = 2
-Trying to decide instance 28
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 28 on 2 = 1
-Got 28
-2: currently @ 28 -> 28
-num eye:  14 get
-
-
-(1) Clerk Get
-num eye:  6 put  4990765271833742716
-
-
-(1) Clerk PutAppend
-num eye:  11 get
-
-
-(1) Clerk Get
-num eye:  7 put  3337066551442961397
-
-
-(1) Clerk PutAppend
-num eye:  10 put  3902890183311134652
+num eye:  1 put  6941261091797652072
 num eye:  12 get
+num eye:  4 put  261049867304784443
+num eye:  5 get
 
 
 (1) Clerk Get
+0: currently @ 10 -> 9
 
 
 (1) Clerk PutAppend
-num eye:  13 put  6281838661429879825
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 0 = 2
 
 
-(1) Clerk PutAppend
+(1) Clerk Get
+KV Server Get key b on 0!
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+KV Server Get key b on 1!
+	Paxos: Status - Key does not exist.
+1: currently @ 9 -> 9
+Wait for 10 on 0 = 2
+(3) Starting PAXOS... 10 0 9
+Trying to decide instance 10
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 10 on 1 = 2
+Log: New proposal on: 10 376257337546240
+	Paxos: Status - Key does not exist.
+Trying to decide instance 10
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 10 376257337546241
+KV Server Get key b on 1!
+1: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 1 = 2
+Trying to decide instance 10
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 10 376257337546497
+	Paxos: Status - Key does not exist.
+1: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 1 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337546753
+num eye:  0 put  3328451335138149956
 num eye:  3 get
 
 
 (1) Clerk Get
-num eye:  4 get
-
-
-(1) Clerk Get
-KV Server Get key b on 2!
-2: currently @ 29 -> 28
-(3) Starting PAXOS... 29 0 28
-	Paxos: Status - Key does not exist.
-Wait for 29 on 2 = 2
-Trying to decide instance 29
-num eye:  9 get
-
-
-(1) Clerk Get
-num eye:  5 get
-	Paxos: Status - Key does not exist.
-
-
-(1) Clerk Get
-num eye:  2 get
-num eye:  8 get
-
-
-(1) Clerk Get
-
-
-(1) Clerk Get
-num eye:  0 put  685213522303989579
 
 
 (1) Clerk PutAppend
-num eye:  1 get
 
 
 (1) Clerk Get
-1: currently @ 28 -> 28
-KV Server Get key b on 0!
-0: currently @ 27 -> 28
-(3) Starting PAXOS... 29 0 28
+Trying to decide instance 10
+Log: New proposal on: 10 376257337547008
+num eye:  2 put  8995016276575641803
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk PutAppend
+Propose: Sequence value is too small / out of date. Rejected!
+KV Server Get key b on 1!
+2: currently @ 8 -> 9
+(3) Starting PAXOS... 10 0 9
 	Paxos: Status - Key does not exist.
-Wait for 29 on 1 = 2
-(3) Starting PAXOS... 29 0 28
+Wait for 10 on 2 = 2
+Trying to decide instance 10
 	Paxos: Status - Key does not exist.
-Wait for 29 on 0 = 2
-Trying to decide instance 29
-	Paxos: Status - Key does not exist.
-Trying to decide instance 29
-	Paxos: Status - Key does not exist.
+Log: New proposal on: 10 376257337548546
 	Paxos: Status - Key does not exist.
 KV Server Get key b on 2!
-2: currently @ 29 -> 28
-(3) Starting PAXOS... 29 0 28
-	Paxos: Status - Key does not exist.
-Wait for 29 on 2 = 2
-Trying to decide instance 29
-	Paxos: Status - Key does not exist.
-KV Server Get key b on 0!
-	Paxos: Status - Key does not exist.
-1: currently @ 29 -> 28
-KV Server Get key b on 1!
-(3) Starting PAXOS... 29 0 28
-Wait for 29 on 1 = 2
-1: currently @ 29 -> 28
-(3) Starting PAXOS... 29 0 28
-Wait for 29 on 1 = 2
-KV Server Get key b on 1!
-1: currently @ 29 -> 28
-(3) Starting PAXOS... 29 0 28
-Wait for 29 on 1 = 2
-1: currently @ 29 -> 28
-(3) Starting PAXOS... 29 0 28
-Wait for 29 on 1 = 2
-Trying to decide instance 29
-KV Server Get key b on 1!
-1: currently @ 29 -> 28
-(3) Starting PAXOS... 29 0 28
-Wait for 29 on 1 = 2
-Trying to decide instance 29
-Trying to decide instance 29
-Trying to decide instance 29
-KV Server Get key b on 1!
-Trying to decide instance 29
-1: currently @ 29 -> 28
-(3) Starting PAXOS... 29 0 28
-Wait for 29 on 1 = 2
-Trying to decide instance 29
-Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 29 on 2 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-0: currently @ 29 -> 28
-Wait for 29 on 2 = 2
-(3) Starting PAXOS... 29 0 28
-Wait for 29 on 1 = 2
-Wait for 29 on 0 = 2
-Wait for 29 on 0 = 2
-Trying to decide instance 29
-0: currently @ 29 -> 28
-(3) Starting PAXOS... 29 0 28
-Wait for 29 on 0 = 2
-Trying to decide instance 29
-0: currently @ 29 -> 28
-(3) Starting PAXOS... 29 0 28
-Wait for 29 on 0 = 2
-Trying to decide instance 29
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-KV Server Get key b on 0!
-0: currently @ 29 -> 28
-(3) Starting PAXOS... 29 0 28
-Wait for 29 on 0 = 2
-Trying to decide instance 29
-Wait for 29 on 1 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 1 = 2
-KV Server Get key b on 0!
-0: currently @ 29 -> 28
-(3) Starting PAXOS... 29 0 28
-Wait for 29 on 0 = 2
-Trying to decide instance 29
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Wait for 29 on 0 = 2
-Wait for 29 on 0 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 29 on 0 = 2
-Wait for 29 on 0 = 2
-Wait for 29 on 2 = 2
-Wait for 29 on 0 = 2
-Wait for 29 on 0 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 2 = 2
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 29 on 1 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 0 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 0 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 1 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 29 on 0 = 2
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 29 on 0 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 29 on 0 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 29 on 2 = 2
-Wait for 29 on 0 = 2
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 29 on 1 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 2 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 1 = 2
-Wait for 29 on 0 = 2
-Wait for 29 on 1 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 29 on 0 = 2
-Wait for 29 on 1 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 29 on 0 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  29  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Wait for 29 on 0 = 1
-Got 29
-0: currently @ 29 -> 29
-Wait for 29 on 0 = 1
-Got 29
-0: currently @ 30 -> 29
-(3) Starting PAXOS... 30 0 29
-	Paxos: Status - Key does not exist.
-Wait for 30 on 0 = 2
-Trying to decide instance 30
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-
-
-
-PutAppend Call failed!
-Sequence  29  is decided!
-	Paxos: Status - Key does not exist.
-Sequence  29  is decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value has already been decided!
-I need to do something to accept: Have majority, no agreement
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-Sequence  29  is decided!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Sequence  29  is decided!
-Sequence  29  is decided!
-Propose: Sequence value has already been decided!
-	Paxos: Status - Key does not exist.
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value has already been decided!
-Wait for 30 on 0 = 1
-Got 30
-0: currently @ 30 -> 30
-Wait for 29 on 2 = 1
-Wait for 29 on 0 = 1
-Got 29
-Got 29
-2: currently @ 29 -> 30
-0: currently @ 31 -> 30
-(3) Starting PAXOS... 31 0 30
-(3) Starting PAXOS... 31 0 30
-	Paxos: Status - Key does not exist.
-Wait for 31 on 2 = 2
-	Paxos: Status - Key does not exist.
-Wait for 31 on 0 = 2
-Trying to decide instance 31
-Trying to decide instance 31
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-I need to do something to accept: Have majority, no agreement
-Sequence  31  is decided!
-Propose: Sequence value has already been decided!
-Sequence  31  is decided!
-Sequence  31  is decided!
-Sequence  31  is decided!
-I need to do something to accept: Have majority, no agreement
-Wait for 29 on 1 = 1
-Wait for 29 on 2 = 1
-Got 29
-Got 29
-1: currently @ 29 -> 31
-2: currently @ 31 -> 31
-Wait for 29 on 1 = 1
-(3) Starting PAXOS... 32 0 31
-(3) Starting PAXOS... 32 0 31
-Got 29
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 32 on 2 = 2
-Wait for 32 on 1 = 2
-1: currently @ 32 -> 31
-Trying to decide instance 32
-Trying to decide instance 32
-(3) Starting PAXOS... 32 0 31
-	Paxos: Status - Key does not exist.
-Wait for 29 on 1 = 1
-Got 29
-	Paxos: Status - Key does not exist.
-Wait for 32 on 1 = 2
-Wait for 29 on 1 = 1
-Got 29
-1: currently @ 32 -> 31
-Trying to decide instance 32
-(3) Starting PAXOS... 32 0 31
-	Paxos: Status - Key does not exist.
-Trying to decide instance 32
-	Paxos: Status - Key does not exist.
-Wait for 29 on 1 = 1
-Got 29
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 32 on 1 = 2
-Wait for 31 on 0 = 1
-Got 31
-Wait for 29 on 1 = 1
-0: currently @ 31 -> 31
-Got 29
-(3) Starting PAXOS... 32 0 31
-Wait for 29 on 0 = 1
-	Paxos: Status - Key does not exist.
-Got 29
-1: currently @ 32 -> 31
-Wait for 32 on 0 = 2
-0: currently @ 32 -> 31
-(3) Starting PAXOS... 32 0 31
-	Paxos: Status - Key does not exist.
-(3) Starting PAXOS... 32 0 31
-Trying to decide instance 32
-Wait for 32 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 31 on 2 = 1
-1: currently @ 32 -> 31
-Wait for 32 on 0 = 2
-Got 31
-(3) Starting PAXOS... 32 0 31
-	Paxos: Status - Key does not exist.
-2: currently @ 32 -> 31
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 32 on 1 = 2
-1: currently @ 32 -> 31
-(3) Starting PAXOS... 32 0 31
-	Paxos: Status - Key does not exist.
-Wait for 32 on 1 = 2
-Trying to decide instance 32
-Trying to decide instance 32
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 29 on 1 = 1
-Got 29
-1: currently @ 32 -> 31
-(3) Starting PAXOS... 32 0 31
-	Paxos: Status - Key does not exist.
-Wait for 32 on 1 = 2
-Trying to decide instance 32
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 29 on 0 = 1
-Got 29
-0: currently @ 32 -> 31
-(3) Starting PAXOS... 32 0 31
-Wait for 32 on 0 = 2
-Trying to decide instance 32
-Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  32  is decided!
-Trying to decide instance 32
-Trying to decide instance 32
-Sequence  32  is decided!
-Propose: Sequence value has already been decided!
-Sequence  32  is decided!
-Propose: Sequence value has already been decided!
-Sequence  32  is decided!
-Sequence  32  is decided!
-Sequence  32  is decided!
-Sequence  32  is decided!
-Propose: Sequence value has already been decided!
-Sequence  32  is decided!
-Sequence  32  is decided!
-Sequence  32  is decided!
-Propose: Sequence value has already been decided!
-Sequence  32  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  32  is decided!
-Propose: Sequence value has already been decided!
-I need to do something to accept: Have majority, no agreement
-Sequence  32  is decided!
-Sequence  32  is decided!
-Sequence  32  is decided!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value has already been decided!
-Wait for 29 on 0 = 1
-Got 29
-I need to do something to accept: Have majority, no agreement
-0: currently @ 32 -> 32
-(3) Starting PAXOS... 33 0 32
-	Paxos: Status - Key does not exist.
-Wait for 33 on 0 = 2
-Trying to decide instance 33
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 32 on 1 = 1
-Got 32
-Wait for 32 on 2 = 1
-1: currently @ 32 -> 32
-Got 32
-2: currently @ 32 -> 32
-(3) Starting PAXOS... 33 0 32
-	Paxos: Status - Key does not exist.
-(3) Starting PAXOS... 33 0 32
-Wait for 33 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 33 on 2 = 2
-Trying to decide instance 33
-	Paxos: Status - Key does not exist.
-Trying to decide instance 33
-	Paxos: Status - Key does not exist.
-Wait for 32 on 1 = 1
-	Paxos: Status - Key does not exist.
-Got 32
-1: currently @ 33 -> 32
-(3) Starting PAXOS... 33 0 32
-Wait for 33 on 1 = 2
-Trying to decide instance 33
-Wait for 32 on 1 = 1
-Got 32
-1: currently @ 33 -> 32
-(3) Starting PAXOS... 33 0 32
-Wait for 33 on 1 = 2
-Trying to decide instance 33
-Wait for 32 on 1 = 1
-Got 32
-1: currently @ 33 -> 32
-Wait for 32 on 0 = 1
-Got 32
-0: currently @ 33 -> 32
-(3) Starting PAXOS... 33 0 32
-Wait for 33 on 0 = 2
-Trying to decide instance 33
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 32 on 1 = 1
-Got 32
-1: currently @ 33 -> 32
-(3) Starting PAXOS... 33 0 32
-Wait for 33 on 1 = 2
-Trying to decide instance 33
-Wait for 32 on 0 = 1
-Got 32
-0: currently @ 33 -> 32
-(3) Starting PAXOS... 33 0 32
-Wait for 33 on 0 = 2
-Trying to decide instance 33
-Wait for 32 on 1 = 1
-Got 32
-1: currently @ 33 -> 32
-(3) Starting PAXOS... 33 0 32
-Wait for 33 on 1 = 2
-Trying to decide instance 33
-Wait for 32 on 0 = 1
-Got 32
-0: currently @ 33 -> 32
-Propose: Sequence value is too small / out of date. Rejected!
-(3) Starting PAXOS... 33 0 32
-	Paxos: Status - Key does not exist.
-Wait for 33 on 0 = 2
-Trying to decide instance 33
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-
-
-
-PutAppend Call failed!
-Wait for 32 on 1 = 1
-Got 32
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-1: currently @ 33 -> 32
-(3) Starting PAXOS... 33 0 32
-Wait for 33 on 1 = 2
-Trying to decide instance 33
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 33 on 1 = 2
-Wait for 33 on 0 = 2
-Wait for 33 on 1 = 2
-Wait for 33 on 2 = 2
-Wait for 33 on 1 = 2
-Wait for 33 on 1 = 2
-Wait for 33 on 0 = 2
-Wait for 33 on 1 = 2
-Wait for 33 on 0 = 2
-Wait for 33 on 1 = 2
-Wait for 33 on 0 = 2
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 33 on 0 = 1
-Got 33
-0: currently @ 33 -> 33
-(3) Starting PAXOS... 34 0 33
-	Paxos: Status - Key does not exist.
-Wait for 34 on 0 = 2
-Sequence  33  is decided!
-Wait for 33 on 0 = 1
-Got 33
-0: currently @ 34 -> 33
-(3) Starting PAXOS... 34 0 33
-	Paxos: Status - Key does not exist.
-Wait for 34 on 0 = 2
-Trying to decide instance 34
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 33 on 2 = 1
-Got 33
-2: currently @ 33 -> 33
-(3) Starting PAXOS... 34 0 33
-	Paxos: Status - Key does not exist.
-Wait for 34 on 2 = 2
-Trying to decide instance 34
-	Paxos: Status - Key does not exist.
-Sequence  33  is decided!
-Wait for 33 on 0 = 1
-Got 33
-0: currently @ 34 -> 33
-(3) Starting PAXOS... 34 0 33
-Wait for 34 on 0 = 2
-Trying to decide instance 34
-Sequence  33  is decided!
-Wait for 33 on 0 = 1
-Sequence  33  is decided!
-Got 33
-0: currently @ 34 -> 33
-(3) Starting PAXOS... 34 0 33
-Wait for 34 on 0 = 2
-Trying to decide instance 34
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  33  is decided!
-Trying to decide instance 34
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  33  is decided!
-	Paxos: Status - Key does not exist.
-Wait for 33 on 1 = 1
-Got 33
-1: currently @ 33 -> 33
-(3) Starting PAXOS... 34 0 33
-Wait for 34 on 1 = 2
-Trying to decide instance 34
-Propose: Sequence value has already been decided!
-Sequence  33  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Sequence  33  is decided!
-Wait for 33 on 1 = 1
-Got 33
-1: currently @ 34 -> 33
-Sequence  33  is decided!
-Wait for 33 on 1 = 1
-Got 33
-Sequence  33  is decided!
-Sequence  33  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 33 on 1 = 1
-Got 33
-Propose: Sequence value has already been decided!
-Wait for 33 on 1 = 1
-Got 33
-Sequence  33  is decided!
-
-
-
-PutAppend Call failed!
-I need to do something to accept: Have majority, no agreement
-Sequence  33  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-1: currently @ 34 -> 33
-(3) Starting PAXOS... 34 0 33
-Wait for 34 on 1 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-1: currently @ 34 -> 33
-(3) Starting PAXOS... 34 0 33
-Sequence  33  is decided!
-Wait for 34 on 1 = 2
-1: currently @ 34 -> 33
-(3) Starting PAXOS... 34 0 33
-Wait for 34 on 1 = 2
-Trying to decide instance 34
-Sequence  33  is decided!
-Wait for 33 on 1 = 1
-Sequence  33  is decided!
-Got 33
-1: currently @ 34 -> 33
-(3) Starting PAXOS... 34 0 33
-Wait for 34 on 1 = 2
-Trying to decide instance 34
-I need to do something to accept: Have majority, no agreement
-Trying to decide instance 34
-I need to do something to accept: Have majority, no agreement
-Sequence  33  is decided!
-I need to do something to accept: Have majority, no agreement
-Trying to decide instance 34
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 34 on 0 = 2
-Wait for 34 on 2 = 2
-Wait for 34 on 0 = 2
-Wait for 34 on 1 = 2
-Wait for 34 on 0 = 2
-Wait for 34 on 0 = 2
-I need to do something to accept: Have majority, no agreement
-Wait for 34 on 1 = 2
-I need to do something to accept: Have majority, no agreement
-Wait for 34 on 1 = 2
-Wait for 34 on 1 = 2
-Wait for 34 on 1 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Sequence  34  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  34  is decided!
-Sequence  34  is decided!
-Sequence  34  is decided!
-Wait for 34 on 1 = 1
-Got 34
-1: currently @ 34 -> 34
-(3) Starting PAXOS... 35 0 34
-	Paxos: Status - Key does not exist.
-Sequence  34  is decided!
-Wait for 35 on 1 = 2
-Trying to decide instance 35
-	Paxos: Status - Key does not exist.
-Sequence  34  is decided!
-Sequence  34  is decided!
-Sequence  34  is decided!
-Wait for 34 on 0 = 1
-Got 34
-Sequence  34  is decided!
-Wait for 34 on 2 = 1
-Got 34
-2: currently @ 34 -> 34
-(3) Starting PAXOS... 35 0 34
-	Paxos: Status - Key does not exist.
-Wait for 35 on 2 = 2
-Propose: Sequence value has already been decided!
-0: currently @ 34 -> 34
-Wait for 34 on 0 = 1
-Got 34
-(3) Starting PAXOS... 35 0 34
-	Paxos: Status - Key does not exist.
-Wait for 35 on 0 = 2
-0: currently @ 35 -> 34
-Trying to decide instance 35
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 34 on 0 = 1
-Got 34
-0: currently @ 35 -> 34
-(3) Starting PAXOS... 35 0 34
-Wait for 35 on 0 = 2
-Sequence  34  is decided!
-Trying to decide instance 35
-Sequence  34  is decided!
-Trying to decide instance 35
-	Paxos: Status - Key does not exist.
-Sequence  34  is decided!
-Propose: Sequence value has already been decided!
-Sequence  34  is decided!
-Propose: Sequence value has already been decided!
-Sequence  34  is decided!
-	Paxos: Status - Key does not exist.
-Sequence  34  is decided!
-Sequence  34  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  34  is decided!
-I need to do something to accept: Have majority, no agreement
-Sequence  34  is decided!
-Propose: Sequence value has already been decided!
-Sequence  34  is decided!
-I need to do something to accept: Have majority, no agreement
-Sequence  34  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Wait for 34 on 0 = 1
-Got 34
-0: currently @ 35 -> 34
-(3) Starting PAXOS... 35 0 34
-Wait for 35 on 0 = 2
-Wait for 34 on 1 = 1
-Got 34
-1: currently @ 35 -> 34
-(3) Starting PAXOS... 35 0 34
-Wait for 35 on 1 = 2
-Trying to decide instance 35
-Wait for 34 on 1 = 1
-Got 34
-1: currently @ 35 -> 34
-(3) Starting PAXOS... 35 0 34
-Wait for 35 on 1 = 2
-Trying to decide instance 35
-Wait for 34 on 1 = 1
-Got 34
-1: currently @ 35 -> 34
-(3) Starting PAXOS... 35 0 34
-Wait for 35 on 1 = 2
-Trying to decide instance 35
-Wait for 34 on 1 = 1
-Got 34
-1: currently @ 35 -> 34
-(3) Starting PAXOS... 35 0 34
-Wait for 35 on 1 = 2
-Trying to decide instance 35
-Wait for 35 on 1 = 2
-Wait for 35 on 2 = 2
-Wait for 35 on 0 = 2
-Trying to decide instance 35
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 35 on 0 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 35 on 1 = 2
-Wait for 35 on 1 = 2
-Wait for 35 on 1 = 1
-Got 35
-1: currently @ 35 -> 35
-(3) Starting PAXOS... 36 0 35
-	Paxos: Status - Key does not exist.
-Wait for 36 on 1 = 2
-Trying to decide instance 36
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 35 on 1 = 1
-Got 35
-1: currently @ 36 -> 35
-(3) Starting PAXOS... 36 0 35
-	Paxos: Status - Key does not exist.
-Wait for 36 on 1 = 2
-Trying to decide instance 36
-	Paxos: Status - Key does not exist.
-Sequence  35  is decided!
-Wait for 35 on 0 = 1
-Got 35
-0: currently @ 35 -> 35
-(3) Starting PAXOS... 36 0 35
-	Paxos: Status - Key does not exist.
-Wait for 36 on 0 = 2
-Propose: Sequence value has already been decided!
-Trying to decide instance 36
-	Paxos: Status - Key does not exist.
-Sequence  35  is decided!
-Sequence  35  is decided!
-Sequence  35  is decided!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  35  is decided!
-Sequence  35  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value has already been decided!
-Sequence  35  is decided!
-Propose: Sequence value has already been decided!
-	Paxos: Status - Key does not exist.
-Sequence  35  is decided!
-Propose: Sequence value has already been decided!
-Sequence  35  is decided!
-Propose: Sequence value has already been decided!
-Sequence  35  is decided!
-Sequence  35  is decided!
-I need to do something to accept: Have majority, no agreement
-Sequence  35  is decided!
-I need to do something to accept: Have majority, no agreement
-Sequence  35  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Sequence  35  is decided!
-Sequence  35  is decided!
-Propose: Sequence value has already been decided!
-Sequence  35  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  36  is decided!
-Propose: Sequence value has already been decided!
-Sequence  35  is decided!
-Propose: Sequence value has already been decided!
-Sequence  35  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value has already been decided!
-Sequence  35  is decided!
-Sequence  35  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  35  is decided!
-Propose: Sequence value has already been decided!
-Sequence  35  is decided!
-Propose: Sequence value has already been decided!
-Wait for 35 on 0 = 1
-Got 35
-0: currently @ 36 -> 35
-Wait for 35 on 1 = 1
-Wait for 36 on 1 = 1
-Wait for 35 on 2 = 1
-Got 35
-Got 36
-Got 35
-1: currently @ 36 -> 36
-2: currently @ 35 -> 36
-(3) Starting PAXOS... 37 0 36
-	Paxos: Status - Key does not exist.
-(3) Starting PAXOS... 37 0 36
-Wait for 37 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 37 on 2 = 2
-1: currently @ 37 -> 36
-(3) Starting PAXOS... 37 0 36
-Trying to decide instance 37
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 37 on 1 = 2
-Trying to decide instance 37
-	Paxos: Status - Key does not exist.
-Wait for 36 on 1 = 1
-Got 36
-1: currently @ 37 -> 36
-
-
-
-PutAppend Call failed!
-(3) Starting PAXOS... 37 0 36
-	Paxos: Status - Key does not exist.
-Wait for 37 on 1 = 2
-Trying to decide instance 37
-Trying to decide instance 37
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 36 on 0 = 1
-Propose: Sequence value is too small / out of date. Rejected!
-Got 36
-0: currently @ 36 -> 36
-Propose: Sequence value is too small / out of date. Rejected!
-(3) Starting PAXOS... 37 0 36
-Wait for 37 on 0 = 2
-Trying to decide instance 37
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 35 on 0 = 1
-Got 35
-0: currently @ 37 -> 36
-(3) Starting PAXOS... 37 0 36
-Wait for 37 on 0 = 2
-Trying to decide instance 37
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Sequence  37  is decided!
-Sequence  37  is decided!
-Sequence  37  is decided!
-Propose: Sequence value has already been decided!
-Sequence  37  is decided!
-Sequence  37  is decided!
-Sequence  37  is decided!
-Sequence  37  is decided!
-Sequence  37  is decided!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  37  is decided!
-Sequence  37  is decided!
-Propose: Sequence value has already been decided!
-I need to do something to accept: Have majority, no agreement
-Wait for 35 on 1 = 1
-Got 35
-1: currently @ 37 -> 37
-(3) Starting PAXOS... 38 0 37
-	Paxos: Status - Key does not exist.
-Wait for 38 on 1 = 2
-Trying to decide instance 38
-	Paxos: Status - Key does not exist.
-Wait for 35 on 1 = 1
-Got 35
-1: currently @ 38 -> 37
-(3) Starting PAXOS... 38 0 37
-	Paxos: Status - Key does not exist.
-Wait for 38 on 1 = 2
-Trying to decide instance 38
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 37 on 1 = 1
-Got 37
-1: currently @ 38 -> 37
-Propose: Sequence value is too small / out of date. Rejected!
-(3) Starting PAXOS... 38 0 37
-Wait for 38 on 1 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 37 on 2 = 1
-Got 37
-2: currently @ 37 -> 37
-(3) Starting PAXOS... 38 0 37
-	Paxos: Status - Key does not exist.
-Wait for 38 on 2 = 2
-Wait for 37 on 1 = 1
-Trying to decide instance 38
-Got 37
-	Paxos: Status - Key does not exist.
-1: currently @ 38 -> 37
-	Paxos: Status - Key does not exist.
-(3) Starting PAXOS... 38 0 37
-Wait for 38 on 1 = 2
-Trying to decide instance 38
-Trying to decide instance 38
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 37 on 0 = 1
-Got 37
-0: currently @ 37 -> 37
-(3) Starting PAXOS... 38 0 37
-Wait for 38 on 0 = 2
-Trying to decide instance 38
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 37 on 1 = 1
-Got 37
-1: currently @ 38 -> 37
-
-
-
-PutAppend Call failed!
-Sequence  38  is decided!
-Sequence  38  is decided!
-Sequence  38  is decided!
-Sequence  38  is decided!
-Propose: Sequence value has already been decided!
-Sequence  38  is decided!
-Wait for 37 on 0 = 1
-Got 37
-0: currently @ 38 -> 38
-(3) Starting PAXOS... 39 0 38
-Propose: Sequence value has already been decided!
-	Paxos: Status - Key does not exist.
-Wait for 39 on 0 = 2
-Trying to decide instance 39
-	Paxos: Status - Key does not exist.
-Propose: Sequence value has already been decided!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-	Paxos: Status - Key does not exist.
-Sequence  38  is decided!
-Sequence  38  is decided!
-	Paxos: Status - Key does not exist.
-Sequence  38  is decided!
-I need to do something to accept: Have majority, no agreement
-Wait for 38 on 1 = 1
-Got 38
-Wait for 38 on 1 = 1
-Wait for 38 on 1 = 1
-1: currently @ 38 -> 39
-Got 38
-Got 38
-Wait for 38 on 2 = 1
-Got 38
-(3) Starting PAXOS... 40 0 39
-2: currently @ 38 -> 38
-	Paxos: Status - Key does not exist.
-Wait for 40 on 1 = 2
-1: currently @ 40 -> 39
-Trying to decide instance 40
-(3) Starting PAXOS... 40 0 39
-	Paxos: Status - Key does not exist.
-Trying to decide instance 40
-	Paxos: Status - Key does not exist.
-Wait for 38 on 1 = 1
-Got 38
-	Paxos: Status - Key does not exist.
-Wait for 40 on 1 = 2
-1: currently @ 40 -> 39
-(3) Starting PAXOS... 40 0 39
-	Paxos: Status - Key does not exist.
-Wait for 40 on 1 = 2
-1: currently @ 40 -> 39
-(3) Starting PAXOS... 40 0 39
-	Paxos: Status - Key does not exist.
-Wait for 40 on 1 = 2
-Trying to decide instance 40
-	Paxos: Status - Key does not exist.
-Trying to decide instance 40
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 38 on 0 = 1
-Got 38
-0: currently @ 39 -> 40
-(3) Starting PAXOS... 41 0 40
-	Paxos: Status - Key does not exist.
-Wait for 41 on 0 = 2
-Trying to decide instance 41
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Sequence  40  is decided!
-Propose: Sequence value has already been decided!
-Sequence  40  is decided!
-Propose: Sequence value has already been decided!
-Sequence  40  is decided!
-Propose: Sequence value has already been decided!
-	Paxos: Status - Key does not exist.
-Wait for 39 on 0 = 1
-Got 39
-0: currently @ 41 -> 39
-Sequence  40  is decided!
-Sequence  40  is decided!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value has already been decided!
-Sequence  40  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Wait for 40 on 1 = 1
-Got 40
-1: currently @ 40 -> 41
-(3) Starting PAXOS... 42 0 41
-	Paxos: Status - Key does not exist.
-Wait for 42 on 1 = 2
-Trying to decide instance 42
-	Paxos: Status - Key does not exist.
-Wait for 40 on 1 = 1
-Got 40
-1: currently @ 42 -> 41
-(3) Starting PAXOS... 42 0 41
-	Paxos: Status - Key does not exist.
-Wait for 42 on 1 = 2
-Wait for 40 on 1 = 1
-Trying to decide instance 42
-Got 40
-	Paxos: Status - Key does not exist.
-1: currently @ 42 -> 41
-(3) Starting PAXOS... 42 0 41
-	Paxos: Status - Key does not exist.
-Wait for 42 on 1 = 2
-Trying to decide instance 42
-	Paxos: Status - Key does not exist.
-Wait for 40 on 1 = 1
-Got 40
-1: currently @ 42 -> 40
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 41 on 0 = 1
-Got 41
-0: currently @ 41 -> 41
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  42  is decided!
-Propose: Sequence value has already been decided!
-Sequence  42  is decided!
-Sequence  42  is decided!
-Sequence  42  is decided!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value has already been decided!
-Wait for 42 on 1 = 1
-Wait for 42 on 1 = 1
-Got 42
-Got 42
-1: currently @ 42 -> 42
-Wait for 42 on 1 = 1
-(3) Starting PAXOS... 43 0 42
-Got 42
-1: currently @ 43 -> 42
-	Paxos: Status - Key does not exist.
-Wait for 43 on 1 = 2
-Trying to decide instance 43
-1: currently @ 43 -> 42
-	Paxos: Status - Key does not exist.
-(3) Starting PAXOS... 43 0 42
-	Paxos: Status - Key does not exist.
-Wait for 43 on 1 = 2
-Trying to decide instance 43
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  43  is decided!
-Sequence  43  is decided!
-Sequence  43  is decided!
-I need to do something to accept: Have majority, no agreement
-Wait for 43 on 1 = 1
-Got 43
-1: currently @ 43 -> 43
-Wait for 43 on 1 = 1
-Got 43
-1: currently @ 44 -> 43
-(3) Starting PAXOS... 44 0 43
-	Paxos: Status - Key does not exist.
-Wait for 44 on 1 = 2
-Trying to decide instance 44
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 44 on 1 = 1
-Got 44
-1: currently @ 44 -> 44
-
-
-(1) Clerk Get
-KV Server Get key b on 0!
-0: currently @ 42 -> 44
-(3) Starting PAXOS... 45 0 44
-	Paxos: Status - Key does not exist.
-Wait for 45 on 0 = 2
-Trying to decide instance 45
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 45 on 0 = 1
-Got 45
-0: currently @ 45 -> 45
-
-
-(1) Clerk Get
-KV Server Get key b on 1!
-1: currently @ 45 -> 45
-(3) Starting PAXOS... 46 0 45
-	Paxos: Status - Key does not exist.
-Wait for 46 on 1 = 2
-Trying to decide instance 46
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 46 on 1 = 1
-Got 46
-1: currently @ 46 -> 46
-
-
-(1) Clerk Get
+2: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 2 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337548546
 KV Server Get key b on 2!
-2: currently @ 39 -> 46
-(3) Starting PAXOS... 47 0 46
-	Paxos: Status - Key does not exist.
-Wait for 47 on 2 = 2
-Trying to decide instance 47
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 47 on 2 = 1
-Got 47
-2: currently @ 47 -> 47
-num eye:  14 get
-
-
-(1) Clerk Get
-num eye:  6 put  6556961545928831643
-num eye:  2 put  6971241403795498694
-
-
-(1) Clerk PutAppend
-
-
-(1) Clerk PutAppend
-num eye:  7 get
-
-
-(1) Clerk Get
-num eye:  0 put  1205043859388862788
-num eye:  3 put  5743654948930018631
-num eye:  8 put  788787457839692041
-
-
-(1) Clerk PutAppend
-
-
-(1) Clerk PutAppend
-num eye:  1 get
-
-
-(1) Clerk Get
-num eye:  9 get
-num eye:  4 get
-
-
-(1) Clerk Get
-
-
-(1) Clerk Get
-num eye:  5 put  4011359550169803385
-
-
-(1) Clerk PutAppend
-num eye:  13 put  3689199053531163850
-num eye:  10 get
-
-
-(1) Clerk Get
-num eye:  11 get
-
-
-(1) Clerk Get
-num eye:  12 get
-
-
-(1) Clerk Get
-1: currently @ 47 -> 47
-(3) Starting PAXOS... 48 0 47
-	Paxos: Status - Key does not exist.
-Wait for 48 on 1 = 2
-KV Server Get key b on 0!
-0: currently @ 46 -> 47
-(3) Starting PAXOS... 48 0 47
-	Paxos: Status - Key does not exist.
-Wait for 48 on 0 = 2
-Trying to decide instance 48
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-2: currently @ 48 -> 47
-
-
-(1) Clerk PutAppend
-(3) Starting PAXOS... 48 0 47
-	Paxos: Status - Key does not exist.
-Wait for 48 on 2 = 2
-Trying to decide instance 48
-	Paxos: Status - Key does not exist.
-KV Server Get key b on 0!
-0: currently @ 48 -> 47
-(3) Starting PAXOS... 48 0 47
-Wait for 48 on 0 = 2
-Trying to decide instance 48
-
-
-(1) Clerk PutAppend
-2: currently @ 48 -> 47
+2: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 2 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337548546
+Wait for 10 on 0 = 2
+2: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 2 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337548802
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
 KV Server Get key b on 2!
-Trying to decide instance 48
-1: currently @ 48 -> 47
-KV Server Get key b on 1!
-	Paxos: Status - Key does not exist.
-(3) Starting PAXOS... 48 0 47
-	Paxos: Status - Key does not exist.
-Wait for 48 on 2 = 2
-2: currently @ 48 -> 47
-(3) Starting PAXOS... 48 0 47
-(3) Starting PAXOS... 48 0 47
+2: currently @ 10 -> 9
+propose_ok!
 KV Server Get key b on 0!
-Wait for 48 on 1 = 2
-0: currently @ 48 -> 47
-1: currently @ 48 -> 47
-(3) Starting PAXOS... 48 0 47
-(3) Starting PAXOS... 48 0 47
-Wait for 48 on 0 = 2
-Wait for 48 on 1 = 2
-Trying to decide instance 48
-1: currently @ 48 -> 47
-(3) Starting PAXOS... 48 0 47
-Wait for 48 on 1 = 2
-Trying to decide instance 48
-Trying to decide instance 48
-KV Server Get key b on 0!
-0: currently @ 48 -> 47
-Trying to decide instance 48
-(3) Starting PAXOS... 48 0 47
-Wait for 48 on 0 = 2
-Trying to decide instance 48
-KV Server Get key b on 0!
-0: currently @ 48 -> 47
-(3) Starting PAXOS... 48 0 47
-Wait for 48 on 0 = 2
-Trying to decide instance 48
-KV Server Get key b on 0!
-0: currently @ 48 -> 47
-(3) Starting PAXOS... 48 0 47
-Wait for 48 on 0 = 2
-Trying to decide instance 48
-0: currently @ 48 -> 47
-(3) Starting PAXOS... 48 0 47
-Wait for 48 on 0 = 2
-Trying to decide instance 48
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337549056
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 2 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+0: currently @ 10 -> 9
+Trying to decide instance 10
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337551872
+Log: New proposal on: 10 376257337551874
+Trying to decide instance 10
+Log: New proposal on: 10 376257337551872
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Trying to decide instance 10
+Log: New proposal on: 10 376257337551872
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552129
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337552385
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552642
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552642
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552642
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337552640
+1: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 1 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337552641
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552640
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552896
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552896
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337552896
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Wait for 10 on 1 = 2
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Wait for 10 on 2 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 2 = 2
+propose_ok!
+Wait for 10 on 0 = 2
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 1 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337560832
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337560833
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337560833
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337560833
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 48 on 1 = 2
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337561089
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337561089
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+accept_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Accept Err: Sequence  10  is decided!
+Propose: Sequence value is too small / out of date. Rejected!
+Sequence  10  is decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Accept Err: Sequence  10  is decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+Propose: Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+Accept Err: Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+HandleAccept Err:  Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+I need to do something to accept: Have majority, no agreement
+HandleAccept Err:  Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+I need to do something to accept: Have majority, no agreement
+Propose: Sequence value has already been decided!
+HandleAccept Err:  Sequence value has already been decided!
+I need to do something to accept: Have majority, no agreement
+Accept Err: Sequence  10  is decided!
+Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+I need to do something to accept: Have majority, no agreement
+Accept Err: Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+HandleAccept Err:  Sequence value has already been decided!
+I need to do something to accept: Have majority, no agreement
+Wait for 10 on 0 = 1
+Wait for 10 on 2 = 1
+Got 10
+Got 10
+0: currently @ 10 -> 10
+2: currently @ 10 -> 10
+(3) Starting PAXOS... 11 0 10
+(3) Starting PAXOS... 11 0 10
 	Paxos: Status - Key does not exist.
-Wait for 48 on 2 = 2
-2: currently @ 48 -> 47
-(3) Starting PAXOS... 48 0 47
 	Paxos: Status - Key does not exist.
-Wait for 48 on 2 = 2
-Trying to decide instance 48
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+Trying to decide instance 11
 	Paxos: Status - Key does not exist.
 	Paxos: Status - Key does not exist.
-Wait for 48 on 0 = 2
+Log: New proposal on: 11 376257337565442
+Log: New proposal on: 11 376257337565440
+	Paxos: Status - Key does not exist.
+Wait for 10 on 2 = 1
+Wait for 10 on 0 = 1
+Got 10
+Got 10
+2: currently @ 11 -> 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+Trying to decide instance 11
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 11 376257337565440
+Log: New proposal on: 11 376257337565442
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 10 on 1 = 1
+Got 10
+1: currently @ 10 -> 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+Wait for 11 on 1 = 2
+Trying to decide instance 11
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 11 376257337565441
+Wait for 10 on 2 = 1
+Got 10
+Wait for 10 on 0 = 1
+2: currently @ 11 -> 10
+Got 10
+(3) Starting PAXOS... 11 0 10
+0: currently @ 11 -> 10
+	Paxos: Status - Key does not exist.
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+	Paxos: Status - Key does not exist.
+Trying to decide instance 11
+Log: New proposal on: 11 376257337565442
+Log: New proposal on: 11 376257337565696
+Wait for 10 on 2 = 1
+Got 10
+2: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+Wait for 11 on 2 = 2
+Trying to decide instance 11
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 11 376257337565698
+Wait for 10 on 2 = 1
+Got 10
+Wait for 10 on 1 = 1
+2: currently @ 11 -> 10
+Got 10
+(3) Starting PAXOS... 11 0 10
+1: currently @ 11 -> 10
+	Paxos: Status - Key does not exist.
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 2 = 2
+	Paxos: Status - Key does not exist.
+Wait for 11 on 1 = 2
+Trying to decide instance 11
+	Paxos: Status - Key does not exist.
+Trying to decide instance 11
+Log: New proposal on: 11 376257337565698
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 11 376257337565697
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 48 on 0 = 2
-Wait for 48 on 2 = 2
 Propose: Sequence value is too small / out of date. Rejected!
-Trying to decide instance 48
 Propose: Sequence value is too small / out of date. Rejected!
-Trying to decide instance 48
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337565954
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566210
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566208
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566210
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566209
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566464
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337566464
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566466
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566722
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566720
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337566976
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337566976
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337567232
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337567234
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337568000
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 11 on 0 = 2
+propose_ok!
+Wait for 11 on 2 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337568258
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337568257
+propose_ok!
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337568258
+Wait for 11 on 0 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337568513
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 2 = 2
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337568514
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337568770
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569024
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337569026
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337569282
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569282
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569536
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569537
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569537
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569538
+propose_ok!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337570306
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Log: New proposal on: 11 376257337570305
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337570561
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337570562
+Wait for 10 on 0 = 1
+Got 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+Log: New proposal on: 11 376257337570560
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Wait for 10 on 1 = 1
+Log: New proposal on: 11 376257337571330
+Got 10
+1: currently @ 11 -> 10
+Wait for 10 on 0 = 1
+Got 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+Log: New proposal on: 11 376257337571584
+Wait for 10 on 1 = 1
+Got 10
+1: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 1 = 2
+Trying to decide instance 11
+Log: New proposal on: 11 376257337571585
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 10 on 0 = 1
+Got 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+Log: New proposal on: 11 376257337571584
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  48  is decided!
-Wait for 48 on 2 = 2
-Wait for 48 on 2 = 2
-Sequence  48  is decided!
-Wait for 48 on 1 = 1
-Got 48
-1: currently @ 48 -> 48
-(3) Starting PAXOS... 49 0 48
-Sequence  48  is decided!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value has already been decided!
+Log: New proposal on: 11 376257337571584
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 1 = 2
-Wait for 48 on 1 = 1
-Got 48
-Sequence  48  is decided!
-1: currently @ 49 -> 48
-(3) Starting PAXOS... 49 0 48
-	Paxos: Status - Key does not exist.
-Wait for 49 on 1 = 2
-I need to do something to accept: Have majority, no agreement
-Trying to decide instance 49
+Log: New proposal on: 11 376257337571842
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Wait for 48 on 1 = 1
-Got 48
-1: currently @ 49 -> 48
-(3) Starting PAXOS... 49 0 48
-	Paxos: Status - Key does not exist.
-Wait for 49 on 1 = 2
-Trying to decide instance 49
-	Paxos: Status - Key does not exist.
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value has already been decided!
-Wait for 48 on 2 = 2
-Trying to decide instance 49
-	Paxos: Status - Key does not exist.
-Sequence  48  is decided!
-Sequence  48  is decided!
-Sequence  48  is decided!
-Sequence  48  is decided!
-Sequence  48  is decided!
-	Paxos: Status - Key does not exist.
-Wait for 48 on 0 = 1
-Got 48
-0: currently @ 48 -> 48
-(3) Starting PAXOS... 49 0 48
-Wait for 49 on 0 = 2
-Trying to decide instance 49
-Propose: Sequence value has already been decided!
-Sequence  48  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Wait for 48 on 0 = 1
-Got 48
-0: currently @ 49 -> 48
-Sequence  48  is decided!
-Sequence  48  is decided!
-Propose: Sequence value has already been decided!
-Wait for 48 on 0 = 1
-Got 48
-0: currently @ 49 -> 48
-(3) Starting PAXOS... 49 0 48
-Sequence  48  is decided!
-Wait for 49 on 0 = 2
-Trying to decide instance 49
-Wait for 48 on 0 = 1
-Got 48
-0: currently @ 49 -> 48
-(3) Starting PAXOS... 49 0 48
-Wait for 49 on 0 = 2
-Trying to decide instance 49
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value has already been decided!
-	Paxos: Status - Key does not exist.
-Wait for 48 on 0 = 1
 
 
 
 PutAppend Call failed!
-Wait for 49 on 1 = 2
-Wait for 48 on 1 = 1
-Got 48
-1: currently @ 49 -> 48
-Propose: Sequence value is too small / out of date. Rejected!
-(3) Starting PAXOS... 49 0 48
-Wait for 49 on 1 = 2
-Trying to decide instance 49
-Got 48
-Wait for 48 on 0 = 1
-Got 48
-0: currently @ 49 -> 48
-Propose: Sequence value has already been decided!
-(3) Starting PAXOS... 49 0 48
-Wait for 49 on 0 = 2
-0: currently @ 49 -> 48
-(3) Starting PAXOS... 49 0 48
-Wait for 49 on 0 = 2
-Trying to decide instance 49
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 48 on 0 = 1
-Got 48
-0: currently @ 49 -> 48
-(3) Starting PAXOS... 49 0 48
-Wait for 49 on 0 = 2
-Trying to decide instance 49
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 48 on 2 = 1
-Got 48
-2: currently @ 48 -> 48
-(3) Starting PAXOS... 49 0 48
-	Paxos: Status - Key does not exist.
-Wait for 49 on 2 = 2
-Trying to decide instance 49
-	Paxos: Status - Key does not exist.
-Propose: Sequence value has already been decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Trying to decide instance 49
-Sequence  48  is decided!
-Wait for 49 on 1 = 2
-Propose: Sequence value has already been decided!
-Wait for 49 on 1 = 2
-Sequence  48  is decided!
-Sequence  48  is decided!
-Sequence  48  is decided!
-Propose: Sequence value has already been decided!
-Sequence  48  is decided!
-	Paxos: Status - Key does not exist.
-Propose: Sequence value has already been decided!
-Sequence  48  is decided!
-Propose: Sequence value has already been decided!
-Sequence  48  is decided!
-Propose: Sequence value has already been decided!
-Sequence  48  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value has already been decided!
-Sequence  48  is decided!
-Propose: Sequence value has already been decided!
-Sequence  48  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Sequence  48  is decided!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value has already been decided!
-Sequence  48  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  48  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
+Log: New proposal on: 11 376257337572353
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337572352
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337572610
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337572610
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 2 = 2
-Wait for 49 on 0 = 2
-Wait for 48 on 2 = 1
-Got 48
-2: currently @ 49 -> 48
-(3) Starting PAXOS... 49 0 48
-Wait for 49 on 2 = 2
-Trying to decide instance 49
-Wait for 48 on 2 = 1
-Got 48
-2: currently @ 49 -> 48
-(3) Starting PAXOS... 49 0 48
-Wait for 49 on 2 = 2
-Trying to decide instance 49
-Wait for 49 on 0 = 2
-Wait for 49 on 0 = 2
-Wait for 49 on 1 = 2
-Wait for 49 on 0 = 2
-Wait for 49 on 0 = 2
-Wait for 48 on 2 = 1
-Got 48
-2: currently @ 49 -> 48
-(3) Starting PAXOS... 49 0 48
-Wait for 49 on 2 = 2
-Trying to decide instance 49
+Log: New proposal on: 11 376257337572610
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Wait for 49 on 0 = 2
+Log: New proposal on: 11 376257337572866
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337572864
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573120
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337573120
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573120
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573378
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 2 = 2
-Wait for 49 on 1 = 2
-Wait for 49 on 2 = 2
-Wait for 49 on 1 = 2
-Wait for 49 on 1 = 2
-Wait for 49 on 2 = 2
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573376
 Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 0 = 2
-Wait for 49 on 2 = 2
-I need to do something to accept: Have majority, no agreement
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337573633
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573634
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573890
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573889
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573890
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337574144
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337574146
 Propose: Sequence value is too small / out of date. Rejected!
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 0 = 2
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337577217
+Wait for 11 on 1 = 2
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 2 = 2
-Wait for 49 on 0 = 2
-Wait for 49 on 0 = 2
-Wait for 49 on 2 = 2
-Wait for 49 on 0 = 2
-Wait for 49 on 0 = 2
-Wait for 49 on 2 = 2
-Wait for 49 on 0 = 2
-Wait for 49 on 1 = 2
+Log: New proposal on: 11 376257337577218
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337577473
+Log: New proposal on: 11 376257337577472
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337577474
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337577472
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337577986
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337577984
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337577986
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337577984
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337577984
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578242
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337578242
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578240
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578240
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578497
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 1 = 2
-Wait for 49 on 1 = 2
-Wait for 49 on 1 = 2
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337578497
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578752
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578754
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578754
+Log: New proposal on: 11 376257337578752
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578754
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337579520
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337579521
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337579520
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 2 = 2
-Wait for 49 on 0 = 2
 I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337579776
+Log: New proposal on: 11 376257337579778
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337579777
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337579778
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580032
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580032
 Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580034
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580033
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580290
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580544
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580546
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580546
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580546
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580544
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580544
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580544
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Log: New proposal on: 11 376257337580801
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580801
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337581058
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337581057
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337581058
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337581314
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337581312
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337581824
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Wait for 11 on 0 = 2
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582080
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 0 = 2
-Wait for 49 on 2 = 2
-Wait for 49 on 0 = 2
+Log: New proposal on: 11 376257337582081
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582080
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 2 = 2
-Wait for 49 on 0 = 2
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582082
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 2 = 2
-Wait for 49 on 0 = 2
+Log: New proposal on: 11 376257337582082
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582082
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337582080
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582080
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 1 = 2
-Wait for 49 on 0 = 2
-I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582338
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582337
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582592
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337582848
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337582849
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582848
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582850
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582850
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582850
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Log: New proposal on: 11 376257337583106
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337583104
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337583104
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337583360
+Log: New proposal on: 11 376257337583617
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337583874
 Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584129
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584128
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584130
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584384
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584386
+Log: New proposal on: 11 376257337584385
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584384
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584384
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584642
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584896
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584898
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584896
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584897
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337585154
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337585408
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337585409
+propose_ok!
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337585410
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337585408
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337585664
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Sequence  49  is decided!
+Log: New proposal on: 11 376257337585666
 Propose: Sequence value is too small / out of date. Rejected!
-Sequence  49  is decided!
-Sequence  49  is decided!
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
-I need to do something to accept: Have majority, no agreement
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
-Sequence  49  is decided!
-Sequence  49  is decided!
-Sequence  49  is decided!
-Sequence  49  is decided!
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
-Sequence  49  is decided!
+Log: New proposal on: 11 376257337585664
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value has already been decided!
-Sequence  49  is decided!
+Log: New proposal on: 11 376257337585921
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 11 on 0 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Propose: Sequence value has already been decided!
-Wait for 49 on 1 = 1
-Wait for 49 on 1 = 1
-Got 49
-Wait for 49 on 1 = 1
-Got 49
-1: currently @ 49 -> 49
-Got 49
-1: currently @ 50 -> 49
-(3) Starting PAXOS... 50 0 49
-	Paxos: Status - Key does not exist.
-Wait for 50 on 1 = 2
-1: currently @ 50 -> 49
-(3) Starting PAXOS... 50 0 49
-	Paxos: Status - Key does not exist.
-Wait for 50 on 1 = 2
-Trying to decide instance 50
-Trying to decide instance 50
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-
-
-
-PutAppend Call failed!
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
+Log: New proposal on: 11 376257337586432
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
+Log: New proposal on: 11 376257337586434
 Propose: Sequence value is too small / out of date. Rejected!
-I need to do something to accept: Have majority, no agreement
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337586433
 Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 2 = 1
-Got 49
-2: currently @ 49 -> 50
-(3) Starting PAXOS... 51 0 50
-	Paxos: Status - Key does not exist.
-Wait for 51 on 2 = 2
-Trying to decide instance 51
-	Paxos: Status - Key does not exist.
-Wait for 49 on 0 = 1
-Got 49
-0: currently @ 49 -> 50
-(3) Starting PAXOS... 51 0 50
-	Paxos: Status - Key does not exist.
-Wait for 51 on 0 = 2
-Trying to decide instance 51
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-I need to do something to accept: Have majority, no agreement
-Sequence  51  is decided!
-Propose: Sequence value has already been decided!
-Sequence  51  is decided!
-Sequence  51  is decided!
-Sequence  51  is decided!
+Log: New proposal on: 11 376257337586690
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Wait for 50 on 1 = 1
-Wait for 50 on 1 = 1
-Got 50
-Got 50
-1: currently @ 50 -> 50
-1: currently @ 51 -> 51
-(3) Starting PAXOS... 52 0 51
-	Paxos: Status - Key does not exist.
-Wait for 52 on 1 = 2
-Trying to decide instance 52
-	Paxos: Status - Key does not exist.
-
-
-
-PutAppend Call failed!
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 51 on 0 = 1
-Wait for 51 on 2 = 1
-Got 51
-Got 51
-0: currently @ 51 -> 52
-2: currently @ 51 -> 51
-(3) Starting PAXOS... 53 0 52
-	Paxos: Status - Key does not exist.
-Wait for 53 on 0 = 2
-Trying to decide instance 53
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-
-
-
-PutAppend Call failed!
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 52 on 1 = 1
-Got 52
-1: currently @ 52 -> 52
-Wait for 49 on 0 = 1
-Got 49
-Wait for 49 on 0 = 1
-0: currently @ 53 -> 53
-Got 49
-(3) Starting PAXOS... 54 0 53
-Wait for 49 on 2 = 1
-Got 49
-	Paxos: Status - Key does not exist.
-Wait for 54 on 0 = 2
-2: currently @ 52 -> 53
-0: currently @ 54 -> 53
-(3) Starting PAXOS... 54 0 53
-	Paxos: Status - Key does not exist.
-Wait for 54 on 0 = 2
-(3) Starting PAXOS... 54 0 53
-Trying to decide instance 54
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 54 on 2 = 2
-	Paxos: Status - Key does not exist.
-Trying to decide instance 54
-	Paxos: Status - Key does not exist.
-Trying to decide instance 54
+Log: New proposal on: 11 376257337586690
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Log: New proposal on: 11 376257337586689
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 49 on 0 = 1
-Got 49
-0: currently @ 54 -> 53
-(3) Starting PAXOS... 54 0 53
-Wait for 54 on 0 = 2
-Trying to decide instance 54
-	Paxos: Status - Key does not exist.
-Wait for 49 on 2 = 1
-Got 49
-2: currently @ 54 -> 53
-(3) Starting PAXOS... 54 0 53
-	Paxos: Status - Key does not exist.
-Wait for 54 on 2 = 2
-Trying to decide instance 54
-	Paxos: Status - Key does not exist.
-Wait for 49 on 0 = 1
-Got 49
-0: currently @ 54 -> 53
-(3) Starting PAXOS... 54 0 53
-Wait for 54 on 0 = 2
-Trying to decide instance 54
+Log: New proposal on: 11 376257337586688
 Propose: Sequence value is too small / out of date. Rejected!
-	Paxos: Status - Key does not exist.
-Wait for 49 on 2 = 1
-Got 49
-2: currently @ 54 -> 53
-(3) Starting PAXOS... 54 0 53
-Wait for 54 on 2 = 2
+Log: New proposal on: 11 376257337586944
 Propose: Sequence value is too small / out of date. Rejected!
-Trying to decide instance 54
-Wait for 53 on 0 = 1
-Got 53
-0: currently @ 54 -> 53
-Wait for 49 on 1 = 1
-Got 49
-1: currently @ 53 -> 53
-(3) Starting PAXOS... 54 0 53
-Wait for 54 on 1 = 2
-Trying to decide instance 54
-Wait for 49 on 0 = 1
-Got 49
-0: currently @ 54 -> 53
-(3) Starting PAXOS... 54 0 53
-Wait for 54 on 0 = 2
-Trying to decide instance 54
 Propose: Sequence value is too small / out of date. Rejected!
-Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337586944
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 54 on 2 = 2
-Wait for 54 on 0 = 2
-Wait for 54 on 0 = 2
-Wait for 54 on 0 = 2
 Propose: Sequence value is too small / out of date. Rejected!
 Propose: Sequence value is too small / out of date. Rejected!
-Wait for 54 on 0 = 2
-Wait for 54 on 2 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337587200
 Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Wait for 54 on 1 = 2
-Sequence  54  is decided!
-Sequence  54  is decided!
-Propose: Sequence value has already been decided!
-Wait for 54 on 0 = 1
-Got 54
-0: currently @ 54 -> 54
-(3) Starting PAXOS... 55 0 54
-	Paxos: Status - Key does not exist.
-Wait for 55 on 0 = 2
-Trying to decide instance 55
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Sequence  54  is decided!
-Sequence  54  is decided!
-Sequence  54  is decided!
-Sequence  54  is decided!
-I need to do something to accept: Have majority, no agreement
-Wait for 54 on 2 = 1
-Got 54
-2: currently @ 54 -> 54
-(3) Starting PAXOS... 55 0 54
-	Paxos: Status - Key does not exist.
-Wait for 55 on 2 = 2
-Trying to decide instance 55
-	Paxos: Status - Key does not exist.
-I need to do something to accept: Have majority, no agreement
-Sequence  54  is decided!
-	Paxos: Status - Key does not exist.
-Sequence  54  is decided!
-Propose: Sequence value has already been decided!
-Sequence  54  is decided!
-I need to do something to accept: Have majority, no agreement
-Propose: Sequence value has already been decided!
-Propose: Sequence value has already been decided!
-Sequence  54  is decided!
-Sequence  54  is decided!
-Sequence  54  is decided!
-Sequence  54  is decided!
-Propose: Sequence value has already been decided!
-Sequence  54  is decided!
-Sequence  54  is decided!
-Sequence  54  is decided!
-Sequence  54  is decided!
-Propose: Sequence value has already been decided!
-Sequence  54  is decided!
-Propose: Sequence value has already been decided!
-I need to do something to accept: Have majority, no agreement
-Sequence  54  is decided!
-Sequence  54  is decided!
-I need to do something to accept: Have majority, no agreement
-Sequence  55  is decided!
-Wait for 54 on 2 = 1
-Got 54
-2: currently @ 55 -> 54
+Log: New proposal on: 11 376257337587202
+propose_ok!
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337587456
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
 I need to do something to accept: Have majority, no agreement
-Wait for 55 on 2 = 2
-
-
-
-PutAppend Call failed!
-Wait for 54 on 1 = 1
-Got 54
-1: currently @ 54 -> 55
-(3) Starting PAXOS... 56 0 55
-	Paxos: Status - Key does not exist.
-Wait for 56 on 1 = 2
-Trying to decide instance 56
-	Paxos: Status - Key does not exist.
-	Paxos: Status - Key does not exist.
-Wait for 56 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 56 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 56 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 56 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 56 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 56 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 56 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 56 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 56 on 1 = 2
-	Paxos: Status - Key does not exist.
-Wait for 56 on 1 = 2
-signal: interrupt
-FAIL	kvpaxos	6.994s
+exit status 2
+FAIL	kvpaxos	0.312s
