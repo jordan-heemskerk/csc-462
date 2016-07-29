@@ -1,0 +1,1487 @@
+Test: Basic put/append/get ...
+
+
+(1) Clerk PutAppend
+0: currently @ 1 -> 0
+(3) Starting PAXOS... 1 0 0
+	Paxos: Status - Key does not exist.
+Wait for 1 on 0 = 2
+Trying to decide instance 1
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 1 376257337519616
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
+Wait for 1 on 0 = 1
+Got 1
+0: currently @ 1 -> 1
+
+
+
+PutAppend Call failed!
+
+
+(1) Clerk PutAppend
+0: currently @ 2 -> 1
+(3) Starting PAXOS... 2 0 1
+	Paxos: Status - Key does not exist.
+Wait for 2 on 0 = 2
+Trying to decide instance 2
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 2 376257337522176
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
+Wait for 2 on 0 = 1
+Got 2
+0: currently @ 2 -> 2
+
+
+
+PutAppend Call failed!
+
+
+(1) Clerk Get
+KV Server Get key app on 0!
+0: currently @ 3 -> 2
+(3) Starting PAXOS... 3 0 2
+	Paxos: Status - Key does not exist.
+Wait for 3 on 0 = 2
+Trying to decide instance 3
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 3 376257337524992
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
+Wait for 3 on 0 = 1
+Got 3
+0: currently @ 3 -> 3
+
+
+(1) Clerk PutAppend
+0: currently @ 4 -> 3
+(3) Starting PAXOS... 4 0 3
+	Paxos: Status - Key does not exist.
+Wait for 4 on 0 = 2
+Trying to decide instance 4
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 4 376257337527808
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
+Wait for 4 on 0 = 1
+Got 4
+0: currently @ 4 -> 4
+
+
+
+PutAppend Call failed!
+
+
+(1) Clerk Get
+KV Server Get key a on 0!
+0: currently @ 5 -> 4
+(3) Starting PAXOS... 5 0 4
+	Paxos: Status - Key does not exist.
+Wait for 5 on 0 = 2
+Trying to decide instance 5
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 5 376257337530624
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
+Wait for 5 on 0 = 1
+Got 5
+0: currently @ 5 -> 5
+
+
+(1) Clerk PutAppend
+1: currently @ 1 -> 5
+(3) Starting PAXOS... 6 0 5
+	Paxos: Status - Key does not exist.
+Wait for 6 on 1 = 2
+Trying to decide instance 6
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 6 376257337533697
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
+Wait for 6 on 1 = 1
+Got 6
+1: currently @ 6 -> 6
+
+
+
+PutAppend Call failed!
+
+
+(1) Clerk Get
+KV Server Get key a on 2!
+2: currently @ 1 -> 6
+(3) Starting PAXOS... 7 0 6
+	Paxos: Status - Key does not exist.
+Wait for 7 on 2 = 2
+Trying to decide instance 7
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 7 376257337536514
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
+Wait for 7 on 2 = 1
+Got 7
+2: currently @ 7 -> 7
+
+
+(1) Clerk Get
+KV Server Get key a on 1!
+1: currently @ 7 -> 7
+(3) Starting PAXOS... 8 0 7
+	Paxos: Status - Key does not exist.
+Wait for 8 on 1 = 2
+Trying to decide instance 8
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 8 376257337539329
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
+Wait for 8 on 1 = 1
+Got 8
+1: currently @ 8 -> 8
+
+
+(1) Clerk Get
+KV Server Get key a on 0!
+0: currently @ 6 -> 8
+(3) Starting PAXOS... 9 0 8
+	Paxos: Status - Key does not exist.
+Wait for 9 on 0 = 2
+Trying to decide instance 9
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 9 376257337542400
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+propose_ok!
+accept_ok!
+Wait for 9 on 0 = 1
+Got 9
+0: currently @ 9 -> 9
+  ... Passed
+
+
+
+
+
+Test: Concurrent clients ...
+num eye:  14 get
+
+
+(1) Clerk Get
+num eye:  8 get
+num eye:  10 put  3916589616287113937
+num eye:  6 put  2775422040480279449
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk PutAppend
+num eye:  11 put  1976235410884491574
+
+
+(1) Clerk PutAppend
+num eye:  7 get
+
+
+(1) Clerk Get
+num eye:  9 get
+
+
+(1) Clerk Get
+num eye:  13 get
+
+
+(1) Clerk Get
+num eye:  1 put  6941261091797652072
+num eye:  12 get
+num eye:  4 put  261049867304784443
+num eye:  5 get
+
+
+(1) Clerk Get
+0: currently @ 10 -> 9
+
+
+(1) Clerk PutAppend
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 0 = 2
+
+
+(1) Clerk Get
+KV Server Get key b on 0!
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+KV Server Get key b on 1!
+	Paxos: Status - Key does not exist.
+1: currently @ 9 -> 9
+Wait for 10 on 0 = 2
+(3) Starting PAXOS... 10 0 9
+Trying to decide instance 10
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 10 on 1 = 2
+Log: New proposal on: 10 376257337546240
+	Paxos: Status - Key does not exist.
+Trying to decide instance 10
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 10 376257337546241
+KV Server Get key b on 1!
+1: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 1 = 2
+Trying to decide instance 10
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 10 376257337546497
+	Paxos: Status - Key does not exist.
+1: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 1 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337546753
+num eye:  0 put  3328451335138149956
+num eye:  3 get
+
+
+(1) Clerk Get
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk Get
+Trying to decide instance 10
+Log: New proposal on: 10 376257337547008
+num eye:  2 put  8995016276575641803
+
+
+(1) Clerk PutAppend
+
+
+(1) Clerk PutAppend
+Propose: Sequence value is too small / out of date. Rejected!
+KV Server Get key b on 1!
+2: currently @ 8 -> 9
+(3) Starting PAXOS... 10 0 9
+	Paxos: Status - Key does not exist.
+Wait for 10 on 2 = 2
+Trying to decide instance 10
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 10 376257337548546
+	Paxos: Status - Key does not exist.
+KV Server Get key b on 2!
+2: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 2 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337548546
+KV Server Get key b on 2!
+2: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 2 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337548546
+Wait for 10 on 0 = 2
+2: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 2 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337548802
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+KV Server Get key b on 2!
+2: currently @ 10 -> 9
+propose_ok!
+KV Server Get key b on 0!
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337549056
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 2 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+0: currently @ 10 -> 9
+Trying to decide instance 10
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+0: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 0 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337551872
+Log: New proposal on: 10 376257337551874
+Trying to decide instance 10
+Log: New proposal on: 10 376257337551872
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Trying to decide instance 10
+Log: New proposal on: 10 376257337551872
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552129
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337552385
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552642
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552642
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552642
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337552640
+1: currently @ 10 -> 9
+(3) Starting PAXOS... 10 0 9
+Wait for 10 on 1 = 2
+Trying to decide instance 10
+Log: New proposal on: 10 376257337552641
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552640
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552896
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337552896
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337552896
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Wait for 10 on 1 = 2
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Wait for 10 on 2 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 2 = 2
+propose_ok!
+Wait for 10 on 0 = 2
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Wait for 10 on 0 = 2
+Wait for 10 on 2 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 1 = 2
+Wait for 10 on 0 = 2
+Wait for 10 on 1 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337560832
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337560833
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337560833
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337560833
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 10 376257337561089
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 10 376257337561089
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+accept_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Accept Err: Sequence  10  is decided!
+Propose: Sequence value is too small / out of date. Rejected!
+Sequence  10  is decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Accept Err: Sequence  10  is decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+Propose: Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+Accept Err: Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+HandleAccept Err:  Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+I need to do something to accept: Have majority, no agreement
+HandleAccept Err:  Sequence value has already been decided!
+Accept Err: Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+I need to do something to accept: Have majority, no agreement
+Propose: Sequence value has already been decided!
+HandleAccept Err:  Sequence value has already been decided!
+I need to do something to accept: Have majority, no agreement
+Accept Err: Sequence  10  is decided!
+Sequence  10  is decided!
+HandleAccept Err:  Sequence value has already been decided!
+I need to do something to accept: Have majority, no agreement
+Accept Err: Sequence  10  is decided!
+Propose: Sequence value has already been decided!
+HandleAccept Err:  Sequence value has already been decided!
+I need to do something to accept: Have majority, no agreement
+Wait for 10 on 0 = 1
+Wait for 10 on 2 = 1
+Got 10
+Got 10
+0: currently @ 10 -> 10
+2: currently @ 10 -> 10
+(3) Starting PAXOS... 11 0 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+Trying to decide instance 11
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 11 376257337565442
+Log: New proposal on: 11 376257337565440
+	Paxos: Status - Key does not exist.
+Wait for 10 on 2 = 1
+Wait for 10 on 0 = 1
+Got 10
+Got 10
+2: currently @ 11 -> 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+Trying to decide instance 11
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 11 376257337565440
+Log: New proposal on: 11 376257337565442
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 10 on 1 = 1
+Got 10
+1: currently @ 10 -> 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+Wait for 11 on 1 = 2
+Trying to decide instance 11
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 11 376257337565441
+Wait for 10 on 2 = 1
+Got 10
+Wait for 10 on 0 = 1
+2: currently @ 11 -> 10
+Got 10
+(3) Starting PAXOS... 11 0 10
+0: currently @ 11 -> 10
+	Paxos: Status - Key does not exist.
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+	Paxos: Status - Key does not exist.
+Trying to decide instance 11
+Log: New proposal on: 11 376257337565442
+Log: New proposal on: 11 376257337565696
+Wait for 10 on 2 = 1
+Got 10
+2: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+	Paxos: Status - Key does not exist.
+Wait for 11 on 2 = 2
+Trying to decide instance 11
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 11 376257337565698
+Wait for 10 on 2 = 1
+Got 10
+Wait for 10 on 1 = 1
+2: currently @ 11 -> 10
+Got 10
+(3) Starting PAXOS... 11 0 10
+1: currently @ 11 -> 10
+	Paxos: Status - Key does not exist.
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 2 = 2
+	Paxos: Status - Key does not exist.
+Wait for 11 on 1 = 2
+Trying to decide instance 11
+	Paxos: Status - Key does not exist.
+Trying to decide instance 11
+Log: New proposal on: 11 376257337565698
+	Paxos: Status - Key does not exist.
+Log: New proposal on: 11 376257337565697
+	Paxos: Status - Key does not exist.
+	Paxos: Status - Key does not exist.
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337565954
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566210
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566208
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566210
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566209
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566464
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337566464
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566466
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566722
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337566720
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337566976
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337566976
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337567232
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337567234
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337568000
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 11 on 0 = 2
+propose_ok!
+Wait for 11 on 2 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337568258
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337568257
+propose_ok!
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337568258
+Wait for 11 on 0 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337568513
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 2 = 2
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337568514
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337568770
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569024
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337569026
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337569282
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569282
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569536
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569537
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569537
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337569538
+propose_ok!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337570306
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Log: New proposal on: 11 376257337570305
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337570561
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337570562
+Wait for 10 on 0 = 1
+Got 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+Log: New proposal on: 11 376257337570560
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Wait for 10 on 1 = 1
+Log: New proposal on: 11 376257337571330
+Got 10
+1: currently @ 11 -> 10
+Wait for 10 on 0 = 1
+Got 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+Log: New proposal on: 11 376257337571584
+Wait for 10 on 1 = 1
+Got 10
+1: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 1 = 2
+Trying to decide instance 11
+Log: New proposal on: 11 376257337571585
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 10 on 0 = 1
+Got 10
+0: currently @ 11 -> 10
+(3) Starting PAXOS... 11 0 10
+Wait for 11 on 0 = 2
+Trying to decide instance 11
+Log: New proposal on: 11 376257337571584
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337571584
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337571842
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+
+
+
+PutAppend Call failed!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337572353
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337572352
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337572610
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337572610
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337572610
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337572866
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337572864
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337573120
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337573120
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573120
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573378
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337573376
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337573633
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573634
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573890
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337573889
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337573890
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337574144
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337574146
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 0 = 2
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337577217
+Wait for 11 on 1 = 2
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337577218
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337577473
+Log: New proposal on: 11 376257337577472
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337577474
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337577472
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337577986
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337577984
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337577986
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337577984
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337577984
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578242
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578242
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578240
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578240
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337578497
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337578497
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578752
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578754
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337578754
+Log: New proposal on: 11 376257337578752
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337578754
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337579520
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337579521
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337579520
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+I need to do something to accept: Have majority, no agreement
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337579776
+Log: New proposal on: 11 376257337579778
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337579777
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337579778
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580032
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580032
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580034
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580033
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580290
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580544
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580546
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580546
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580546
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580544
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580544
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337580544
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Log: New proposal on: 11 376257337580801
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337580801
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337581058
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337581057
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337581058
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337581314
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337581312
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337581824
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Wait for 11 on 0 = 2
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582080
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582081
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582080
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582082
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337582082
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582082
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337582080
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582080
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582338
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582337
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582592
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582848
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337582849
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582848
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337582850
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582850
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337582850
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Log: New proposal on: 11 376257337583106
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337583104
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337583104
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337583360
+Log: New proposal on: 11 376257337583617
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337583874
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584129
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584128
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584130
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584384
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584386
+Log: New proposal on: 11 376257337584385
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584384
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584384
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584642
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584896
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584898
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337584896
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337584897
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337585154
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337585408
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337585409
+propose_ok!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337585410
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337585408
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337585664
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337585666
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337585664
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337585921
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Wait for 11 on 0 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 1 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337586432
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337586434
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337586433
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337586690
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337586690
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Log: New proposal on: 11 376257337586689
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337586688
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337586944
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Wait for 11 on 1 = 2
+Wait for 11 on 2 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337586944
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337587200
+Propose: Sequence value is too small / out of date. Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+propose_ok!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+Log: New proposal on: 11 376257337587202
+propose_ok!
+Wait for 11 on 2 = 2
+Wait for 11 on 0 = 2
+Wait for 11 on 2 = 2
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Propose: Sequence value is too small / out of date. Rejected!
+Log: New proposal on: 11 376257337587456
+HandleAccept Err:  Proposed value is too small / out of date. Accept Rejected!
+I need to do something to accept: Have majority, no agreement
+exit status 2
+FAIL	kvpaxos	0.312s

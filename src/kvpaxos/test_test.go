@@ -9,6 +9,7 @@ import "fmt"
 import "math/rand"
 import "strings"
 import "sync/atomic"
+import "log"
 
 func check(t *testing.T, ck *Clerk, key string, value string) {
 	v := ck.Get(key)
@@ -81,8 +82,6 @@ func TestBasic(t *testing.T) {
 	check(t, cka[2], "a", "aaa")
 	check(t, cka[1], "a", "aaa")
 
-	fmt.Printf("MERMAID 4")
-
 	check(t, ck, "a", "aaa") // FAILING!
 
 	fmt.Printf("  ... Passed\n\n\n\n\n\n")
@@ -93,7 +92,7 @@ func TestBasic(t *testing.T) {
 		const npara = 15
 		var ca [npara]chan bool
 
-		// creates 15 go functions! Vary between Get and Put
+		// creates 20 go functions! Vary between Get and Put
 		for nth := 0; nth < npara; nth++ {
 			ca[nth] = make(chan bool)
 			go func(me int) {
@@ -101,12 +100,16 @@ func TestBasic(t *testing.T) {
 				ci := (rand.Int() % nservers)
 				myck := MakeClerk([]string{kvh[ci]})
 				if (rand.Int() % 1000) < 500 {
-					myck.Put("b", strconv.Itoa(rand.Int()))
+					randN := strconv.Itoa(rand.Int())
+					fmt.Println("num eye: ", me, "put ", randN )
+					myck.Put("b",randN)
 				} else {
+					fmt.Println("num eye: ", me, "get")
 					myck.Get("b")
 				}
 			}(nth)
 		}
+
 		for nth := 0; nth < npara; nth++ {
 			<-ca[nth]
 		}
@@ -116,6 +119,8 @@ func TestBasic(t *testing.T) {
 		for i := 0; i < nservers; i++ {
 			va[i] = cka[i].Get("b")
 			if va[i] != va[0] {
+				fmt.Println("B == ", va[i], va[0])
+				log.Fatal("Fatal Eye:",i)
 				t.Fatalf("mismatch")
 			}
 		}
